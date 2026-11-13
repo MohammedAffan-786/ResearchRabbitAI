@@ -1,0 +1,2498 @@
+{
+  "papers": {
+    "paper-vaswani-2017": {
+      "id": "paper-vaswani-2017",
+      "title": "Attention Is All You Need",
+      "authors": [
+        {
+          "name": "Ashish Vaswani",
+          "affiliation": "Google Brain"
+        },
+        {
+          "name": "Noam Shazeer",
+          "affiliation": "Google Brain"
+        },
+        {
+          "name": "Niki Parmar",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Jakob Uszkoreit",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Llion Jones",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Aidan N. Gomez",
+          "affiliation": "University of Toronto"
+        },
+        {
+          "name": "Lukasz Kaiser",
+          "affiliation": "Google Brain"
+        },
+        {
+          "name": "Illia Polosukhin",
+          "affiliation": "Independent"
+        }
+      ],
+      "abstract": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train.",
+      "year": 2017,
+      "venue": "NeurIPS 2017",
+      "arxivId": "1706.03762",
+      "doi": "10.48550/arXiv.1706.03762",
+      "citationCount": 135400,
+      "referenceCount": 42,
+      "influentialCitationCount": 18200,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Natural Language Processing"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/1706.03762.pdf",
+      "tldr": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+      "source": "local",
+      "readingStatus": "starred",
+      "userRating": 5,
+      "tags": [
+        "Transformer",
+        "NLP",
+        "Foundational",
+        "Attention"
+      ],
+      "dateAdded": "2026-10-14T14:02:38.762Z",
+      "references": [
+        "paper-bahdanau-2014",
+        "paper-sutskever-2014",
+        "paper-hochreiter-1997"
+      ]
+    },
+    "paper-devlin-2018": {
+      "id": "paper-devlin-2018",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "authors": [
+        {
+          "name": "Jacob Devlin",
+          "affiliation": "Google AI Language"
+        },
+        {
+          "name": "Ming-Wei Chang",
+          "affiliation": "Google AI Language"
+        },
+        {
+          "name": "Kenton Lee",
+          "affiliation": "Google AI Language"
+        },
+        {
+          "name": "Kristina Toutanova",
+          "affiliation": "Google AI Language"
+        }
+      ],
+      "abstract": "We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models, BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference.",
+      "year": 2018,
+      "venue": "NAACL 2019",
+      "arxivId": "1810.04805",
+      "doi": "10.18653/v1/N19-1423",
+      "citationCount": 104200,
+      "referenceCount": 47,
+      "influentialCitationCount": 12400,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Natural Language Processing"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/1810.04805.pdf",
+      "tldr": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+      "source": "local",
+      "readingStatus": "completed",
+      "userRating": 5,
+      "tags": [
+        "BERT",
+        "Transformers",
+        "Pretraining",
+        "Bidirectional"
+      ],
+      "dateAdded": "2026-10-19T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017",
+        "paper-radford-2018"
+      ]
+    },
+    "paper-brown-2020": {
+      "id": "paper-brown-2020",
+      "title": "Language Models are Few-Shot Learners (GPT-3)",
+      "authors": [
+        {
+          "name": "Tom B. Brown",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Benjamin Mann",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Nick Ryder",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Melanie Subbiah",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Jared Kaplan",
+          "affiliation": "Johns Hopkins University"
+        },
+        {
+          "name": "Dario Amodei",
+          "affiliation": "OpenAI"
+        }
+      ],
+      "abstract": "Recent work has demonstrated substantial gains on many NLP tasks and benchmarks by pre-training on a large corpus of text followed by fine-tuning on a specific task. While typically task-agnostic in architecture, this method still requires task-specific fine-tuning datasets of thousands or tens of thousands of examples. Here we show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches.",
+      "year": 2020,
+      "venue": "NeurIPS 2020",
+      "arxivId": "2005.14165",
+      "doi": "10.48550/arXiv.2005.14165",
+      "citationCount": 42100,
+      "referenceCount": 78,
+      "influentialCitationCount": 6500,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Machine Learning"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2005.14165.pdf",
+      "tldr": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+      "source": "local",
+      "readingStatus": "reading",
+      "userRating": 5,
+      "tags": [
+        "GPT-3",
+        "Few-Shot",
+        "Scaling Laws",
+        "LLM"
+      ],
+      "dateAdded": "2026-10-24T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017",
+        "paper-radford-2019",
+        "paper-kaplan-2020"
+      ]
+    },
+    "paper-ouyang-2022": {
+      "id": "paper-ouyang-2022",
+      "title": "Training language models to follow instructions with human feedback (InstructGPT)",
+      "authors": [
+        {
+          "name": "Long Ouyang",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Jeff Wu",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Xu Jiang",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Diogo Almeida",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "Carroll L. Wainwright",
+          "affiliation": "OpenAI"
+        },
+        {
+          "name": "John Schulman",
+          "affiliation": "OpenAI"
+        }
+      ],
+      "abstract": "Making language models bigger does not inherently make them better at following a users intent. For example, large language models can generate outputs that are untruthful, toxic, or simply not helpful to the user. In this work, we show an avenue for aligning language models with user intent on a wide range of tasks by fine-tuning with human feedback. Using Reinforcement Learning from Human Feedback (RLHF), we train models that are much better at following instructions.",
+      "year": 2022,
+      "venue": "NeurIPS 2022",
+      "arxivId": "2203.02155",
+      "doi": "10.48550/arXiv.2203.02155",
+      "citationCount": 18500,
+      "referenceCount": 64,
+      "influentialCitationCount": 2900,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Human-Computer Interaction"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2203.02155.pdf",
+      "tldr": "Demonstrates alignment of LLMs using Reinforcement Learning from Human Feedback (RLHF) to make models helpful, honest, and harmless.",
+      "source": "local",
+      "readingStatus": "starred",
+      "userRating": 5,
+      "tags": [
+        "RLHF",
+        "Alignment",
+        "InstructGPT",
+        "PPO"
+      ],
+      "dateAdded": "2026-10-29T14:02:38.763Z",
+      "references": [
+        "paper-brown-2020",
+        "paper-christiano-2017"
+      ]
+    },
+    "paper-lewis-2020": {
+      "id": "paper-lewis-2020",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "authors": [
+        {
+          "name": "Patrick Lewis",
+          "affiliation": "Facebook AI Research"
+        },
+        {
+          "name": "Ethan Perez",
+          "affiliation": "New York University"
+        },
+        {
+          "name": "Aleksandra Piktus",
+          "affiliation": "Facebook AI Research"
+        },
+        {
+          "name": "Fabio Petroni",
+          "affiliation": "Facebook AI Research"
+        },
+        {
+          "name": "Vladimir Karpukhin",
+          "affiliation": "Facebook AI Research"
+        },
+        {
+          "name": "Douwe Kiela",
+          "affiliation": "Facebook AI Research"
+        }
+      ],
+      "abstract": "Large pre-trained language models have been shown to store factual knowledge in their parameters. However, their ability to precisely access and manipulate knowledge is still limited. We explore a general-purpose fine-tuning recipe for retrieval-augmented generation (RAG) — models which combine pre-trained parametric and non-parametric memory for language generation. We introduce RAG models where the parametric memory is a pre-trained seq2seq model and the non-parametric memory is a dense vector index of Wikipedia.",
+      "year": 2020,
+      "venue": "NeurIPS 2020",
+      "arxivId": "2005.11401",
+      "doi": "10.48550/arXiv.2005.11401",
+      "citationCount": 12200,
+      "referenceCount": 52,
+      "influentialCitationCount": 2100,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Information Retrieval",
+        "Natural Language Processing"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2005.11401.pdf",
+      "tldr": "Pioneers Retrieval-Augmented Generation (RAG) combining dense neural retrieval with sequence-to-sequence language generators to mitigate hallucinations.",
+      "source": "local",
+      "readingStatus": "starred",
+      "userRating": 5,
+      "tags": [
+        "RAG",
+        "Retrieval",
+        "Information Retrieval",
+        "Dense Embeddings"
+      ],
+      "dateAdded": "2026-11-03T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017",
+        "paper-devlin-2018",
+        "paper-karpukhin-2020"
+      ]
+    },
+    "paper-jumper-2021": {
+      "id": "paper-jumper-2021",
+      "title": "Highly accurate protein structure prediction with AlphaFold",
+      "authors": [
+        {
+          "name": "John Jumper",
+          "affiliation": "DeepMind"
+        },
+        {
+          "name": "Richard Evans",
+          "affiliation": "DeepMind"
+        },
+        {
+          "name": "Alexander Pritzel",
+          "affiliation": "DeepMind"
+        },
+        {
+          "name": "Tim Green",
+          "affiliation": "DeepMind"
+        },
+        {
+          "name": "Michael Figurnov",
+          "affiliation": "DeepMind"
+        },
+        {
+          "name": "Demis Hassabis",
+          "affiliation": "DeepMind"
+        }
+      ],
+      "abstract": "Proteins are essential to life, and understanding their structure can facilitate a mechanistic understanding of their function. Decades of effort have produced experimental methods that have determined tens of thousands of protein structures, but mapping the structural proteome has remained a major challenge. Here we present AlphaFold, a computational approach capable of predicting protein structures to atomic accuracy even in cases in which no similar structure is known.",
+      "year": 2021,
+      "venue": "Nature",
+      "doi": "10.1038/s41586-021-03819-2",
+      "citationCount": 31200,
+      "referenceCount": 65,
+      "influentialCitationCount": 7800,
+      "fieldsOfStudy": [
+        "Biology",
+        "Structural Biology",
+        "Bioinformatics",
+        "Machine Learning"
+      ],
+      "openAccessPdfUrl": "https://www.nature.com/articles/s41586-021-03819-2.pdf",
+      "tldr": "Solves the 50-year protein folding grand challenge using Evoformer attention architectures and invariant coordinate frames to achieve atomic-level accuracy.",
+      "source": "local",
+      "readingStatus": "starred",
+      "userRating": 5,
+      "tags": [
+        "AlphaFold",
+        "Structural Biology",
+        "Proteins",
+        "DeepMind"
+      ],
+      "dateAdded": "2026-10-26T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017"
+      ]
+    },
+    "paper-arute-2019": {
+      "id": "paper-arute-2019",
+      "title": "Quantum supremacy using a programmable superconducting processor (Sycamore)",
+      "authors": [
+        {
+          "name": "Frank Arute",
+          "affiliation": "Google AI Quantum"
+        },
+        {
+          "name": "Kunal Arya",
+          "affiliation": "Google AI Quantum"
+        },
+        {
+          "name": "John M. Martinis",
+          "affiliation": "Google AI Quantum"
+        }
+      ],
+      "abstract": "The promise of quantum computers is that certain computational tasks might be executed exponentially faster on a quantum processor than on a classical processor. A fundamental milestone is to demonstrate a quantum speedup over the best possible classical algorithms. Here we report the use of a processor with 53 programmable superconducting qubits to achieve quantum supremacy on a random circuit sampling task.",
+      "year": 2019,
+      "venue": "Nature",
+      "doi": "10.1038/s41586-019-1666-5",
+      "citationCount": 7800,
+      "referenceCount": 50,
+      "influentialCitationCount": 1100,
+      "fieldsOfStudy": [
+        "Physics",
+        "Quantum Physics",
+        "Quantum Computing"
+      ],
+      "openAccessPdfUrl": "https://www.nature.com/articles/s41586-019-1666-5.pdf",
+      "tldr": "Demonstrates quantum supremacy with a 53-qubit superconducting Sycamore processor sampling random circuits in 200 seconds.",
+      "source": "local",
+      "readingStatus": "reading",
+      "userRating": 4,
+      "tags": [
+        "Quantum Supremacy",
+        "Sycamore",
+        "Superconducting Qubits"
+      ],
+      "dateAdded": "2026-10-30T14:02:38.763Z",
+      "references": []
+    },
+    "paper-doudna-2012": {
+      "id": "paper-doudna-2012",
+      "title": "A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity",
+      "authors": [
+        {
+          "name": "Martin Jinek",
+          "affiliation": "University of California, Berkeley"
+        },
+        {
+          "name": "Krzysztof Chylinski",
+          "affiliation": "University of Vienna"
+        },
+        {
+          "name": "Ines Fonfara",
+          "affiliation": "Umea University"
+        },
+        {
+          "name": "Michael Hauer",
+          "affiliation": "University of California, Berkeley"
+        },
+        {
+          "name": "Jennifer A. Doudna",
+          "affiliation": "University of California, Berkeley"
+        },
+        {
+          "name": "Emmanuelle Charpentier",
+          "affiliation": "Umea University"
+        }
+      ],
+      "abstract": "Clustered regularly interspaced short palindromic repeats (CRISPR)/CRISPR-associated (Cas) systems provide adaptive immunity against viruses and plasmids in bacteria and archaea. Cas9 endonuclease guided by dual-RNA structures cleaves targeted double-stranded DNA. We demonstrate that Cas9 can be programmed with single guide RNAs to introduce targeted double-stranded breaks into specific DNA sequences, establishing CRISPR-Cas9 as a versatile gene editing platform.",
+      "year": 2012,
+      "venue": "Science",
+      "doi": "10.1126/science.1225829",
+      "citationCount": 22400,
+      "referenceCount": 38,
+      "influentialCitationCount": 4500,
+      "fieldsOfStudy": [
+        "Biology",
+        "Genetics",
+        "Molecular Biology"
+      ],
+      "openAccessPdfUrl": "https://www.science.org/doi/10.1126/science.1225829",
+      "tldr": "Discovers that Cas9 can be programmed by synthetic single-guide RNAs to perform targeted site-specific DNA cleavage, enabling precision genome editing.",
+      "source": "local",
+      "readingStatus": "completed",
+      "userRating": 5,
+      "tags": [
+        "CRISPR",
+        "Cas9",
+        "Genome Editing",
+        "Biotechnology"
+      ],
+      "dateAdded": "2026-10-22T14:02:38.763Z",
+      "references": []
+    },
+    "paper-dosovitskiy-2020": {
+      "id": "paper-dosovitskiy-2020",
+      "title": "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale (ViT)",
+      "authors": [
+        {
+          "name": "Alexey Dosovitskiy",
+          "affiliation": "Google Research, Brain Team"
+        },
+        {
+          "name": "Lucas Beyer",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Alexander Kolesnikov",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Dirk Weissenborn",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Xiaohua Zhai",
+          "affiliation": "Google Research"
+        },
+        {
+          "name": "Thomas Unterthiner",
+          "affiliation": "Google Research"
+        }
+      ],
+      "abstract": "While the Transformer architecture has become the de-facto standard for natural language processing tasks, its applications to computer vision remain limited. In vision, attention is either applied in conjunction with convolutional networks, or used to replace certain components of convolutional networks while keeping their overall structure in place. We show that this reliance on CNNs is not necessary and a pure transformer applied directly to sequences of image patches can perform very well on image classification tasks.",
+      "year": 2020,
+      "venue": "ICLR 2021",
+      "arxivId": "2010.11929",
+      "doi": "10.48550/arXiv.2010.11929",
+      "citationCount": 46800,
+      "referenceCount": 49,
+      "influentialCitationCount": 6100,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Computer Vision",
+        "Artificial Intelligence"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2010.11929.pdf",
+      "tldr": "Applies pure standard Transformer encoders directly to flattened 16x16 image patches, challenging convolutional dominance in computer vision.",
+      "source": "local",
+      "readingStatus": "starred",
+      "userRating": 5,
+      "tags": [
+        "Vision Transformer",
+        "ViT",
+        "Computer Vision",
+        "Self-Attention"
+      ],
+      "dateAdded": "2026-10-28T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017"
+      ]
+    },
+    "paper-rombach-2022": {
+      "id": "paper-rombach-2022",
+      "title": "High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)",
+      "authors": [
+        {
+          "name": "Robin Rombach",
+          "affiliation": "LMU Munich"
+        },
+        {
+          "name": "Andreas Blattmann",
+          "affiliation": "LMU Munich"
+        },
+        {
+          "name": "Dominik Lorenz",
+          "affiliation": "LMU Munich"
+        },
+        {
+          "name": "Patrick Esser",
+          "affiliation": "Runway ML"
+        },
+        {
+          "name": "Bjorn Ommer",
+          "affiliation": "LMU Munich"
+        }
+      ],
+      "abstract": "By decomposing the image formation process into a sequential application of denoising autoencoders, diffusion models achieve state-of-the-art synthesis results on image data. However, operating directly in RGB space consumes prohibitive computing resources. To overcome this limitation, we apply diffusion models in the latent space of powerful pretrained autoencoders, significantly boosting computational efficiency while retaining high perceptual fidelity.",
+      "year": 2022,
+      "venue": "CVPR 2022",
+      "arxivId": "2112.10752",
+      "doi": "10.1109/CVPR52688.2022.01042",
+      "citationCount": 16400,
+      "referenceCount": 71,
+      "influentialCitationCount": 2400,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Computer Vision",
+        "Generative Modeling"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2112.10752.pdf",
+      "tldr": "Introduces Latent Diffusion Models (LDM), enabling high-resolution photorealistic generative image synthesis on consumer GPUs via cross-attention condition conditioning.",
+      "source": "local",
+      "readingStatus": "reading",
+      "userRating": 5,
+      "tags": [
+        "Diffusion Models",
+        "Stable Diffusion",
+        "Generative AI",
+        "Latent Space"
+      ],
+      "dateAdded": "2026-11-01T14:02:38.763Z",
+      "references": [
+        "paper-vaswani-2017"
+      ]
+    },
+    "openalex-W3133696297": {
+      "id": "openalex-W3133696297",
+      "title": "Transformer in Transformer",
+      "authors": [
+        {
+          "name": "Kai Han",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5101784732"
+        },
+        {
+          "name": "An Xiao",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5017898444"
+        },
+        {
+          "name": "Enhua Wu",
+          "affiliation": "University of Macau",
+          "authorId": "https://openalex.org/A5013119881"
+        },
+        {
+          "name": "Jianyuan Guo",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5016185815"
+        },
+        {
+          "name": "Chunjing Xu",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5101082712"
+        },
+        {
+          "name": "Yunhe Wang",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5100727358"
+        }
+      ],
+      "abstract": "Transformer is a new kind of neural architecture which encodes the input data as powerful features via the attention mechanism. Basically, the visual transformers first divide the input images into several local patches and then calculate both representations and their relationship. Since natural images are of high complexity with abundant detail and color information, the granularity of the patch dividing is not fine enough for excavating features of objects in different scales and locations. In this paper, we point out that the attention inside these local patches are also essential for building visual transformers with high performance and we explore a new architecture, namely, Transformer iN Transformer (TNT). Specifically, we regard the local patches (e.g., 16$\\times$16) as \"visual sentences\" and present to further divide them into smaller patches (e.g., 4$\\times$4) as \"visual words\". The attention of each word will be calculated with other words in the given visual sentence with negligible computational costs. Features of both words and sentences will be aggregated to enhance the representation ability. Experiments on several benchmarks demonstrate the effectiveness of the proposed TNT architecture, e.g., we achieve an 81.5% top-1 accuracy on the ImageNet, which is about 1.7% higher than that of the state-of-the-art visual transformer with similar computational cost. The PyTorch code is available at https://github.com/huawei-noah/CV-Backbones, and the MindSpore code is available at https://gitee.com/mindspore/models/tree/master/research/cv/TNT.",
+      "year": 2021,
+      "venue": "arXiv (Cornell University)",
+      "doi": "10.48550/arxiv.2103.00112",
+      "citationCount": 1501,
+      "referenceCount": 53,
+      "fieldsOfStudy": [
+        "Transformer",
+        "Computer science",
+        "Architecture",
+        "Sentence"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2103.00112",
+      "tldr": "Transformer is a new kind of neural architecture which encodes the input data as powerful features via the attention mechanism. The PyTorch code is available at https://github.com/huawei-noah/CV-Backbones, and the MindSpore code is available at https://gitee.com/mindspore/models/tree/master/research/cv/TNT.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Transformer",
+        "Computer science",
+        "Architecture"
+      ]
+    },
+    "openalex-W3171649327": {
+      "id": "openalex-W3171649327",
+      "title": "A survey of transformers",
+      "authors": [
+        {
+          "name": "Tianyang Lin",
+          "affiliation": "Fudan University",
+          "authorId": "https://openalex.org/A5054471260"
+        },
+        {
+          "name": "Yuxin Wang",
+          "affiliation": "Fudan University",
+          "authorId": "https://openalex.org/A5075628027"
+        },
+        {
+          "name": "Xiangyang Liu",
+          "affiliation": "Fudan University",
+          "authorId": "https://openalex.org/A5100341810"
+        },
+        {
+          "name": "Xipeng Qiu",
+          "affiliation": "Fudan University",
+          "authorId": "https://openalex.org/A5044665993"
+        }
+      ],
+      "abstract": "Transformers have achieved great success in many artificial intelligence fields, such as natural language processing, computer vision, and audio processing. Therefore, it is natural to attract lots of interest from academic and industry researchers. Up to the present, a great variety of Transformer variants (a.k.a. X-formers) have been proposed, however, a systematic and comprehensive literature review on these Transformer variants is still missing. In this survey, we provide a comprehensive review of various X-formers. We first briefly introduce the vanilla Transformer and then propose a new taxonomy of X-formers. Next, we introduce the various X-formers from three perspectives: architectural modification, pre-training, and applications. Finally, we outline some potential directions for future research.",
+      "year": 2022,
+      "venue": "AI Open",
+      "doi": "10.1016/j.aiopen.2022.10.001",
+      "citationCount": 1721,
+      "referenceCount": 195,
+      "fieldsOfStudy": [
+        "Transformer",
+        "Computer science",
+        "Data science",
+        "Engineering"
+      ],
+      "openAccessPdfUrl": "https://www.sciencedirect.com/science/article/pii/S2666651022000146/pdf",
+      "tldr": "Transformers have achieved great success in many artificial intelligence fields, such as natural language processing, computer vision, and audio processing. Finally, we outline some potential directions for future research.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Transformer",
+        "Computer science",
+        "Data science"
+      ]
+    },
+    "openalex-W3138516171": {
+      "id": "openalex-W3138516171",
+      "title": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+      "authors": [
+        {
+          "name": "Ze Liu",
+          "affiliation": "University of Science and Technology of China",
+          "authorId": "https://openalex.org/A5100349451"
+        },
+        {
+          "name": "Yutong Lin",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5102798361"
+        },
+        {
+          "name": "Yue Cao",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5101593662"
+        },
+        {
+          "name": "Han Hu",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5101976576"
+        },
+        {
+          "name": "Yixuan Wei",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5009248953"
+        },
+        {
+          "name": "Zheng Zhang",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": null
+        },
+        {
+          "name": "Stephen Ching-Feng Lin",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5025114648"
+        },
+        {
+          "name": "Baining Guo",
+          "affiliation": "Microsoft Research Asia (China)",
+          "authorId": "https://openalex.org/A5101666011"
+        }
+      ],
+      "abstract": "This paper presents a new vision Transformer, called Swin Transformer, that capably serves as a general-purpose backbone for computer vision. Challenges in adapting Transformer from language to vision arise from differences between the two domains, such as large variations in the scale of visual entities and the high resolution of pixels in images compared to words in text. To address these differences, we propose a hierarchical Transformer whose representation is computed with Shifted windows. The shifted windowing scheme brings greater efficiency by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. This hierarchical architecture has the flexibility to model at various scales and has linear computational complexity with respect to image size. These qualities of Swin Transformer make it compatible with a broad range of vision tasks, including image classification (87.3 top-1 accuracy on ImageNet-1K) and dense prediction tasks such as object detection (58.7 box AP and 51.1 mask AP on COCO test-dev) and semantic segmentation (53.5 mIoU on ADE20K val). Its performance surpasses the previous state-of-the-art by a large margin of +2.7 box AP and +2.6 mask AP on COCO, and +3.2 mIoU on ADE20K, demonstrating the potential of Transformer-based models as vision backbones. The hierarchical design and the shifted window approach also prove beneficial for all-MLP architectures. The code and models are publicly available at https://github.com/microsoft/Swin-Transformer.",
+      "year": 2021,
+      "venue": "IEEE/CVF International Conference on Computer Vision (ICCV)",
+      "doi": "10.1109/iccv48922.2021.00986",
+      "citationCount": 38615,
+      "referenceCount": 93,
+      "fieldsOfStudy": [
+        "Transformer",
+        "Computer science",
+        "Segmentation",
+        "Artificial intelligence"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2103.14030",
+      "tldr": "This paper presents a new vision Transformer, called Swin Transformer, that capably serves as a general-purpose backbone for computer vision. The code and models are publicly available at https://github.com/microsoft/Swin-Transformer.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Transformer",
+        "Computer science",
+        "Segmentation"
+      ]
+    },
+    "openalex-W3034573343": {
+      "id": "openalex-W3034573343",
+      "title": "Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention",
+      "authors": [
+        {
+          "name": "Angelos Katharopoulos",
+          "affiliation": "École Polytechnique Fédérale de Lausanne",
+          "authorId": "https://openalex.org/A5031829458"
+        },
+        {
+          "name": "Apoorv Vyas",
+          "affiliation": "Idiap Research Institute",
+          "authorId": "https://openalex.org/A5108691882"
+        },
+        {
+          "name": "Nikolaos Pappas",
+          "affiliation": "University of Washington",
+          "authorId": "https://openalex.org/A5023518080"
+        },
+        {
+          "name": "François Fleuret",
+          "affiliation": "Idiap Research Institute",
+          "authorId": "https://openalex.org/A5076094010"
+        }
+      ],
+      "abstract": "Transformers achieve remarkable performance in several tasks but due to their quadratic complexity, with respect to the input's length, they are prohibitively slow for very long sequences. To address this limitation, we express the self-attention as a linear dot-product of kernel feature maps and make use of the associativity property of matrix products to reduce the complexity from $\\mathcal{O}\\left(N^2\\right)$ to $\\mathcal{O}\\left(N\\right)$, where $N$ is the sequence length. We show that this formulation permits an iterative implementation that dramatically accelerates autoregressive transformers and reveals their relationship to recurrent neural networks. Our linear transformers achieve similar performance to vanilla transformers and they are up to 4000x faster on autoregressive prediction of very long sequences.",
+      "year": 2020,
+      "venue": "arXiv (Cornell University)",
+      "doi": "10.48550/arxiv.2006.16236",
+      "citationCount": 1005,
+      "referenceCount": 40,
+      "fieldsOfStudy": [
+        "Autoregressive model",
+        "Transformer",
+        "Quadratic equation",
+        "Computer science"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2006.16236",
+      "tldr": "Transformers achieve remarkable performance in several tasks but due to their quadratic complexity, with respect to the input's length, they are prohibitively slow for very long sequences. Our linear transformers achieve similar performance to vanilla transformers and they are up to 4000x faster on autoregressive prediction of very long sequences.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Autoregressive model",
+        "Transformer",
+        "Quadratic equation"
+      ]
+    },
+    "openalex-W4387338457": {
+      "id": "openalex-W4387338457",
+      "title": "A survey of the vision transformers and their CNN-transformer based variants",
+      "authors": [
+        {
+          "name": "Asifullah Khan",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5083112369"
+        },
+        {
+          "name": "Zunaira Rauf",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5089371801"
+        },
+        {
+          "name": "Anabia Sohail",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5026855523"
+        },
+        {
+          "name": "Abdul Rehman Khan",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": null
+        },
+        {
+          "name": "Hifsa Asif",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5104178375"
+        },
+        {
+          "name": "Aqsa Asif",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5112918991"
+        },
+        {
+          "name": "Umair Farooq",
+          "affiliation": "Pakistan Institute of Engineering and Applied Sciences",
+          "authorId": "https://openalex.org/A5013716694"
+        }
+      ],
+      "abstract": "No abstract preview available for this indexed publication.",
+      "year": 2023,
+      "venue": "Artificial Intelligence Review",
+      "doi": "10.1007/s10462-023-10595-0",
+      "citationCount": 538,
+      "referenceCount": 206,
+      "fieldsOfStudy": [
+        "Transformer",
+        "Computer science",
+        "Convolutional neural network",
+        "Architecture"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2305.09880",
+      "tldr": "Paper exploring a survey of the vision transformers and their cnn-transformer based variants.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Transformer",
+        "Computer science",
+        "Convolutional neural network"
+      ]
+    },
+    "openalex-W2866343820": {
+      "id": "openalex-W2866343820",
+      "title": "Universal Transformers",
+      "authors": [
+        {
+          "name": "Mostafa Dehghani",
+          "affiliation": "Google DeepMind (United Kingdom)",
+          "authorId": "https://openalex.org/A5102906366"
+        },
+        {
+          "name": "Stephan Gouws",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5052500398"
+        },
+        {
+          "name": "Oriol Vinyals",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5003562101"
+        },
+        {
+          "name": "Jakob Uszkoreit",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5022416424"
+        },
+        {
+          "name": "Łukasz Kaiser",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5031789995"
+        }
+      ],
+      "abstract": "Recurrent neural networks (RNNs) sequentially process data by updating their state with each new data point, and have long been the de facto choice for sequence modeling tasks. However, their inherently sequential computation makes them slow to train. Feed-forward and convolutional architectures have recently been shown to achieve superior results on some sequence modeling tasks such as machine translation, with the added advantage that they concurrently process all inputs in the sequence, leading to easy parallelization and faster training times. Despite these successes, however, popular feed-forward sequence models like the Transformer fail to generalize in many simple tasks that recurrent models handle with ease, e.g. copying strings or even simple logical inference when the string or formula lengths exceed those observed at training time. We propose the Universal Transformer (UT), a parallel-in-time self-attentive recurrent sequence model which can be cast as a generalization of the Transformer model and which addresses these issues. UTs combine the parallelizability and global receptive field of feed-forward sequence models like the Transformer with the recurrent inductive bias of RNNs. We also add a dynamic per-position halting mechanism and find that it improves accuracy on several tasks. In contrast to the standard Transformer, under certain assumptions, UTs can be shown to be Turing-complete. Our experiments show that UTs outperform standard Transformers on a wide range of algorithmic and language understanding tasks, including the challenging LAMBADA language modeling task where UTs achieve a new state of the art, and machine translation where UTs achieve a 0.9 BLEU improvement over Transformers on the WMT14 En-De dataset.",
+      "year": 2018,
+      "venue": "arXiv (Cornell University)",
+      "doi": "10.48550/arxiv.1807.03819",
+      "citationCount": 999,
+      "referenceCount": 35,
+      "fieldsOfStudy": [
+        "Computer science",
+        "Transformer",
+        "Recurrent neural network",
+        "Machine translation"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/1807.03819",
+      "tldr": "Recurrent neural networks (RNNs) sequentially process data by updating their state with each new data point, and have long been the de facto choice for sequence modeling tasks. Our experiments show that UTs outperform standard Transformers on a wide range of algorithmic and language understanding tasks, including the challenging LAMBADA language modeling task where UTs achieve a new state of the art, and machine translation where UTs achieve a 0.9 BLEU improvement over Transformers on the WMT14 En-De dataset.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Computer science",
+        "Transformer",
+        "Recurrent neural network"
+      ]
+    },
+    "openalex-W3142630836": {
+      "id": "openalex-W3142630836",
+      "title": "Transformer Tracking",
+      "authors": [
+        {
+          "name": "Xin Chen",
+          "affiliation": "Dalian University of Technology",
+          "authorId": "https://openalex.org/A5100638657"
+        },
+        {
+          "name": "Bin Yan",
+          "affiliation": "Dalian University of Technology",
+          "authorId": "https://openalex.org/A5101616088"
+        },
+        {
+          "name": "Jiawen Zhu",
+          "affiliation": "Dalian University of Technology",
+          "authorId": "https://openalex.org/A5038211659"
+        },
+        {
+          "name": "Dong Wang",
+          "affiliation": "Dalian University of Technology",
+          "authorId": "https://openalex.org/A5100391493"
+        },
+        {
+          "name": "Xiaoyun Yang",
+          "authorId": "https://openalex.org/A5006828891"
+        },
+        {
+          "name": "Huchuan Lu",
+          "affiliation": "Dalian University of Technology",
+          "authorId": "https://openalex.org/A5006986293"
+        }
+      ],
+      "abstract": "Correlation acts as a critical role in the tracking field, especially in recent popular Siamese-based trackers. The correlation operation is a simple fusion manner to consider the similarity between the template and the search region. However, the correlation operation itself is a local linear matching process, leading to lose semantic information and fall into local optimum easily, which may be the bottleneck of designing high-accuracy tracking algorithms. Is there any better feature fusion method than correlation? To address this issue, inspired by Transformer, this work presents a novel attention-based feature fusion network, which effectively combines the template and search region features solely using attention. Specifically, the proposed method includes an ego-context augment module based on self-attention and a cross-feature augment module based on cross-attention. Finally, we present a Transformer tracking (named TransT) method based on the Siamese-like feature extraction backbone, the designed attention-based fusion mechanism, and the classification and regression head. Experiments show that our TransT achieves very promising results on six challenging datasets, especially on large-scale LaSOT, TrackingNet, and GOT-10k benchmarks. Our tracker runs at approximatively 50 fps on GPU. Code and models are available at https://github.com/chenxin-dlut/TransT.",
+      "year": 2021,
+      "venue": "IEEE Computer Society Conference on Computer Vision and Pattern Recognition/Proceedings - IEEE Computer Society Conference on Computer Vision and Pattern Recognition/Proceedings",
+      "doi": "10.1109/cvpr46437.2021.00803",
+      "citationCount": 1653,
+      "referenceCount": 54,
+      "fieldsOfStudy": [
+        "BitTorrent tracker",
+        "Computer science",
+        "Artificial intelligence",
+        "Bottleneck"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2103.15436",
+      "tldr": "Correlation acts as a critical role in the tracking field, especially in recent popular Siamese-based trackers. Code and models are available at https://github.com/chenxin-dlut/TransT.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "BitTorrent tracker",
+        "Computer science",
+        "Artificial intelligence"
+      ]
+    },
+    "openalex-W4214755140": {
+      "id": "openalex-W4214755140",
+      "title": "Point Transformer",
+      "authors": [
+        {
+          "name": "Hengshuang Zhao",
+          "affiliation": "University of Oxford",
+          "authorId": "https://openalex.org/A5078109015"
+        },
+        {
+          "name": "Li Jiang",
+          "affiliation": "Chinese University of Hong Kong",
+          "authorId": "https://openalex.org/A5100392353"
+        },
+        {
+          "name": "Jiaya Jia",
+          "affiliation": "Chinese University of Hong Kong",
+          "authorId": "https://openalex.org/A5052856441"
+        },
+        {
+          "name": "Philip H. S. Torr",
+          "affiliation": "University of Oxford",
+          "authorId": "https://openalex.org/A5042899882"
+        },
+        {
+          "name": "Vladlen Koltun",
+          "affiliation": "Intel (United States)",
+          "authorId": "https://openalex.org/A5006181255"
+        }
+      ],
+      "abstract": "Self-attention networks have revolutionized natural language processing and are making impressive strides in image analysis tasks such as image classification and object detection. Inspired by this success, we investigate the application of self-attention networks to 3D point cloud processing. We design self-attention layers for point clouds and use these to construct self-attention networks for tasks such as semantic scene segmentation, object part segmentation, and object classification. Our Point Transformer design improves upon prior work across domains and tasks. For example, on the challenging S3DIS dataset for large-scale semantic scene segmentation, the Point Transformer attains an mIoU of 70.4% on Area 5, outperforming the strongest prior model by 3.3 absolute percentage points and crossing the 70% mIoU threshold for the first time.",
+      "year": 2021,
+      "venue": "IEEE/CVF International Conference on Computer Vision (ICCV)",
+      "doi": "10.1109/iccv48922.2021.01595",
+      "citationCount": 3033,
+      "referenceCount": 57,
+      "fieldsOfStudy": [
+        "Computer science",
+        "Segmentation",
+        "Artificial intelligence",
+        "Point cloud"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1109/iccv48922.2021.01595",
+      "tldr": "Self-attention networks have revolutionized natural language processing and are making impressive strides in image analysis tasks such as image classification and object detection. For example, on the challenging S3DIS dataset for large-scale semantic scene segmentation, the Point Transformer attains an mIoU of 70.4% on Area 5, outperforming the strongest prior model by 3.3 absolute percentage points and crossing the 70% mIoU threshold for the first time.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Computer science",
+        "Segmentation",
+        "Artificial intelligence"
+      ]
+    },
+    "openalex-W3187418919": {
+      "id": "openalex-W3187418919",
+      "title": "A Survey on Vision Transformer",
+      "authors": [
+        {
+          "name": "Kai Han",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5101784732"
+        },
+        {
+          "name": "Yunhe Wang",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5100727358"
+        },
+        {
+          "name": "Hanting Chen",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5081216284"
+        },
+        {
+          "name": "Xinghao Chen",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5006817088"
+        },
+        {
+          "name": "Jianyuan Guo",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5016185815"
+        },
+        {
+          "name": "Zhenhua Liu",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5100420216"
+        },
+        {
+          "name": "Yehui Tang",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5038232518"
+        },
+        {
+          "name": "An Xiao",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5017898444"
+        },
+        {
+          "name": "Chunjing Xu",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5101082712"
+        },
+        {
+          "name": "Yixing Xu",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5015585920"
+        },
+        {
+          "name": "Zhaohui Yang",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5000095574"
+        },
+        {
+          "name": "Yiman Zhang",
+          "affiliation": "Huawei Technologies (China)",
+          "authorId": "https://openalex.org/A5101682727"
+        },
+        {
+          "name": "Dacheng Tao",
+          "affiliation": "The University of Sydney",
+          "authorId": "https://openalex.org/A5074103823"
+        }
+      ],
+      "abstract": "Transformer, first applied to the field of natural language processing, is a type of deep neural network mainly based on the self-attention mechanism. Thanks to its strong representation capabilities, researchers are looking at ways to apply transformer to computer vision tasks. In a variety of visual benchmarks, transformer-based models perform similar to or better than other types of networks such as convolutional and recurrent neural networks. Given its high performance and less need for vision-specific inductive bias, transformer is receiving more and more attention from the computer vision community. In this paper, we review these vision transformer models by categorizing them in different tasks and analyzing their advantages and disadvantages. The main categories we explore include the backbone network, high/mid-level vision, low-level vision, and video processing. We also include efficient transformer methods for pushing transformer into real device-based applications. Furthermore, we also take a brief look at the self-attention mechanism in computer vision, as it is the base component in transformer. Toward the end of this paper, we discuss the challenges and provide several further research directions for vision transformers.",
+      "year": 2022,
+      "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+      "doi": "10.1109/tpami.2022.3152247",
+      "citationCount": 5155,
+      "referenceCount": 347,
+      "fieldsOfStudy": [
+        "Transformer",
+        "Computer science",
+        "Artificial intelligence",
+        "Inductive bias"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2012.12556",
+      "tldr": "Transformer, first applied to the field of natural language processing, is a type of deep neural network mainly based on the self-attention mechanism. Toward the end of this paper, we discuss the challenges and provide several further research directions for vision transformers.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Transformer",
+        "Computer science",
+        "Artificial intelligence"
+      ]
+    },
+    "openalex-W4300936792": {
+      "id": "openalex-W4300936792",
+      "title": "Music Transformer",
+      "authors": [
+        {
+          "name": "Cheng-Zhi Anna Huang",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5007555810"
+        },
+        {
+          "name": "Ashish Vaswani",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5103024730"
+        },
+        {
+          "name": "Jakob Uszkoreit",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5022416424"
+        },
+        {
+          "name": "Noam Shazeer",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5021878400"
+        },
+        {
+          "name": "Ian Simon",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5007560593"
+        },
+        {
+          "name": "Curtis Hawthorne",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5083209727"
+        },
+        {
+          "name": "Andrew M. Dai",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5101597225"
+        },
+        {
+          "name": "Matthew D. Hoffman",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5109851187"
+        },
+        {
+          "name": "Monica Dinculescu",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5046319876"
+        },
+        {
+          "name": "Douglas Eck",
+          "affiliation": "Google (United States)",
+          "authorId": "https://openalex.org/A5055592482"
+        }
+      ],
+      "abstract": "Music relies heavily on repetition to build structure and meaning. Self-reference occurs on multiple timescales, from motifs to phrases to reusing of entire sections of music, such as in pieces with ABA structure. The Transformer (Vaswani et al., 2017), a sequence model based on self-attention, has achieved compelling results in many generation tasks that require maintaining long-range coherence. This suggests that self-attention might also be well-suited to modeling music. In musical composition and performance, however, relative timing is critically important. Existing approaches for representing relative positional information in the Transformer modulate attention based on pairwise distance (Shaw et al., 2018). This is impractical for long sequences such as musical compositions since their memory complexity for intermediate relative information is quadratic in the sequence length. We propose an algorithm that reduces their intermediate memory requirement to linear in the sequence length. This enables us to demonstrate that a Transformer with our modified relative attention mechanism can generate minute-long compositions (thousands of steps, four times the length modeled in Oore et al., 2018) with compelling structure, generate continuations that coherently elaborate on a given motif, and in a seq2seq setup generate accompaniments conditioned on melodies. We evaluate the Transformer with our relative attention mechanism on two datasets, JSB Chorales and Piano-e-Competition, and obtain state-of-the-art results on the latter.",
+      "year": 2018,
+      "venue": "arXiv (Cornell University)",
+      "doi": "10.48550/arxiv.1809.04281",
+      "citationCount": 597,
+      "referenceCount": 19,
+      "fieldsOfStudy": [
+        "Melody",
+        "Computer science",
+        "Transformer",
+        "Algorithm"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/1809.04281",
+      "tldr": "Music relies heavily on repetition to build structure and meaning. We evaluate the Transformer with our relative attention mechanism on two datasets, JSB Chorales and Piano-e-Competition, and obtain state-of-the-art results on the latter.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Melody",
+        "Computer science",
+        "Transformer"
+      ]
+    },
+    "openalex-W3119997354": {
+      "id": "openalex-W3119997354",
+      "title": "Transformers in Vision: A Survey",
+      "authors": [
+        {
+          "name": "Salman Hameed Khan",
+          "affiliation": "Australian National University",
+          "authorId": "https://openalex.org/A5000300751"
+        },
+        {
+          "name": "Muzammal Naseer",
+          "affiliation": "Australian National University",
+          "authorId": "https://openalex.org/A5083105774"
+        },
+        {
+          "name": "Munawar Hayat",
+          "affiliation": "Monash University",
+          "authorId": "https://openalex.org/A5041437150"
+        },
+        {
+          "name": "Syed Waqas Zamir",
+          "affiliation": "Inception Institute of Artificial Intelligence",
+          "authorId": "https://openalex.org/A5060899114"
+        },
+        {
+          "name": "Fahad Shahbaz Khan",
+          "affiliation": "Linköping University",
+          "authorId": "https://openalex.org/A5100760570"
+        },
+        {
+          "name": "Mubarak A. Shah",
+          "affiliation": "University of Central Florida",
+          "authorId": "https://openalex.org/A5080823547"
+        }
+      ],
+      "abstract": "Astounding results from Transformer models on natural language tasks have intrigued the vision community to study their application to computer vision problems. Among their salient benefits, Transformers enable modeling long dependencies between input sequence elements and support parallel processing of sequence as compared to recurrent networks, e.g., Long short-term memory. Different from convolutional networks, Transformers require minimal inductive biases for their design and are naturally suited as set-functions. Furthermore, the straightforward design of Transformers allows processing multiple modalities (e.g., images, videos, text, and speech) using similar processing blocks and demonstrates excellent scalability to very large capacity networks and huge datasets. These strengths have led to exciting progress on a number of vision tasks using Transformer networks. This survey aims to provide a comprehensive overview of the Transformer models in the computer vision discipline. We start with an introduction to fundamental concepts behind the success of Transformers, i.e., self-attention, large-scale pre-training, and bidirectional feature encoding. We then cover extensive applications of transformers in vision including popular recognition tasks (e.g., image classification, object detection, action recognition, and segmentation), generative modeling, multi-modal tasks (e.g., visual-question answering, visual reasoning, and visual grounding), video processing (e.g., activity recognition, video forecasting), low-level vision (e.g., image super-resolution, image enhancement, and colorization), and three-dimensional analysis (e.g., point cloud classification and segmentation). We compare the respective advantages and limitations of popular techniques both in terms of architectural design and their experimental value. Finally, we provide an analysis on open research directions and possible future works. We hope this effort will ignite further interest in the community to solve current challenges toward the application of transformer models in computer vision.",
+      "year": 2022,
+      "venue": "ACM Computing Surveys",
+      "doi": "10.1145/3505244",
+      "citationCount": 4057,
+      "referenceCount": 321,
+      "fieldsOfStudy": [
+        "Computer science",
+        "Transformer",
+        "Segmentation",
+        "Artificial intelligence"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2101.01169",
+      "tldr": "Astounding results from Transformer models on natural language tasks have intrigued the vision community to study their application to computer vision problems. We hope this effort will ignite further interest in the community to solve current challenges toward the application of transformer models in computer vision.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Computer science",
+        "Transformer",
+        "Segmentation"
+      ]
+    },
+    "openalex-W4238164907": {
+      "id": "openalex-W4238164907",
+      "title": "Transformer Engineering",
+      "authors": [
+        {
+          "name": "Shrikrishna V Kulkarni",
+          "authorId": "https://openalex.org/A5022550607"
+        },
+        {
+          "name": "S.A. Khaparde",
+          "authorId": "https://openalex.org/A5050986379"
+        }
+      ],
+      "abstract": "This reference illustrates the interaction and operation of transformer and system components and spans more than two decades of technological advancement to provide an updated perspective on the increasing demands and requirements of the modern transformer industry. Guiding engineers through everyday design challenges and difficulties such as stray loss estimation and control, prediction of winding hot spots, and calculation of various stress levels and performance figures, the book propagates the use of advanced computational tools for the optimization and quality enhancement of power system transformers and encompasses every key aspect of transformer function, design, and engineering.",
+      "year": 2004,
+      "venue": "CRC Press eBooks",
+      "doi": "10.1201/9780367800598",
+      "citationCount": 622,
+      "referenceCount": 0,
+      "fieldsOfStudy": [
+        "Computer science"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1201/9780367800598",
+      "tldr": "This reference illustrates the interaction and operation of transformer and system components and spans more than two decades of technological advancement to provide an updated perspective on the increasing demands and requirements of the modern transformer industry. Guiding engineers through everyday design challenges and difficulties such as stray loss estimation and control, prediction of winding hot spots, and calculation of various stress levels and performance figures, the book propagates the use of advanced computational tools for the optimization and quality enhancement of power system transformers and encompasses every key aspect of transformer function, design, and engineering.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Computer science"
+      ]
+    },
+    "arxiv-2201.00978": {
+      "id": "arxiv-2201.00978",
+      "title": "PyramidTNT: Improved Transformer-in-Transformer Baselines with Pyramid Architecture",
+      "authors": [
+        {
+          "name": "Kai Han"
+        },
+        {
+          "name": "Jianyuan Guo"
+        },
+        {
+          "name": "Yehui Tang"
+        },
+        {
+          "name": "Yunhe Wang"
+        }
+      ],
+      "abstract": "Transformer networks have achieved great progress for computer vision tasks. Transformer-in-Transformer (TNT) architecture utilizes inner transformer and outer transformer to extract both local and global representations. In this work, we present new TNT baselines by introducing two advanced designs: 1) pyramid architecture, and 2) convolutional stem. The new \"PyramidTNT\" significantly improves the original TNT by establishing hierarchical representations. PyramidTNT achieves better performances than the previous state-of-the-art vision transformers such as Swin Transformer. We hope this new baseline will be helpful to the further research and application of vision transformer. Code will be available at https://github.com/huawei-noah/CV-Backbones/tree/master/tnt_pytorch.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2201.00978",
+      "citationCount": 70,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2201.00978.pdf",
+      "tldr": "Transformer networks have achieved great progress for computer vision tasks. Code will be available at https://github.com/huawei-noah/CV-Backbones/tree/master/tnt_pytorch.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2104.11502": {
+      "id": "arxiv-2104.11502",
+      "title": "Learning to Cluster Faces via Transformer",
+      "authors": [
+        {
+          "name": "Jinxing Ye"
+        },
+        {
+          "name": "Xioajiang Peng"
+        },
+        {
+          "name": "Baigui Sun"
+        },
+        {
+          "name": "Kai Wang"
+        },
+        {
+          "name": "Xiuyu Sun"
+        },
+        {
+          "name": "Hao Li"
+        },
+        {
+          "name": "Hanqing Wu"
+        }
+      ],
+      "abstract": "Face clustering is a useful tool for applications like automatic face annotation and retrieval. The main challenge is that it is difficult to cluster images from the same identity with different face poses, occlusions, and image quality. Traditional clustering methods usually ignore the relationship between individual images and their neighbors which may contain useful context information. In this paper, we repurpose the well-known Transformer and introduce a Face Transformer for supervised face clustering. In Face Transformer, we decompose the face clustering into two steps: relation encoding and linkage predicting. Specifically, given a face image, a \\textbf{relation encoder} module aggregates local context information from its neighbors and a \\textbf{linkage predictor} module judges whether a pair of images belong to the same cluster or not. In the local linkage graph view, Face Transformer can generate more robust node and edge representations compared to existing methods. Experiments on both MS-Celeb-1M and DeepFashion show that our method achieves state-of-the-art performance, e.g., 91.12\\% in pairwise F-score on MS-Celeb-1M.",
+      "year": 2021,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2104.11502",
+      "citationCount": 18,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2104.11502.pdf",
+      "tldr": "Face clustering is a useful tool for applications like automatic face annotation and retrieval. Experiments on both MS-Celeb-1M and DeepFashion show that our method achieves state-of-the-art performance, e.g., 91.12\\% in pairwise F-score on MS-Celeb-1M.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2404.05657": {
+      "id": "arxiv-2404.05657",
+      "title": "MLP Can Be A Good Transformer Learner",
+      "authors": [
+        {
+          "name": "Sihao Lin"
+        },
+        {
+          "name": "Pumeng Lyu"
+        },
+        {
+          "name": "Dongrui Liu"
+        },
+        {
+          "name": "Tao Tang"
+        },
+        {
+          "name": "Xiaodan Liang"
+        },
+        {
+          "name": "Andy Song"
+        },
+        {
+          "name": "Xiaojun Chang"
+        }
+      ],
+      "abstract": "Self-attention mechanism is the key of the Transformer but often criticized for its computation demands. Previous token pruning works motivate their methods from the view of computation redundancy but still need to load the full network and require same memory costs. This paper introduces a novel strategy that simplifies vision transformers and reduces computational load through the selective removal of non-essential attention layers, guided by entropy considerations. We identify that regarding the attention layer in bottom blocks, their subsequent MLP layers, i.e. two feed-forward layers, can elicit the same entropy quantity. Meanwhile, the accompanied MLPs are under-exploited since they exhibit smaller feature entropy compared to those MLPs in the top blocks. Therefore, we propose to integrate the uninformative attention layers into their subsequent counterparts by degenerating them into identical mapping, yielding only MLP in certain transformer blocks. Experimental results on ImageNet-1k show that the proposed method can remove 40% attention layer of DeiT-B, improving throughput and memory bound without performance compromise. Code is available at https://github.com/sihaoevery/lambda_vit.",
+      "year": 2024,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2404.05657",
+      "citationCount": 57,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2404.05657.pdf",
+      "tldr": "Self-attention mechanism is the key of the Transformer but often criticized for its computation demands. Code is available at https://github.com/sihaoevery/lambda_vit.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2212.14538": {
+      "id": "arxiv-2212.14538",
+      "title": "Transformer in Transformer as Backbone for Deep Reinforcement Learning",
+      "authors": [
+        {
+          "name": "Hangyu Mao"
+        },
+        {
+          "name": "Rui Zhao"
+        },
+        {
+          "name": "Hao Chen"
+        },
+        {
+          "name": "Jianye Hao"
+        },
+        {
+          "name": "Yiqun Chen"
+        },
+        {
+          "name": "Dong Li"
+        },
+        {
+          "name": "Junge Zhang"
+        },
+        {
+          "name": "Zhen Xiao"
+        }
+      ],
+      "abstract": "Designing better deep networks and better reinforcement learning (RL) algorithms are both important for deep RL. This work focuses on the former. Previous methods build the network with several modules like CNN, LSTM and Attention. Recent methods combine the Transformer with these modules for better performance. However, it requires tedious optimization skills to train a network composed of mixed modules, making these methods inconvenient to be used in practice. In this paper, we propose to design \\emph{pure Transformer-based networks} for deep RL, aiming at providing off-the-shelf backbones for both the online and offline settings. Specifically, the Transformer in Transformer (TIT) backbone is proposed, which cascades two Transformers in a very natural way: the inner one is used to process a single observation, while the outer one is responsible for processing the observation history; combining both is expected to extract spatial-temporal representations for good decision-making. Experiments show that TIT can achieve satisfactory performance in different settings consistently.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2212.14538",
+      "citationCount": 80,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2212.14538.pdf",
+      "tldr": "Designing better deep networks and better reinforcement learning (RL) algorithms are both important for deep RL. Experiments show that TIT can achieve satisfactory performance in different settings consistently.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2607.25798": {
+      "id": "arxiv-2607.25798",
+      "title": "Transformer Transformer: A Unified Model for Motion-Conditioned Robot Co-design",
+      "authors": [
+        {
+          "name": "Huy Ha"
+        },
+        {
+          "name": "C. Karen Liu"
+        },
+        {
+          "name": "Shuran Song"
+        }
+      ],
+      "abstract": "An often overlooked factor of robot manipulation performance is the embodiment of the robot itself. Motivated by this problem, we study motion-conditioned robot co-design, where the goal is to generate complete robot designs that track target end-effector trajectories (from human demonstrations) while optimizing user-defined rewards. We introduce Transformer Transformer, a diffusion transformer trained on RoboTokens, a unified tokenization of robot embodiments, states, and actions. The same architecture can be used across embodiment spaces (e.g., wheeled bimanual, quadrupeds, humanoids) and use cases (embodiment generation, cross embodiment controller). Rather than overfitting to one reward function, Transformer Transformer is a dynamics model, whose reward-agnostic state and action predictions can be converted into reward-specific value predictions. These value predictions are used to steer embodiment diffusion towards high value robot designs, through a procedure we call Dynamics Self-Guidance. Experiments across multiple design spaces show zero-shot optimization of unseen rewards and trajectories, improving performance and runtime over the evolutionary baseline. Finally, we fabricated an optimized ALOHA design, which reduced tracking error by over 70% compared to the original design.",
+      "year": 2026,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2607.25798",
+      "citationCount": 53,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2607.25798.pdf",
+      "tldr": "An often overlooked factor of robot manipulation performance is the embodiment of the robot itself. Finally, we fabricated an optimized ALOHA design, which reduced tracking error by over 70% compared to the original design.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2206.10552": {
+      "id": "arxiv-2206.10552",
+      "title": "Vicinity Vision Transformer",
+      "authors": [
+        {
+          "name": "Weixuan Sun"
+        },
+        {
+          "name": "Zhen Qin"
+        },
+        {
+          "name": "Hui Deng"
+        },
+        {
+          "name": "Jianyuan Wang"
+        },
+        {
+          "name": "Yi Zhang"
+        },
+        {
+          "name": "Kaihao Zhang"
+        },
+        {
+          "name": "Nick Barnes"
+        },
+        {
+          "name": "Stan Birchfield"
+        },
+        {
+          "name": "Lingpeng Kong"
+        },
+        {
+          "name": "Yiran Zhong"
+        }
+      ],
+      "abstract": "Vision transformers have shown great success on numerous computer vision tasks. However, its central component, softmax attention, prohibits vision transformers from scaling up to high-resolution images, due to both the computational complexity and memory footprint being quadratic. Although linear attention was introduced in natural language processing (NLP) tasks to mitigate a similar issue, directly applying existing linear attention to vision transformers may not lead to satisfactory results. We investigate this problem and find that computer vision tasks focus more on local information compared with NLP tasks. Based on this observation, we present a Vicinity Attention that introduces a locality bias to vision transformers with linear complexity. Specifically, for each image patch, we adjust its attention weight based on its 2D Manhattan distance measured by its neighbouring patches. In this case, the neighbouring patches will receive stronger attention than far-away patches. Moreover, since our Vicinity Attention requires the token length to be much larger than the feature dimension to show its efficiency advantages, we further propose a new Vicinity Vision Transformer (VVT) structure to reduce the feature dimension without degenerating the accuracy. We perform extensive experiments on the CIFAR100, ImageNet1K, and ADE20K datasets to validate the effectiveness of our method. Our method has a slower growth rate of GFlops than previous transformer-based and convolution-based networks when the input resolution increases. In particular, our approach achieves state-of-the-art image classification accuracy with 50% fewer parameters than previous methods.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2206.10552",
+      "citationCount": 91,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2206.10552.pdf",
+      "tldr": "Vision transformers have shown great success on numerous computer vision tasks. In particular, our approach achieves state-of-the-art image classification accuracy with 50% fewer parameters than previous methods.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2303.00957": {
+      "id": "arxiv-2303.00957",
+      "title": "Preference Transformer: Modeling Human Preferences using Transformers for RL",
+      "authors": [
+        {
+          "name": "Changyeon Kim"
+        },
+        {
+          "name": "Jongjin Park"
+        },
+        {
+          "name": "Jinwoo Shin"
+        },
+        {
+          "name": "Honglak Lee"
+        },
+        {
+          "name": "Pieter Abbeel"
+        },
+        {
+          "name": "Kimin Lee"
+        }
+      ],
+      "abstract": "Preference-based reinforcement learning (RL) provides a framework to train agents using human preferences between two behaviors. However, preference-based RL has been challenging to scale since it requires a large amount of human feedback to learn a reward function aligned with human intent. In this paper, we present Preference Transformer, a neural architecture that models human preferences using transformers. Unlike prior approaches assuming human judgment is based on the Markovian rewards which contribute to the decision equally, we introduce a new preference model based on the weighted sum of non-Markovian rewards. We then design the proposed preference model using a transformer architecture that stacks causal and bidirectional self-attention layers. We demonstrate that Preference Transformer can solve a variety of control tasks using real human preferences, while prior approaches fail to work. We also show that Preference Transformer can induce a well-specified reward and attend to critical events in the trajectory by automatically capturing the temporal dependencies in human decision-making. Code is available on the project website: https://sites.google.com/view/preference-transformer.",
+      "year": 2023,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2303.00957",
+      "citationCount": 36,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2303.00957.pdf",
+      "tldr": "Preference-based reinforcement learning (RL) provides a framework to train agents using human preferences between two behaviors. Code is available on the project website: https://sites.google.com/view/preference-transformer.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "openalex-W2144576651": {
+      "id": "openalex-W2144576651",
+      "title": "Attention, Joint Attention, and Social Cognition",
+      "authors": [
+        {
+          "name": "Peter Clive Mundy",
+          "affiliation": "University of Miami",
+          "authorId": "https://openalex.org/A5082043878"
+        },
+        {
+          "name": "Lisa C. Newell",
+          "affiliation": "University of Miami",
+          "authorId": "https://openalex.org/A5012344637"
+        }
+      ],
+      "abstract": "Before social cognition there is joint processing of information about the attention of self and others. This joint attention requires the integrated activation of a distributed cortical network involving the anterior and posterior attention systems. In infancy, practice with the integrated activation of this distributed attention network is a major contributor to the development of social cognition. Thus, the functional neuroanatomies of social cognition and the anterior-posterior attention systems have much in common. These propositions have implications for understanding joint attention, social cognition, and autism.",
+      "year": 2007,
+      "venue": "Current Directions in Psychological Science",
+      "doi": "10.1111/j.1467-8721.2007.00518.x",
+      "citationCount": 1006,
+      "referenceCount": 23,
+      "fieldsOfStudy": [
+        "Joint attention",
+        "Psychology",
+        "Social cognition",
+        "Cognition"
+      ],
+      "openAccessPdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2663908/",
+      "tldr": "Before social cognition there is joint processing of information about the attention of self and others. These propositions have implications for understanding joint attention, social cognition, and autism.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Joint attention",
+        "Psychology",
+        "Social cognition"
+      ]
+    },
+    "openalex-W1573000476": {
+      "id": "openalex-W1573000476",
+      "title": "Attention",
+      "authors": [
+        {
+          "name": "Richard Schmidt",
+          "authorId": "https://openalex.org/A5101519943"
+        }
+      ],
+      "abstract": "Introduction The essential claim of this chapter is that the concept of attention is necessary in order to understand virtually every aspect of second language acquisition (SLA), including the development of interlanguages (ILs) over time, variation within IL at particular points in time, the development of L2 influency, the role of individual differences such as motivation, aptitude and learning strategies in L2 learning, and the ways in which interaction, negotiation for meaning, and all forms of instruction contribute to language learning. The theoretical issues dealt with in this chapter are organized around the basic assumptions, definitions, and metaphors concerning attention in psychology and include the idea of attention as a limited capacity, the notion of selective attention, and the role of attention in action control, access to awareness, and learning. It turns out that, like most psychological concepts initially based on common experience, attention is not a unitary phenomenon, but refers to a variety of mechanisms. These include alertness, orientation, preconscious registration (detection without awareness), selection (detection with awareness within selective attention), facilitation, and inhibition. This does not diminish the centrality of attention, in its several manifestations, for learning. Although recent evidence, discussed towards the end of this chapter, indicates the possibility of some unattended learning, this appears limited in scope and relevance for SLA. There is no doubt that attended learning is far superior, and for all practical purposes, attention is necessary for all aspects of L2 learning.",
+      "year": 2001,
+      "venue": "Cambridge University Press eBooks",
+      "doi": "10.1017/cbo9781139524780.003",
+      "citationCount": 1403,
+      "referenceCount": 0,
+      "fieldsOfStudy": [
+        "Meaning (existential)",
+        "Psychology",
+        "Negotiation",
+        "Aptitude"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1017/cbo9781139524780.003",
+      "tldr": "Introduction The essential claim of this chapter is that the concept of attention is necessary in order to understand virtually every aspect of second language acquisition (SLA), including the development of interlanguages (ILs) over time, variation within IL at particular points in time, the development of L2 influency, the role of individual differences such as motivation, aptitude and learning strategies in L2 learning, and the ways in which interaction, negotiation for meaning, and all forms of instruction contribute to language learning. There is no doubt that attended learning is far superior, and for all practical purposes, attention is necessary for all aspects of L2 learning.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Meaning (existential)",
+        "Psychology",
+        "Negotiation"
+      ]
+    },
+    "openalex-W2033292790": {
+      "id": "openalex-W2033292790",
+      "title": "Attention to Attention",
+      "authors": [
+        {
+          "name": "William C. Ocasio",
+          "affiliation": "Northwestern University",
+          "authorId": "https://openalex.org/A5052708464"
+        }
+      ],
+      "abstract": "Organizational theory and research has increased attention to the determinants and consequences of attention in organizations. Attention is not, however, a unitary concept but is used differently in various metatheories: the behavioral theory of the firm, managerial cognition, issue selling, attention-based view, and ecology. At the level of the brain, neuroscientists have identified three varieties of attention: selective attention, executive attention, and vigilance. Attention is shaped by both top-down (i.e., schema-driven) and bottom-up (i.e., stimulus-driven) processes. Inspired by neuroscience research, I classify and compare three varieties of attention studied in organization science: attentional perspective (top-down), attentional engagement (combining top-down and bottom-up executive attention and vigilance), and attentional selection (the outcome of attentional processes). Based on research findings, I develop five propositions on how the varieties of attention in organization provide a theoretical alternative to theories of structural determinism or strategic choice, with a particular focus on the role of attention in explaining organizational adaptation and change.",
+      "year": 2010,
+      "venue": "Organization Science",
+      "doi": "10.1287/orsc.1100.0602",
+      "citationCount": 1281,
+      "referenceCount": 102,
+      "fieldsOfStudy": [
+        "Psychology",
+        "Cognitive psychology",
+        "Cognition",
+        "Top-down and bottom-up design"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1287/orsc.1100.0602",
+      "tldr": "Organizational theory and research has increased attention to the determinants and consequences of attention in organizations. Based on research findings, I develop five propositions on how the varieties of attention in organization provide a theoretical alternative to theories of structural determinism or strategic choice, with a particular focus on the role of attention in explaining organizational adaptation and change.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Psychology",
+        "Cognitive psychology",
+        "Cognition"
+      ]
+    },
+    "openalex-W2102812780": {
+      "id": "openalex-W2102812780",
+      "title": "Attention and Performance",
+      "authors": [
+        {
+          "name": "Harold Pashler",
+          "affiliation": "Ames Research Center",
+          "authorId": "https://openalex.org/A5008952472"
+        },
+        {
+          "name": "James C. Johnston",
+          "affiliation": "Ames Research Center",
+          "authorId": "https://openalex.org/A5068223950"
+        },
+        {
+          "name": "Eric D. Ruthruff",
+          "affiliation": "Ames Research Center",
+          "authorId": "https://openalex.org/A5022296273"
+        }
+      ],
+      "abstract": "Recent progress in the study of attention and performance is discussed, focusing on the nature of attentional control and the effects of practice. Generally speaking, the effects of mental set are proving more pervasive than was previously suspected, whereas automaticity is proving less robust. Stimulus attributes (e.g. onsets, transients) thought to have a \"wired-in\" ability to capture attention automatically have been shown to capture attention only as a consequence of voluntarily adopted task sets. Recent research suggests that practice does not have as dramatic effects as is commonly believed. While it may turn out that some mental operations are automatized in the strongest sense, this may be uncommon. Recent work on task switching is also described; optimal engagement in a task set is proving to be intimately tied to learning operations triggered by the actual performance of a new task, not merely the anticipation of such performance.",
+      "year": 2001,
+      "venue": "Annual Review of Psychology",
+      "doi": "10.1146/annurev.psych.52.1.629",
+      "citationCount": 1465,
+      "referenceCount": 74,
+      "fieldsOfStudy": [
+        "Automaticity",
+        "Psychology",
+        "Cognitive psychology",
+        "Anticipation (artificial intelligence)"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1146/annurev.psych.52.1.629",
+      "tldr": "Recent progress in the study of attention and performance is discussed, focusing on the nature of attentional control and the effects of practice. Recent work on task switching is also described; optimal engagement in a task set is proving to be intimately tied to learning operations triggered by the actual performance of a new task, not merely the anticipation of such performance.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Automaticity",
+        "Psychology",
+        "Cognitive psychology"
+      ]
+    },
+    "openalex-W2019921249": {
+      "id": "openalex-W2019921249",
+      "title": "The Psychology of Attention",
+      "authors": [
+        {
+          "name": "Harold Pashler",
+          "affiliation": "University of California San Diego",
+          "authorId": "https://openalex.org/A5008952472"
+        }
+      ],
+      "abstract": "In the past two decades, attention has been one of the most investigated areas of research in perception and cognition. However, the literature on the field contains a bewildering array of findings, and empirical progress has not been matched by consensus on major theoretical issues. The Psychology of Attention presents a systematic review of the main lines of research on attention; the topics range from perception of threshold stimuli to memory storage and decision making. The book develops empirical generalizations about the major issues and suggests possible underlying theoretical principles. Pashler argues that widely assumed notions of processing resources and automaticity are of limited value in understanding human information processing. He proposes a central bottleneck for decision making and memory retrieval, and describes evidence that distinguishes this limitation from perceptual limitations and limited-capacity short-term memory. Bradford Books imprint",
+      "year": 1997,
+      "venue": "The MIT Press eBooks",
+      "doi": "10.7551/mitpress/5677.001.0001",
+      "citationCount": 1629,
+      "referenceCount": 0,
+      "fieldsOfStudy": [
+        "Automaticity",
+        "Psychology",
+        "Cognitive psychology",
+        "Attentional control"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.7551/mitpress/5677.001.0001",
+      "tldr": "In the past two decades, attention has been one of the most investigated areas of research in perception and cognition. Bradford Books imprint",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Automaticity",
+        "Psychology",
+        "Cognitive psychology"
+      ]
+    },
+    "openalex-W4229580337": {
+      "id": "openalex-W4229580337",
+      "title": "Attentional networks",
+      "authors": [
+        {
+          "name": "Michael I. Posner",
+          "affiliation": "University of Oregon",
+          "authorId": "https://openalex.org/A5047424481"
+        },
+        {
+          "name": "Stanislas Dehaene",
+          "affiliation": "Centre National de la Recherche Scientifique",
+          "authorId": "https://openalex.org/A5075892407"
+        }
+      ],
+      "abstract": "No abstract preview available for this indexed publication.",
+      "year": 1994,
+      "venue": "Trends in Neurosciences",
+      "doi": "10.1016/0166-2236(94)90078-7",
+      "citationCount": 943,
+      "referenceCount": 19,
+      "fieldsOfStudy": [
+        "Neuroscience",
+        "Psychology",
+        "Neurophysiology",
+        "Posterior parietal cortex"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1016/0166-2236(94)90078-7",
+      "tldr": "Paper exploring attentional networks.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Neuroscience",
+        "Psychology",
+        "Neurophysiology"
+      ]
+    },
+    "openalex-W2171099789": {
+      "id": "openalex-W2171099789",
+      "title": "Attention and joint attention in preschool children with autism.",
+      "authors": [
+        {
+          "name": "Susan Leekam",
+          "affiliation": "University of Kent",
+          "authorId": "https://openalex.org/A5036908898"
+        },
+        {
+          "name": "Beatriz López",
+          "authorId": "https://openalex.org/A5067305880"
+        },
+        {
+          "name": "Chris L. Moore",
+          "authorId": "https://openalex.org/A5053293290"
+        }
+      ],
+      "abstract": "Three experiments examined the role of attention in explaining dyadic (child-adult) and triadic (child-adult-object) joint attention difficulties in autism. Experiments 1 and 2 investigated children's ability to orient to an adult's attention bid and to follow the direction of a human or nonhuman cue. Experiment 3 tested ability to disengage and shift attention to objects. Results showed autism-specific difficulties at both dyadic and triadic levels. Children with autism were less responsive than developmentally delayed controls in orienting to attention bids and in following a human head-turn cue yet had no difficulty in shifting attention and were faster overall in orienting to targets. Results suggest a specific developmental delay in which children with autism rely on the presence of objects in the visual field to guide action. The relation between this problem and autistic children's difficulties with human communicative signals is discussed.",
+      "year": 2000,
+      "venue": "Developmental Psychology",
+      "doi": "10.1037/0012-1649.36.2.261",
+      "citationCount": 332,
+      "referenceCount": 51,
+      "fieldsOfStudy": [
+        "Psychology",
+        "Autism",
+        "Joint attention",
+        "Developmental psychology"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.1037/0012-1649.36.2.261",
+      "tldr": "Three experiments examined the role of attention in explaining dyadic (child-adult) and triadic (child-adult-object) joint attention difficulties in autism. The relation between this problem and autistic children's difficulties with human communicative signals is discussed.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Psychology",
+        "Autism",
+        "Joint attention"
+      ]
+    },
+    "openalex-W1462349324": {
+      "id": "openalex-W1462349324",
+      "title": "Attention and Orienting",
+      "authors": [
+        {
+          "name": "Peter J. Lang",
+          "authorId": "https://openalex.org/A5103091769"
+        },
+        {
+          "name": "Robert F. Simons",
+          "authorId": "https://openalex.org/A5111971965"
+        },
+        {
+          "name": "Marie T. Balaban",
+          "authorId": "https://openalex.org/A5109075973"
+        },
+        {
+          "name": "Robert Simons",
+          "authorId": null
+        }
+      ],
+      "abstract": "Orienting is the gateway to attention, the first step in processing stimulus information. This volume examines these initial stages of information intake, focusing on the sensory and motivational mechanisms that determine such phenomena as stimulus selection and inhibition, habituation, pre-attentive processing, and expectancy. Psychophysiological methods are emphasized throughout. The contributors consider analyses based on cardiovascular and electrodermal changes, reflex reactions, and neural events in the cortex and subcortex. Stimulated by a conference lauding Frances Graham -- held before and during a recent meeting of the Society for Psychophysiological Research, the book presents current theory and research by an international cadre of outstanding investigators. A major researcher and theorist in the field of attention for more than three decades, Dr. Graham contributes an Afterword to the present volume which is both a consideration of the work which has gone before, and a new, original theory paper on preattentive processing and attention.",
+      "year": 2013,
+      "venue": "Psychology Press eBooks",
+      "doi": "10.4324/9780203726457",
+      "citationCount": 806,
+      "referenceCount": 0,
+      "fieldsOfStudy": [
+        "Psychology",
+        "History"
+      ],
+      "openAccessPdfUrl": "https://doi.org/10.4324/9780203726457",
+      "tldr": "Orienting is the gateway to attention, the first step in processing stimulus information. Graham contributes an Afterword to the present volume which is both a consideration of the work which has gone before, and a new, original theory paper on preattentive processing and attention.",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Psychology",
+        "History"
+      ]
+    },
+    "openalex-W4399114252": {
+      "id": "openalex-W4399114252",
+      "title": "Attention and Interpretation",
+      "authors": [
+        {
+          "name": "Howard B. Levine",
+          "authorId": "https://openalex.org/A5112408742"
+        }
+      ],
+      "abstract": "In Attention and Interpretation , Bion (1970) contrasts the difference between two kinds of patients or states of mind: those who can and those who cannot stand to remain in contact with an anxiety-producing or frustrating reality long enough to tolerate and think about what, if anything, can be done about it, rather than react by trying to evade, deny or distort the perception of the source of their frustration or displeasure. In so doing, he is amplifying and exploring Freud’s (1911) two principles of mental functioning from a clinical vertex that investigates the vicissitudes of frustration tolerance. This inevitably leads to questions and considerations of existential Experience, psychic representation and the epistemological status of language, thought and experience – that is, knowing (K) and being (O).",
+      "year": 2024,
+      "venue": "Routledge eBooks",
+      "doi": "10.4324/9781032661230-8",
+      "citationCount": 911,
+      "referenceCount": 0,
+      "fieldsOfStudy": [
+        "Interpretation (philosophy)",
+        "Epistemology",
+        "History",
+        "Psychology"
+      ],
+      "openAccessPdfUrl": "http://dx.doi.org/10.4324/9781032661230-8",
+      "tldr": "In Attention and Interpretation , Bion (1970) contrasts the difference between two kinds of patients or states of mind: those who can and those who cannot stand to remain in contact with an anxiety-producing or frustrating reality long enough to tolerate and think about what, if anything, can be done about it, rather than react by trying to evade, deny or distort the perception of the source of their frustration or displeasure. This inevitably leads to questions and considerations of existential Experience, psychic representation and the epistemological status of language, thought and experience – that is, knowing (K) and being (O).",
+      "source": "openalex",
+      "readingStatus": "to-read",
+      "tags": [
+        "Interpretation (philosophy)",
+        "Epistemology",
+        "History"
+      ]
+    },
+    "arxiv-2202.09741": {
+      "id": "arxiv-2202.09741",
+      "title": "Visual Attention Network",
+      "authors": [
+        {
+          "name": "Meng-Hao Guo"
+        },
+        {
+          "name": "Cheng-Ze Lu"
+        },
+        {
+          "name": "Zheng-Ning Liu"
+        },
+        {
+          "name": "Ming-Ming Cheng"
+        },
+        {
+          "name": "Shi-Min Hu"
+        }
+      ],
+      "abstract": "While originally designed for natural language processing tasks, the self-attention mechanism has recently taken various computer vision areas by storm. However, the 2D nature of images brings three challenges for applying self-attention in computer vision. (1) Treating images as 1D sequences neglects their 2D structures. (2) The quadratic complexity is too expensive for high-resolution images. (3) It only captures spatial adaptability but ignores channel adaptability. In this paper, we propose a novel linear attention named large kernel attention (LKA) to enable self-adaptive and long-range correlations in self-attention while avoiding its shortcomings. Furthermore, we present a neural network based on LKA, namely Visual Attention Network (VAN). While extremely simple, VAN surpasses similar size vision transformers(ViTs) and convolutional neural networks(CNNs) in various tasks, including image classification, object detection, semantic segmentation, panoptic segmentation, pose estimation, etc. For example, VAN-B6 achieves 87.8% accuracy on ImageNet benchmark and set new state-of-the-art performance (58.2 PQ) for panoptic segmentation. Besides, VAN-B2 surpasses Swin-T 4% mIoU (50.1 vs. 46.1) for semantic segmentation on ADE20K benchmark, 2.6% AP (48.8 vs. 46.2) for object detection on COCO dataset. It provides a novel method and a simple yet strong baseline for the community. Code is available at https://github.com/Visual-Attention-Network.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2202.09741",
+      "citationCount": 61,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2202.09741.pdf",
+      "tldr": "While originally designed for natural language processing tasks, the self-attention mechanism has recently taken various computer vision areas by storm. Code is available at https://github.com/Visual-Attention-Network.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2105.02358": {
+      "id": "arxiv-2105.02358",
+      "title": "Beyond Self-attention: External Attention using Two Linear Layers for Visual Tasks",
+      "authors": [
+        {
+          "name": "Meng-Hao Guo"
+        },
+        {
+          "name": "Zheng-Ning Liu"
+        },
+        {
+          "name": "Tai-Jiang Mu"
+        },
+        {
+          "name": "Shi-Min Hu"
+        }
+      ],
+      "abstract": "Attention mechanisms, especially self-attention, have played an increasingly important role in deep feature representation for visual tasks. Self-attention updates the feature at each position by computing a weighted sum of features using pair-wise affinities across all positions to capture the long-range dependency within a single sample. However, self-attention has quadratic complexity and ignores potential correlation between different samples. This paper proposes a novel attention mechanism which we call external attention, based on two external, small, learnable, shared memories, which can be implemented easily by simply using two cascaded linear layers and two normalization layers; it conveniently replaces self-attention in existing popular architectures. External attention has linear complexity and implicitly considers the correlations between all data samples. We further incorporate the multi-head mechanism into external attention to provide an all-MLP architecture, external attention MLP (EAMLP), for image classification. Extensive experiments on image classification, object detection, semantic segmentation, instance segmentation, image generation, and point cloud analysis reveal that our method provides results comparable or superior to the self-attention mechanism and some of its variants, with much lower computational and memory costs.",
+      "year": 2021,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2105.02358",
+      "citationCount": 25,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2105.02358.pdf",
+      "tldr": "Attention mechanisms, especially self-attention, have played an increasingly important role in deep feature representation for visual tasks. Extensive experiments on image classification, object detection, semantic segmentation, instance segmentation, image generation, and point cloud analysis reveal that our method provides results comparable or superior to the self-attention mechanism and some of its variants, with much lower computational and memory costs.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2306.05427": {
+      "id": "arxiv-2306.05427",
+      "title": "Grounded Text-to-Image Synthesis with Attention Refocusing",
+      "authors": [
+        {
+          "name": "Quynh Phung"
+        },
+        {
+          "name": "Songwei Ge"
+        },
+        {
+          "name": "Jia-Bin Huang"
+        }
+      ],
+      "abstract": "Driven by the scalable diffusion models trained on large-scale datasets, text-to-image synthesis methods have shown compelling results. However, these models still fail to precisely follow the text prompt involving multiple objects, attributes, or spatial compositions. In this paper, we reveal the potential causes in the diffusion model's cross-attention and self-attention layers. We propose two novel losses to refocus attention maps according to a given spatial layout during sampling. Creating the layouts manually requires additional effort and can be tedious. Therefore, we explore using large language models (LLM) to produce these layouts for our method. We conduct extensive experiments on the DrawBench, HRS, and TIFA benchmarks to evaluate our proposed method. We show that our proposed attention refocusing effectively improves the controllability of existing approaches.",
+      "year": 2023,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2306.05427",
+      "citationCount": 53,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2306.05427.pdf",
+      "tldr": "Driven by the scalable diffusion models trained on large-scale datasets, text-to-image synthesis methods have shown compelling results. We show that our proposed attention refocusing effectively improves the controllability of existing approaches.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2601.15305": {
+      "id": "arxiv-2601.15305",
+      "title": "Gated Sparse Attention: Combining Computational Efficiency with Training Stability for Long-Context Language Models",
+      "authors": [
+        {
+          "name": "Alfred Shen"
+        },
+        {
+          "name": "Aaron Shen"
+        }
+      ],
+      "abstract": "The computational burden of attention in long-context language models has motivated two largely independent lines of work: sparse attention mechanisms that reduce complexity by attending to selected tokens, and gated attention variants that improve training sta-bility while mitigating the attention sink phenomenon. We observe that these approaches address complementary weaknesses and propose Gated Sparse Attention (GSA), an architecture that realizes the benefits of both. GSA incorporates a gated lightning indexer with sigmoid activations that produce bounded, interpretable selection scores, an adaptive sparsity controller that modulates the number of attended tokens based on local uncertainty, and dual gating at the value and output stages. We establish theoretical foundations for the approach, including complexity analysis, expressiveness results, and convergence guarantees. In experiments with 1.7B parameter models trained on 400B tokens, GSA matches the efficiency of sparse-only baselines (12-16x speedup at 128K context) while achieving the quality gains associated with gated attention: perplexity improves from 6.03 to 5.70, RULER scores at 128K context nearly double, and attention to the first token, a proxy for attention sinks, drops from 47% to under 4%. Training stability improves markedly, with loss spikes reduced by 98%.",
+      "year": 2026,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2601.15305",
+      "citationCount": 46,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2601.15305.pdf",
+      "tldr": "The computational burden of attention in long-context language models has motivated two largely independent lines of work: sparse attention mechanisms that reduce complexity by attending to selected tokens, and gated attention variants that improve training sta-bility while mitigating the attention sink phenomenon. Training stability improves markedly, with loss spikes reduced by 98%.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2508.17807": {
+      "id": "arxiv-2508.17807",
+      "title": "Attention Debiasing for Token Pruning in Vision Language Models",
+      "authors": [
+        {
+          "name": "Kai Zhao"
+        },
+        {
+          "name": "Wubang Yuan"
+        },
+        {
+          "name": "Yuchen Lin"
+        },
+        {
+          "name": "Liting Ruan"
+        },
+        {
+          "name": "Xiaofeng Lu"
+        },
+        {
+          "name": "Deng-Ping Fan"
+        },
+        {
+          "name": "Ming-Ming Cheng"
+        },
+        {
+          "name": "Dan Zeng"
+        }
+      ],
+      "abstract": "Vision-language models (VLMs) typically encode substantially more visual tokens than text tokens, resulting in significant token redundancy. Pruning uninformative visual tokens is therefore crucial for improving computational efficiency, and language-to-vision attention has become a widely used importance criterion for this purpose. However, we find that attention in VLMs is systematically biased. It disproportionately favors tokens appearing later in the sequence, manifesting as over-attention to lower image regions, and assigns inflated scores to semantically empty padding tokens. These behaviors stem from intrinsic recency bias and attention sink effects inherited from large language models (LLMs), and they distort attention-based pruning by preserving irrelevant visual content. To derive a pruning criterion better aligned with semantic relevance, we introduce two lightweight yet effective debiasing techniques that restore the reliability of attention. The first compensates for positional distortions by removing recency-induced attention trends, producing a content-aware and position-agnostic importance measure. The second suppresses attention sink effects by eliminating spurious attention on padding tokens. Our method is model-agnostic, pruning-method-agnostic, and task-agnostic, enabling plug-and-play integration with existing VLM pruning models. Despite its simplicity, our approach consistently delivers strong performance gains. We evaluate our method on ten vision-language benchmarks spanning both image-based and video-based tasks, in comparison with seven state-of-the-art visual token pruning methods and across two representative VLM architectures. Our method achieves substantial performance gains, demonstrating strong effectiveness and generalizability. Our code is available at https://github.com/intcomp/attention-bias.",
+      "year": 2025,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2508.17807",
+      "citationCount": 90,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2508.17807.pdf",
+      "tldr": "Vision-language models (VLMs) typically encode substantially more visual tokens than text tokens, resulting in significant token redundancy. Our code is available at https://github.com/intcomp/attention-bias.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2209.10464": {
+      "id": "arxiv-2209.10464",
+      "title": "Quantifying attention via dwell time and engagement in a social media browsing environment",
+      "authors": [
+        {
+          "name": "Ziv Epstein"
+        },
+        {
+          "name": "Hause Lin"
+        },
+        {
+          "name": "Gordon Pennycook"
+        },
+        {
+          "name": "David Rand"
+        }
+      ],
+      "abstract": "Modern computational systems have an unprecedented ability to detect, leverage and influence human attention. Prior work identified user engagement and dwell time as two key metrics of attention in digital environments, but these metrics have yet to be integrated into a unified model that can advance the theory andpractice of digital attention. We draw on work from cognitive science, digital advertising, and AI to propose a two-stage model of attention for social media environments that disentangles engagement and dwell. In an online experiment, we show that attention operates differently in these two stages and find clear evidence of dissociation: when dwelling on posts (Stage 1), users attend more to sensational than credible content, but when deciding whether to engage with content (Stage 2), users attend more to credible than sensational content. These findings have implications for the design and development of computational systems that measure and model human attention, such as newsfeed algorithms on social media.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2209.10464",
+      "citationCount": 40,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2209.10464.pdf",
+      "tldr": "Modern computational systems have an unprecedented ability to detect, leverage and influence human attention. These findings have implications for the design and development of computational systems that measure and model human attention, such as newsfeed algorithms on social media.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2212.08151": {
+      "id": "arxiv-2212.08151",
+      "title": "First De-Trend then Attend: Rethinking Attention for Time-Series Forecasting",
+      "authors": [
+        {
+          "name": "Xiyuan Zhang"
+        },
+        {
+          "name": "Xiaoyong Jin"
+        },
+        {
+          "name": "Karthick Gopalswamy"
+        },
+        {
+          "name": "Gaurav Gupta"
+        },
+        {
+          "name": "Youngsuk Park"
+        },
+        {
+          "name": "Xingjian Shi"
+        },
+        {
+          "name": "Hao Wang"
+        },
+        {
+          "name": "Danielle C. Maddix"
+        },
+        {
+          "name": "Yuyang Wang"
+        }
+      ],
+      "abstract": "Transformer-based models have gained large popularity and demonstrated promising results in long-term time-series forecasting in recent years. In addition to learning attention in time domain, recent works also explore learning attention in frequency domains (e.g., Fourier domain, wavelet domain), given that seasonal patterns can be better captured in these domains. In this work, we seek to understand the relationships between attention models in different time and frequency domains. Theoretically, we show that attention models in different domains are equivalent under linear conditions (i.e., linear kernel to attention scores). Empirically, we analyze how attention models of different domains show different behaviors through various synthetic experiments with seasonality, trend and noise, with emphasis on the role of softmax operation therein. Both these theoretical and empirical analyses motivate us to propose a new method: TDformer (Trend Decomposition Transformer), that first applies seasonal-trend decomposition, and then additively combines an MLP which predicts the trend component with Fourier attention which predicts the seasonal component to obtain the final prediction. Extensive experiments on benchmark time-series forecasting datasets demonstrate that TDformer achieves state-of-the-art performance against existing attention-based models.",
+      "year": 2022,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2212.08151",
+      "citationCount": 73,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2212.08151.pdf",
+      "tldr": "Transformer-based models have gained large popularity and demonstrated promising results in long-term time-series forecasting in recent years. Extensive experiments on benchmark time-series forecasting datasets demonstrate that TDformer achieves state-of-the-art performance against existing attention-based models.",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "arxiv-2609.08574": {
+      "id": "arxiv-2609.08574",
+      "title": "Do New Attention Mechanisms Actually Fix Attention Sinks at Million-Token Context?",
+      "authors": [
+        {
+          "name": "Sara Rizwan"
+        },
+        {
+          "name": "Samaanah Abdus Salam"
+        },
+        {
+          "name": "Mohammed Mudassir Uddin"
+        }
+      ],
+      "abstract": "Long context language models now advertise windows of one million tokens, but two habits limit how much of that window is used. Attention heads with nothing useful to read still spend their budget on the first token, which is called the attention sink, and where a fact sits in the context changes whether the model finds it. Gated attention cut first token attention from 46.7 percent to 4.8 percent at NeurIPS 2025, and Kimi K3 pairs that idea with Kimi Delta Attention and Attention Residuals behind a one million token window, eight times past the range where these diagnostics have been reported. This paper asks whether the fix survives that jump. We build SinkProbe, a suite that measures sink mass, massive activation, position resolved recall and the recency gap, and apply it to four small models that differ only in how they mix tokens and depth. Three results follow. The training objective produces the sink, not the architecture. Gating did not reproduce its published effect at our scale. Sink mass, activations and position bias moved independently. Code, data and the measurement protocol are released at https://github.com/sararizwan7/Attention-Mechanisms-in-1M-Context-Window",
+      "year": 2026,
+      "venue": "arXiv Preprint Server",
+      "arxivId": "2609.08574",
+      "citationCount": 88,
+      "referenceCount": 28,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Preprint"
+      ],
+      "openAccessPdfUrl": "https://arxiv.org/pdf/2609.08574.pdf",
+      "tldr": "Long context language models now advertise windows of one million tokens, but two habits limit how much of that window is used. Code, data and the measurement protocol are released at https://github.com/sararizwan7/Attention-Mechanisms-in-1M-Context-Window",
+      "source": "arxiv",
+      "readingStatus": "to-read",
+      "tags": [
+        "arXiv",
+        "Preprint"
+      ]
+    },
+    "upload-1794579215570-bziem": {
+      "id": "upload-1794579215570-bziem",
+      "title": "sample paper",
+      "authors": [
+        {
+          "name": "Primary Investigator et al."
+        }
+      ],
+      "abstract": "PDF-1.4 1 0 obj /Type /Catalog /Pages 2 0 R endobj 2 0 obj /Type /Pages /Kids 3 0 R /Count 1 endobj 3 0 obj /Type /Page /Parent 2 0 R /MediaBox 0 0 612 792 /Resources /Font /F1 4 0 R /Contents 5 0 R endobj 4 0 obj /Type /Font /Subtype /Type1 /BaseFont /Helvetica endobj 5 0 obj /Length 1350 stream /F1 18 Tf 50 750 Td (Scalable State Space Models for Efficient Sequence Modeling) Tj /F1 12 Tf 0 -30 Td (Albert Gu, Tri Dao, Christo...",
+      "year": 2017,
+      "venue": "Uploaded PDF Document",
+      "citationCount": 23,
+      "referenceCount": 15,
+      "fieldsOfStudy": [
+        "Computer Science",
+        "Academic Literature"
+      ],
+      "source": "upload",
+      "pdfExtracted": {
+        "sections": [
+          {
+            "title": "Document Overview",
+            "content": "PDF-1.4 1 0 obj /Type /Catalog /Pages 2 0 R endobj 2 0 obj /Type /Pages /Kids 3 0 R /Count 1 endobj 3 0 obj /Type /Page /Parent 2 0 R /MediaBox 0 0 612 792 /Resources /Font /F1 4 0 R /Contents 5 0 R endobj 4 0 obj /Type /Font /Subtype /Type1 /BaseFont /Helvetica endobj 5 0 obj /Length 1350 stream /F1 18 Tf 50 750 Td (Scalable State Space Models for Efficient Sequence Modeling) Tj /F1 12 Tf 0 -30 Td (Albert Gu, Tri Dao, Christopher Re) Tj 0 -30 Td (Abstract) Tj 0 -20 Td (Recent advances in sequence modeling have seen Transformers become ubiquitous across artificial intelligence. However, their quadratic computational complexity in sequence length presents fundamental bottlenecks for long context tasks. In this work, we introduce structured state space sequence models that process sequences in sub-quadratic O(N log N) time while matching Transformer perplexity benchmarks.) Tj 0 -50 Td (1. Introduction) Tj 0 -20 Td (Sequence models are central to modern deep learning. While attention mechanisms allow unbounded receptive fields, the compute cost scales prohibitively.) Tj 0 -40 Td (2. Methodology) Tj 0 -20 Td (We parameterize continuous-time state spaces using diagonalized transition matrices and apply fast Fourier transforms for parallelized associative scans.) Tj 0 -40 Td (3. Results) Tj 0 -20 Td (Our model achieves 84.2 accuracy on the Long Range Arena benchmark, outperforming Linear Transformers by 4.8 points.) Tj 0 -40 Td (References) Tj 0 -20 Td Vaswani et al., Attention is all you need, NeurIPS 2017.) Tj 0 -15 Td Gu et al., Efficiently modeling long sequences with structured state spaces, ICLR 2022.) Tj endstream endobj 0000000000 65535 f 0000000009 00000 n 0000000058 00000 n 0000000115 00000 n 0000000229 00000 n 0000000300 00000 n trailer /Size 6 /Root 1 0 R startxref"
+          },
+          {
+            "title": "Extracted Findings & Methodology",
+            "content": ""
+          }
+        ],
+        "references": [],
+        "keywords": [],
+        "fullText": "PDF-1.4 1 0 obj  /Type /Catalog /Pages 2 0 R  endobj 2 0 obj  /Type /Pages /Kids  3 0 R  /Count 1  endobj 3 0 obj  /Type /Page /Parent 2 0 R /MediaBox  0 0 612 792  /Resources   /Font   /F1 4 0 R   /Contents 5 0 R  endobj 4 0 obj  /Type /Font /Subtype /Type1 /BaseFont /Helvetica  endobj 5 0 obj  /Length 1350  stream /F1 18 Tf 50 750 Td (Scalable State Space Models for Efficient Sequence Modeling) Tj /F1 12 Tf 0 -30 Td (Albert Gu, Tri Dao, Christopher Re) Tj 0 -30 Td (Abstract) Tj 0 -20 Td (Recent advances in sequence modeling have seen Transformers become ubiquitous across artificial intelligence. However, their quadratic computational complexity in sequence length presents fundamental bottlenecks for long context tasks. In this work, we introduce structured state space sequence models that process sequences in sub-quadratic O(N log N) time while matching Transformer perplexity benchmarks.) Tj 0 -50 Td (1. Introduction) Tj 0 -20 Td (Sequence models are central to modern deep learning. While attention mechanisms allow unbounded receptive fields, the compute cost scales prohibitively.) Tj 0 -40 Td (2. Methodology) Tj 0 -20 Td (We parameterize continuous-time state spaces using diagonalized transition matrices and apply fast Fourier transforms for parallelized associative scans.) Tj 0 -40 Td (3. Results) Tj 0 -20 Td (Our model achieves 84.2 accuracy on the Long Range Arena benchmark, outperforming Linear Transformers by 4.8 points.) Tj 0 -40 Td (References) Tj 0 -20 Td  Vaswani et al., Attention is all you need, NeurIPS 2017.) Tj 0 -15 Td  Gu et al., Efficiently modeling long sequences with structured state spaces, ICLR 2022.) Tj endstream endobj 0000000000 65535 f  0000000009 00000 n  0000000058 00000 n  0000000115 00000 n  0000000229 00000 n  0000000300 00000 n  trailer  /Size 6 /Root 1 0 R  startxref"
+      },
+      "readingStatus": "reading",
+      "userRating": 5,
+      "tags": [
+        "Uploaded Document"
+      ],
+      "dateAdded": "2026-11-13T14:13:35.570Z"
+    }
+  },
+  "collections": {
+    "col-transformers-foundation": {
+      "id": "col-transformers-foundation",
+      "name": "Foundation Models & Transformer Architectures",
+      "description": "Seminal and cutting-edge literature on self-attention mechanisms, scaling laws, bidirectional encodings, and generative pre-training.",
+      "paperIds": [
+        "paper-vaswani-2017",
+        "paper-devlin-2018",
+        "paper-brown-2020",
+        "paper-ouyang-2022",
+        "paper-lewis-2020"
+      ],
+      "createdAt": "2026-10-16T14:02:38.763Z",
+      "updatedAt": "2026-11-13T14:02:38.763Z",
+      "color": "#3b82f6",
+      "icon": "Brain"
+    },
+    "col-multimodal-vision": {
+      "id": "col-multimodal-vision",
+      "name": "Multimodal AI & Generative Diffusion",
+      "description": "Breakthrough architectures bridging vision, text, latent diffusion, and generative modeling.",
+      "paperIds": [
+        "paper-dosovitskiy-2020",
+        "paper-rombach-2022"
+      ],
+      "createdAt": "2026-10-24T14:02:38.763Z",
+      "updatedAt": "2026-11-13T14:02:38.763Z",
+      "color": "#8b5cf6",
+      "icon": "Sparkles"
+    },
+    "col-biomedical-breakthroughs": {
+      "id": "col-biomedical-breakthroughs",
+      "name": "Bioinformatics & Molecular Precision",
+      "description": "Milestone papers in structural biology prediction and programmable genetic therapeutics.",
+      "paperIds": [
+        "paper-jumper-2021",
+        "paper-doudna-2012"
+      ],
+      "createdAt": "2026-10-29T14:02:38.763Z",
+      "updatedAt": "2026-11-13T14:02:38.763Z",
+      "color": "#10b981",
+      "icon": "Dna"
+    }
+  },
+  "reviews": {
+    "review-1794579120483-k0jdve": {
+      "id": "review-1794579120483-k0jdve",
+      "title": "Systematic Literature Review: Self-Attention and Foundation Models",
+      "topic": "Self-Attention and Foundation Models",
+      "paperIds": [
+        "paper-vaswani-2017",
+        "paper-devlin-2018",
+        "paper-brown-2020"
+      ],
+      "executiveSummary": "This systematic literature review synthesizes 3 seminal publications addressing **Self-Attention and Foundation Models**. Across the corpus, research has transitioned from localized, heuristic-driven frameworks to highly scalable representations that leverage self-attention, deep pre-training, and dense retrieval mechanisms. The reviewed works demonstrate substantial empirical gains across standard benchmarks while illuminating critical trade-offs in computational scalability, interpretability, and methodological generalization.",
+      "sections": [
+        {
+          "heading": "1. Introduction & Background",
+          "content": "The emergence of Self-Attention and Foundation Models represents a paradigm shift across modern computational and empirical science. Traditional approaches relied heavily on manual feature engineering, sequential recurrence, or domain-specific heuristics. However, recent breakthroughs—pioneered by Vaswani et al. (2017) [Vaswani et al., 2017] and Devlin et al. (2018) [Devlin et al., 2018]—have demonstrated that end-to-end architectures operating over unified representations achieve superior sample efficiency and contextual modeling depth. This review provides a rigorous synthesis of foundational methodologies, comparative empirical benchmarks, identified trade-offs, and unresolved research gaps.",
+          "citations": [
+            {
+              "paperId": "paper-vaswani-2017",
+              "citeKey": "[Vaswani et al., 2017]",
+              "title": "Attention Is All You Need",
+              "authors": "Vaswani et al. (2017)",
+              "year": 2017,
+              "quoteSnippet": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-devlin-2018",
+              "citeKey": "[Devlin et al., 2018]",
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+              "authors": "Devlin et al. (2018)",
+              "year": 2018,
+              "quoteSnippet": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "heading": "2. Methodological Paradigms & Core Architecture",
+          "content": "A central theme throughout the reviewed literature is the decomposition of sequential dependencies in favor of parallelizable attention and latent space transformations. As established in Vaswani et al. (2017) [Vaswani et al., 2017], eliminating recurrence eliminates vanishing gradient bottlenecks and enables seamless scaling across vast distributed accelerators. Furthermore, Devlin et al. (2018) [Devlin et al., 2018] demonstrates that bidirectional contextualization allows models to capture multi-scale semantic hierarchies simultaneously.",
+          "citations": [
+            {
+              "paperId": "paper-vaswani-2017",
+              "citeKey": "[Vaswani et al., 2017]",
+              "title": "Attention Is All You Need",
+              "authors": "Vaswani et al. (2017)",
+              "year": 2017,
+              "quoteSnippet": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-devlin-2018",
+              "citeKey": "[Devlin et al., 2018]",
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+              "authors": "Devlin et al. (2018)",
+              "year": 2018,
+              "quoteSnippet": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-brown-2020",
+              "citeKey": "[Brown et al., 2020]",
+              "title": "Language Models are Few-Shot Learners (GPT-3)",
+              "authors": "Brown et al. (2020)",
+              "year": 2020,
+              "quoteSnippet": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "heading": "3. Comparative Analysis & Empirical Findings",
+          "content": "Quantitative benchmarks across the corpus reveal that scaling parameter capacity consistently improves few-shot task adaptation and zero-shot transfer. However, empirical gains exhibit non-linear diminishing returns when evaluated on nuanced reasoning or out-of-distribution generalization. The synthesis matrix indicates that while empirical accuracy gains range between 15% and 42% over preceding baselines, memory consumption during inference scales quadratically with sequence length unless sparse or linear approximations are introduced.",
+          "citations": [
+            {
+              "paperId": "paper-vaswani-2017",
+              "citeKey": "[Vaswani et al., 2017]",
+              "title": "Attention Is All You Need",
+              "authors": "Vaswani et al. (2017)",
+              "year": 2017,
+              "quoteSnippet": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-devlin-2018",
+              "citeKey": "[Devlin et al., 2018]",
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+              "authors": "Devlin et al. (2018)",
+              "year": 2018,
+              "quoteSnippet": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-brown-2020",
+              "citeKey": "[Brown et al., 2020]",
+              "title": "Language Models are Few-Shot Learners (GPT-3)",
+              "authors": "Brown et al. (2020)",
+              "year": 2020,
+              "quoteSnippet": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "heading": "4. Critical Limitations & Identified Research Gaps",
+          "content": "Despite transformative achievements, four prominent research gaps persist across the evaluated literature:\n\n1. **Inference Latency & Quadratic Memory**: The computational cost of dense pairwise attention remains prohibitive for real-time edge processing.\n2. **Calibration & Hallucination Tendencies**: Generative models frequently output fluent but factually unsubstantiated statements without explicit retrieval grounding.\n3. **Data Provenance & Contamination**: Benchmark saturation has been accelerated by inadvertent overlap between massive training corpora and evaluation splits.\n4. **Mechanistic Interpretability**: Internal circuit representations remain difficult to audit for safety-critical healthcare and legal decision-making.",
+          "citations": [
+            {
+              "paperId": "paper-vaswani-2017",
+              "citeKey": "[Vaswani et al., 2017]",
+              "title": "Attention Is All You Need",
+              "authors": "Vaswani et al. (2017)",
+              "year": 2017,
+              "quoteSnippet": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-devlin-2018",
+              "citeKey": "[Devlin et al., 2018]",
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+              "authors": "Devlin et al. (2018)",
+              "year": 2018,
+              "quoteSnippet": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-brown-2020",
+              "citeKey": "[Brown et al., 2020]",
+              "title": "Language Models are Few-Shot Learners (GPT-3)",
+              "authors": "Brown et al. (2020)",
+              "year": 2020,
+              "quoteSnippet": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "heading": "5. Conclusions & Future Directions",
+          "content": "The synthesis of these 3 publications establishes that future research will coalesce around hybrid neuro-symbolic systems, sub-quadratic state-space and linear attention architectures, verifiable retrieval-augmented generation, and automated alignment with rigorous human feedback. Systematic benchmarking must prioritize real-world robustness over synthetic leaderboards.",
+          "citations": [
+            {
+              "paperId": "paper-vaswani-2017",
+              "citeKey": "[Vaswani et al., 2017]",
+              "title": "Attention Is All You Need",
+              "authors": "Vaswani et al. (2017)",
+              "year": 2017,
+              "quoteSnippet": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-devlin-2018",
+              "citeKey": "[Devlin et al., 2018]",
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+              "authors": "Devlin et al. (2018)",
+              "year": 2018,
+              "quoteSnippet": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+              "confidence": 0.95
+            },
+            {
+              "paperId": "paper-brown-2020",
+              "citeKey": "[Brown et al., 2020]",
+              "title": "Language Models are Few-Shot Learners (GPT-3)",
+              "authors": "Brown et al. (2020)",
+              "year": 2020,
+              "quoteSnippet": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+              "confidence": 0.95
+            }
+          ]
+        }
+      ],
+      "synthesisMatrix": [
+        {
+          "paperId": "paper-vaswani-2017",
+          "paperTitle": "Attention Is All You Need",
+          "authors": "Vaswani et al. (2017)",
+          "year": 2017,
+          "objective": "Investigate and formalize Computer Science through Attention Is All You Need.",
+          "methodology": "Large-scale empirical benchmark evaluation & algorithmic innovation",
+          "datasetOrSample": "Standard academic corpora (WMT, ImageNet, GLUE, SQuAD)",
+          "keyFindings": "Introduces the Transformer architecture based entirely on self-attention mechanisms, replacing recurrent networks in sequence transduction.",
+          "limitations": "High training compute demand, vulnerability to distribution shifts, quadratic context scaling.",
+          "gapsIdentified": "Efficient linear-complexity variants, verified safety guarantees, low-resource zero-shot transfer."
+        },
+        {
+          "paperId": "paper-devlin-2018",
+          "paperTitle": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+          "authors": "Devlin et al. (2018)",
+          "year": 2018,
+          "objective": "Investigate and formalize Computer Science through BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.",
+          "methodology": "Large-scale empirical benchmark evaluation & algorithmic innovation",
+          "datasetOrSample": "Standard academic corpora (WMT, ImageNet, GLUE, SQuAD)",
+          "keyFindings": "Introduces BERT, using masked language modeling to pre-train deep bidirectional representations yielding breakthrough NLP benchmark performance.",
+          "limitations": "High training compute demand, vulnerability to distribution shifts, quadratic context scaling.",
+          "gapsIdentified": "Efficient linear-complexity variants, verified safety guarantees, low-resource zero-shot transfer."
+        },
+        {
+          "paperId": "paper-brown-2020",
+          "paperTitle": "Language Models are Few-Shot Learners (GPT-3)",
+          "authors": "Brown et al. (2020)",
+          "year": 2020,
+          "objective": "Investigate and formalize Computer Science through Language Models are Few-Shot Learners (GPT-3).",
+          "methodology": "Large-scale empirical benchmark evaluation & algorithmic innovation",
+          "datasetOrSample": "Standard academic corpora (WMT, ImageNet, GLUE, SQuAD)",
+          "keyFindings": "Demonstrates that 175-billion parameter autoregressive language models achieve strong in-context few-shot learning capabilities without task-specific parameter updating.",
+          "limitations": "High training compute demand, vulnerability to distribution shifts, quadratic context scaling.",
+          "gapsIdentified": "Efficient linear-complexity variants, verified safety guarantees, low-resource zero-shot transfer."
+        }
+      ],
+      "prismaStats": {
+        "identified": 21,
+        "screened": 11,
+        "eligible": 6,
+        "included": 3
+      },
+      "createdAt": "2026-11-13T14:12:00.483Z",
+      "updatedAt": "2026-11-13T14:12:00.483Z"
+    }
+  },
+  "prismaProjects": {}
+}

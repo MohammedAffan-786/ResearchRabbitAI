@@ -1,0 +1,46 @@
+# Re-export all models from backend.app.models for backward compatibility
+from backend.app.models import (
+    User,
+    RefreshToken,
+    Paper,
+    Author,
+    PaperAuthor,
+    Citation,
+    ResearchTopic,
+    PaperTopic,
+    Collection,
+    CollectionPaper,
+    UploadedDocument,
+    DocumentChunk,
+    ResearchSession,
+    ChatMessage,
+    LiteratureReview,
+    PrismaProject,
+    UserActivity,
+    ResearchActivity,
+    BackgroundJob,
+    DocumentJob
+)
+
+__all__ = [
+    "User",
+    "RefreshToken",
+    "Paper",
+    "Author",
+    "PaperAuthor",
+    "Citation",
+    "ResearchTopic",
+    "PaperTopic",
+    "Collection",
+    "CollectionPaper",
+    "UploadedDocument",
+    "DocumentChunk",
+    "ResearchSession",
+    "ChatMessage",
+    "LiteratureReview",
+    "PrismaProject",
+    "UserActivity",
+    "ResearchActivity",
+    "BackgroundJob",
+    "DocumentJob"
+]

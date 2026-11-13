@@ -1,0 +1,26 @@
+{
+  "name": "research-rabbit-ai",
+  "version": "1.0.0",
+  "description": "Production-quality AI-powered research discovery, citation explorer, and systematic literature review platform.",
+  "scripts": {
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:client && npm run build:server",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "start": "cd server && npx tsx src/index.ts"
+  },
+  "keywords": [
+    "academic-search",
+    "research-rabbit",
+    "citation-graph",
+    "literature-review",
+    "rag",
+    "semantic-scholar",
+    "openalex",
+    "arxiv",
+    "prisma"
+  ],
+  "author": "ResearchRabbit AI Team",
+  "license": "MIT"
+}

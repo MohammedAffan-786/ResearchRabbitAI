@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bg-canvas: #fcfcfd;
+    --bg-surface: #ffffff;
+    --bg-subtle: #f8fafc;
+    --border-subtle: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+
+    --border: #e2e8f0;
+    --surface: #ffffff;
+    --canvas: #f8fafc;
+    --muted: #64748b;
+    --foreground: #0f172a;
+  }
+
+  .dark {
+    --bg-canvas: #080c16;
+    --bg-surface: #0e1526;
+    --bg-subtle: #131c31;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+
+    --border: rgba(255, 255, 255, 0.08);
+    --surface: #0e1526;
+    --canvas: #080c16;
+    --muted: #94a3b8;
+    --foreground: #f8fafc;
+  }
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism & Premium SaaS Cards */
+.premium-glass-card {
+  background: rgba(14, 21, 38, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.premium-glass-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(14, 21, 38, 0.7);
+}
+
+/* ReactFlow Custom Clean Node Overrides */
+.react-flow__node,
+.react-flow__node-default {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ReactFlow Crisp Edge Rendering */
+.react-flow__edge-path {
+  stroke-linecap: round;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Graph Canvas styling */
+.graph-canvas {
+  cursor: grab;
+}
+
+.graph-canvas:active {
+  cursor: grabbing;
+}
+
+/* Subtle code typography */
+code, kbd, samp, pre {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}

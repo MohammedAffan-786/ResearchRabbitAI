@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+backend/venv/
+venv/
+env/
+.venv/
+
+# Build outputs
+dist/
+build/
+client/dist/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & vector storage
+qdrant_storage/
+*.sqlite
+*.sqlite3
+*.db
+backend/app.db
+
+# Uploaded test PDFs and intermediate documents
+backend/uploads/
+uploads/
+temp/
+tmp/
+
+# Environment configurations and credentials
+.env
+.env.local
+*.env
+!.env.example
+
+# System & Editor files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,123 @@
+version: "3.9"
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. PostgreSQL Relational Store (PostgreSQL 16)
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: researchrabbit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: research_user
+      POSTGRES_PASSWORD: research_secure_pass_2026
+      POSTGRES_DB: researchrabbit
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U research_user -d researchrabbit"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 2. Qdrant Semantic Vector Database
+  # ----------------------------------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:v1.12.0
+    container_name: researchrabbit-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333" # REST API
+      - "6334:6334" # gRPC API
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:6333/readyz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 3. FastAPI Core API Service
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: researchrabbit-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://research_user:research_secure_pass_2026@postgres:5432/researchrabbit
+      - QDRANT_URL=http://qdrant:6333
+      - LLM_PROVIDER=ollama
+      - EMBEDDING_PROVIDER=ollama
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_CHAT_MODEL=qwen3:4b
+      - OLLAMA_EMBED_MODEL=nomic-embed-text
+      - SECRET_KEY=research-rabbit-super-secret-jwt-signing-key-change-in-prod-2026
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://localhost
+      - UPLOAD_DIR=/app/backend/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/app/backend/uploads
+
+  # ----------------------------------------------------------------------------
+  # 4. Independent Standalone Background Worker
+  # (Deploys independently from the FastAPI API server)
+  # ----------------------------------------------------------------------------
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: researchrabbit-worker
+    restart: unless-stopped
+    command: ["python", "-m", "backend.app.workers.standalone_worker"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://research_user:research_secure_pass_2026@postgres:5432/researchrabbit
+      - QDRANT_URL=http://qdrant:6333
+      - LLM_PROVIDER=ollama
+      - EMBEDDING_PROVIDER=ollama
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_CHAT_MODEL=qwen3:4b
+      - OLLAMA_EMBED_MODEL=nomic-embed-text
+      - WORKER_POLL_INTERVAL=2.0
+      - UPLOAD_DIR=/app/backend/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - uploads_data:/app/backend/uploads
+
+  # ----------------------------------------------------------------------------
+  # 5. React SPA Frontend
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: researchrabbit-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  uploads_data:
