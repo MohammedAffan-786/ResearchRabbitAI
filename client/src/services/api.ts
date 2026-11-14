@@ -577,38 +577,7 @@ export const api = {
     return safeFetchJson(
       `${BASE_URL}/analytics/overview`,
       { headers: getHeaders(false) },
-      () => ({
-        totalPapers: 50,
-        totalCitations: 345000,
-        citationsByYear: [
-          { year: 2018, citations: 18400 },
-          { year: 2019, citations: 42100 },
-          { year: 2020, citations: 78500 },
-          { year: 2021, citations: 125000 },
-          { year: 2022, citations: 198000 },
-          { year: 2023, citations: 265000 },
-          { year: 2024, citations: 345000 }
-        ],
-        fieldsDistribution: [
-          { field: 'Computer Science', count: 42 },
-          { field: 'Artificial Intelligence', count: 36 },
-          { field: 'Natural Language Processing', count: 24 },
-          { field: 'Computer Vision', count: 18 },
-          { field: 'Bioinformatics', count: 12 }
-        ],
-        impactBreakdown: [
-          { category: 'Seminal (>50k citations)', count: 4 },
-          { category: 'High Impact (>10k citations)', count: 8 },
-          { category: 'Notable (>1k citations)', count: 16 },
-          { category: 'Emerging', count: 22 }
-        ],
-        topAuthors: [
-          { name: 'Ashish Vaswani', paperCount: 1, totalCitations: 135400 },
-          { name: 'Jacob Devlin', paperCount: 1, totalCitations: 104200 },
-          { name: 'Tom B. Brown', paperCount: 1, totalCitations: 42100 },
-          { name: 'John Jumper', paperCount: 1, totalCitations: 31200 }
-        ]
-      })
+      () => clientScholarlyEngine.getAnalytics()
     );
   },
 

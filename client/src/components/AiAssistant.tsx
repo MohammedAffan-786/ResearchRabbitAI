@@ -50,9 +50,9 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
       sender: 'ai',
       text: 'Welcome to the Research Intelligence Assistant. I synthesize evidence across multiple peer-reviewed papers with verified citations. Select papers from the left context panel, choose a synthesis mode, and ask your research question.',
       followUps: [
-        'How does self-attention in Transformers compare with recurrent architectures?',
-        'What are the core bottlenecks and limitations of large language models?',
-        'How does Retrieval-Augmented Generation (RAG) mitigate hallucinations?'
+        'What is power electronics and how do wide-bandgap semiconductors improve efficiency?',
+        'How does CRISPR-Cas9 genome editing induce targeted double-strand breaks?',
+        'How does self-attention in Transformers compare with recurrent architectures?'
       ],
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
@@ -71,11 +71,6 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
   const handleSend = async (questionToSend?: string) => {
     const q = (questionToSend || inputQuestion).trim();
     if (!q || loading) return;
-
-    if (targetPapers.length === 0) {
-      alert('Please select at least one paper in the Synthesis Context pane to query.');
-      return;
-    }
 
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -365,15 +360,14 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
                 placeholder={
                   targetPapers.length > 0
                     ? `Ask a question across ${targetPapers.length} selected paper(s)...`
-                    : 'Select at least 1 paper in the left context pane to ask questions...'
+                    : 'Ask any research question (e.g. "What is power electronics", "Explain CRISPR-Cas9")...'
                 }
-                disabled={targetPapers.length === 0}
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500"
               />
 
               <button
                 type="submit"
-                disabled={loading || !inputQuestion.trim() || targetPapers.length === 0}
+                disabled={loading || !inputQuestion.trim()}
                 className="flex items-center justify-center px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition-all shadow-xs cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Send className="w-3.5 h-3.5" />

@@ -18,12 +18,12 @@ import { useResearchStore } from '../../store/useResearchStore';
 
 export interface AnalyticsDashboardProps {
   analyticsData: {
-    citationsByYear: Array<{ year: number; citations: number; paperCount: number }>;
-    fieldsDistribution: Array<{ field: string; count: number }>;
-    impactBreakdown: Array<{ tier: string; count: number }>;
-    topAuthors: Array<{ author: string; citations: number; papers: number }>;
-    totalPapers: number;
-    totalCitations: number;
+    citationsByYear?: Array<{ year: number; citations?: number; citationCount?: number; paperCount?: number; papers?: number }>;
+    fieldsDistribution?: Array<{ field?: string; name?: string; count?: number }>;
+    impactBreakdown?: Array<{ tier?: string; category?: string; count?: number }>;
+    topAuthors?: Array<{ author?: string; name?: string; citations?: number; totalCitations?: number; papers?: number; paperCount?: number }>;
+    totalPapers?: number;
+    totalCitations?: number;
   };
 }
 
@@ -33,14 +33,33 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
   const { theme } = useResearchStore();
   const isDark = theme === 'dark';
 
-  const {
-    citationsByYear = [],
-    fieldsDistribution = [],
-    impactBreakdown = [],
-    topAuthors = [],
-    totalPapers = 0,
-    totalCitations = 0
-  } = analyticsData || {};
+  const raw = analyticsData || ({} as any);
+
+  // Defensive mappings to guarantee zero crashes regardless of backend/fallback schema
+  const totalPapers = Number(raw.totalPapers ?? 0);
+  const totalCitations = Number(raw.totalCitations ?? 0);
+
+  const safeCitationsByYear = (raw.citationsByYear || []).map((item: any) => ({
+    year: Number(item.year || 2024),
+    citations: Number(item.citations ?? item.citationCount ?? 0),
+    paperCount: Number(item.paperCount ?? item.papers ?? 1)
+  }));
+
+  const safeFieldsDistribution = (raw.fieldsDistribution || []).map((item: any) => ({
+    field: String(item.field || item.name || 'General'),
+    count: Number(item.count || 0)
+  }));
+
+  const safeImpactBreakdown = (raw.impactBreakdown || []).map((item: any) => ({
+    tier: String(item.tier || item.category || 'General'),
+    count: Number(item.count || 0)
+  }));
+
+  const safeTopAuthors = (raw.topAuthors || []).map((item: any) => ({
+    author: String(item.author || item.name || 'Unknown Author'),
+    citations: Number(item.citations ?? item.totalCitations ?? 0),
+    papers: Number(item.papers ?? item.paperCount ?? 1)
+  }));
 
   const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9';
   const axisColor = isDark ? '#94a3b8' : '#64748b';
@@ -77,7 +96,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
             <Flame className="w-3.5 h-3.5 text-amber-500" />
             <span>Total Citations</span>
           </span>
-          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{totalCitations.toLocaleString()}</p>
+          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{(totalCitations || 0).toLocaleString()}</p>
           <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">Verified Impact</span>
         </div>
 
@@ -86,7 +105,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
             <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
             <span>Active Disciplines</span>
           </span>
-          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{fieldsDistribution.length}</p>
+          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{safeFieldsDistribution.length}</p>
           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Fields of Study</span>
         </div>
 
@@ -95,7 +114,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
             <Award className="w-3.5 h-3.5 text-purple-500" />
             <span>Seminal Authors</span>
           </span>
-          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{topAuthors.length}</p>
+          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100 font-mono">{safeTopAuthors.length}</p>
           <span className="text-[10px] text-purple-600 dark:text-purple-400 font-medium">Tracked Researchers</span>
         </div>
       </div>
@@ -114,21 +133,27 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           </div>
 
           <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={citationsByYear} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="citationGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                <XAxis dataKey="year" stroke={axisColor} fontSize={11} />
-                <YAxis stroke={axisColor} fontSize={11} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Area type="monotone" dataKey="citations" stroke="#6366f1" strokeWidth={2} fillOpacity={1} fill="url(#citationGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
+            {safeCitationsByYear.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={safeCitationsByYear} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="citationGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                  <XAxis dataKey="year" stroke={axisColor} fontSize={11} />
+                  <YAxis stroke={axisColor} fontSize={11} />
+                  <Tooltip contentStyle={tooltipStyle} />
+                  <Area type="monotone" dataKey="citations" stroke="#6366f1" strokeWidth={2} fillOpacity={1} fill="url(#citationGradient)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                No annual citation trajectory available.
+              </div>
+            )}
           </div>
         </div>
 
@@ -143,15 +168,21 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           </div>
 
           <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={fieldsDistribution} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                <XAxis dataKey="field" stroke={axisColor} fontSize={10} interval={0} angle={-15} textAnchor="end" height={40} />
-                <YAxis stroke={axisColor} fontSize={11} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="count" fill="#6366f1" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            {safeFieldsDistribution.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={safeFieldsDistribution} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                  <XAxis dataKey="field" stroke={axisColor} fontSize={10} interval={0} angle={-15} textAnchor="end" height={40} />
+                  <YAxis stroke={axisColor} fontSize={11} />
+                  <Tooltip contentStyle={tooltipStyle} />
+                  <Bar dataKey="count" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                No fields of study recorded yet.
+              </div>
+            )}
           </div>
         </div>
 
@@ -166,27 +197,33 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           </div>
 
           <div className="h-64 w-full flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={impactBreakdown}
-                  dataKey="count"
-                  nameKey="tier"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={88}
-                  paddingAngle={3}
-                  label={((props: any) => `${props.tier}: ${props.count}`) as any}
-                  fontSize={10}
-                >
-                  {impactBreakdown.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={tooltipStyle} />
-              </PieChart>
-            </ResponsiveContainer>
+            {safeImpactBreakdown.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={safeImpactBreakdown}
+                    dataKey="count"
+                    nameKey="tier"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={88}
+                    paddingAngle={3}
+                    label={((props: any) => `${props.tier || 'Tier'}: ${props.count || 0}`) as any}
+                    fontSize={10}
+                  >
+                    {safeImpactBreakdown.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={tooltipStyle} />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                No citation impact tiers available.
+              </div>
+            )}
           </div>
         </div>
 
@@ -210,20 +247,28 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {topAuthors.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <td className="py-2 font-medium text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                      <span className="w-4 h-4 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono text-[10px] flex items-center justify-center font-bold">
-                        {idx + 1}
-                      </span>
-                      <span>{item.author}</span>
-                    </td>
-                    <td className="py-2 text-center font-normal text-slate-500 dark:text-slate-400">{item.papers}</td>
-                    <td className="py-2 text-right font-mono font-medium text-indigo-600 dark:text-indigo-400">
-                      {item.citations.toLocaleString()}
+                {safeTopAuthors.length > 0 ? (
+                  safeTopAuthors.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                      <td className="py-2 font-medium text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <span className="w-4 h-4 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono text-[10px] flex items-center justify-center font-bold">
+                          {idx + 1}
+                        </span>
+                        <span>{item.author}</span>
+                      </td>
+                      <td className="py-2 text-center font-normal text-slate-500 dark:text-slate-400">{item.papers}</td>
+                      <td className="py-2 text-right font-mono font-medium text-indigo-600 dark:text-indigo-400">
+                        {(item.citations || 0).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="py-6 text-center text-slate-400 italic">
+                      No authors tracked in the current catalog.
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

@@ -15,6 +15,7 @@ import { ExportModal } from './components/ExportModal';
 import { PdfUploadModal } from './components/papers/PdfUploadModal';
 import { PaperDetailModal } from './components/papers/PaperDetailModal';
 import { AuthModal } from './components/AuthModal';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { api } from './services/api';
 import { useResearchStore } from './store/useResearchStore';
 import { Paper, SearchFilters, SearchResult } from '../../shared/types';
@@ -289,7 +290,8 @@ export const App: React.FC = () => {
 
         {/* Dynamic Page Router - Only the right white page scrolls */}
         <main className={`flex-1 min-h-0 ${activeTab === 'graph' ? 'h-full overflow-hidden' : 'overflow-y-auto pb-24'}`}>
-          {activeTab === 'dashboard' && (
+          <ErrorBoundary>
+            {activeTab === 'dashboard' && (
             <Dashboard
               onOpenPaper={(paper) => setInspectedPaper(paper)}
               onOpenUpload={() => setIsUploadOpen(true)}
@@ -426,6 +428,7 @@ export const App: React.FC = () => {
           )}
 
           {activeTab === 'settings' && <Settings />}
+          </ErrorBoundary>
         </main>
       </div>
 

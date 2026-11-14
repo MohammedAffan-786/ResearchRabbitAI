@@ -4,3 +4,4 @@ export * from './EmptyState';
 export * from './ErrorState';
 export * from './LoadingState';
 export * from './Modal';
+export * from './ErrorBoundary';
