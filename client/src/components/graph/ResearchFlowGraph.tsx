@@ -45,8 +45,8 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
   viewMode,
   onViewModeChange
 }) => {
-  const { theme } = useResearchStore();
-  const isDark = theme === 'dark';
+  // Always maintain deep cosmic dark background matching Force Network graph
+  const isDark = true;
   const [edgeFilter, setEdgeFilter] = useState<'all' | 'cites' | 'semantic' | 'author'>('all');
   const [searchFilter, setSearchFilter] = useState('');
 
@@ -102,9 +102,9 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
           d.raw.type === 'topic' || 
           d.raw.nodeType === 'topic'
         );
-        return isAuthorOrTopic ? 130 : 210;
+        return isAuthorOrTopic ? 140 : 235;
       }))
-      .force('link', d3.forceLink(simLinks).id((d: any) => d.id).distance(280).strength(0.25))
+      .force('link', d3.forceLink(simLinks).id((d: any) => d.id).distance(300).strength(0.25))
       .stop();
 
     // Run static ticks to settle layout
@@ -175,45 +175,41 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
         position: { x, y },
         data: {
           label: (
-            <div className={`p-3.5 rounded-xl backdrop-blur-md text-xs transition-all duration-150 w-[260px] shadow-md select-none ${
-              isDark 
-                ? 'bg-slate-900/95 text-slate-100 border border-slate-700/80 shadow-black/40' 
-                : 'bg-white/95 text-slate-900 border border-slate-300 shadow-slate-200/60'
-            } ${
-              isSelected ? 'ring-2 ring-primary-500 border-primary-500' : 'hover:border-primary-400'
+            <div className={`p-4 rounded-2xl backdrop-blur-md transition-all duration-150 w-[290px] select-none bg-[#181d2a]/95 text-slate-100 border border-slate-700/80 shadow-2xl shadow-black/60 ${
+              isSelected ? 'ring-2 ring-emerald-500 border-emerald-500 shadow-emerald-950/40' : 'hover:border-slate-500/90 hover:shadow-2xl'
             }`}>
-              <div className="flex items-center justify-between gap-1 mb-2">
+              <div className="flex items-center justify-between gap-1 mb-2.5">
                 <span 
-                  className="px-2 py-0.5 rounded text-[10px] font-bold text-white font-mono tracking-tight" 
+                  className="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-white font-mono tracking-tight shadow-xs" 
                   style={{ backgroundColor: color }}
                 >
                   {n.year || '2023'}
                 </span>
-                <span className="text-[11px] text-amber-500 font-bold flex items-center gap-0.5">
-                  <Flame className="w-3 h-3 fill-amber-500" />
+                <span className="text-xs text-amber-400 font-bold flex items-center gap-1">
+                  <Flame className="w-3.5 h-3.5 fill-amber-400" />
                   {(n.citations || 0).toLocaleString()}
                 </span>
               </div>
               <p 
-                className={`font-semibold line-clamp-2 leading-snug text-xs ${isDark ? 'text-slate-100' : 'text-slate-900'}`} 
+                className="font-semibold line-clamp-2 leading-snug text-[13px] text-slate-100" 
                 title={paperTitle}
               >
                 {paperTitle}
               </p>
-              <p className={`text-[11px] truncate mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              <p className="text-xs truncate mt-1.5 text-slate-400 font-medium">
                 {authorList}
               </p>
               
-              <div className={`flex items-center gap-1.5 mt-2.5 pt-2 border-t ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+              <div className="flex items-center gap-2 mt-3 pt-2.5 border-t border-slate-700/60">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onExpandNode(n.id);
                   }}
-                  className="px-2 py-1 rounded-md bg-primary-600 hover:bg-primary-500 text-white font-medium text-[10px] flex items-center gap-1 cursor-pointer transition shadow-xs"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer transition shadow-xs"
                   title="Expand citations to discover related papers"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3.5 h-3.5" />
                   <span>Expand</span>
                 </button>
                 <button
@@ -221,14 +217,10 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
                     e.stopPropagation();
                     onSelectPaperForAi(n.id);
                   }}
-                  className={`px-2 py-1 rounded-md text-[10px] font-medium flex items-center gap-1 cursor-pointer transition ${
-                    isDark 
-                      ? 'bg-slate-800 hover:bg-slate-700 text-slate-200' 
-                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                  }`}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700/60"
                   title="Send to AI Assistant basket"
                 >
-                  <Sparkles className="w-3 h-3 text-primary-500" />
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Ask AI</span>
                 </button>
               </div>
@@ -334,23 +326,17 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
   }, [initialNodes, initialEdges, setNodes, setEdges]);
 
   return (
-    <div className={`w-full h-[calc(100vh-3.5rem)] relative transition-colors duration-150 ${
-      isDark ? 'bg-[#090d16]' : 'bg-[#fcfcfd]'
-    }`}>
+    <div className="w-full h-full relative overflow-hidden bg-radial from-slate-800/40 via-slate-900 to-slate-950 text-slate-100">
       
       {/* Floating Header Dock (Filter Bar, Search & Integrated View Mode Switcher) */}
-      <div className={`absolute top-4 left-4 right-4 z-10 backdrop-blur-md px-3.5 py-2 rounded-xl border text-xs flex flex-wrap items-center justify-between gap-2.5 shadow-sm transition ${
-        isDark 
-          ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
-          : 'bg-white/95 border-slate-200 text-slate-700 shadow-slate-200/60'
-      }`}>
+      <div className="absolute top-4 left-4 right-4 z-10 backdrop-blur-md px-3.5 py-2 rounded-xl border text-xs flex flex-wrap items-center justify-between gap-2.5 shadow-lg bg-slate-800/90 border-slate-700/80 text-slate-200 transition">
         {/* Left: Brand / Title, Filters, and Search */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-semibold flex items-center gap-1.5 text-[var(--foreground)] shrink-0">
-            <Network className="w-4 h-4 text-primary-500" />
+          <span className="font-semibold flex items-center gap-1.5 text-slate-100 shrink-0">
+            <Network className="w-4 h-4 text-emerald-400" />
             <span>Citation Network</span>
           </span>
-          <span className="text-[var(--muted)] hidden sm:inline">•</span>
+          <span className="text-slate-600 hidden sm:inline">•</span>
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center gap-1">
@@ -358,8 +344,8 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               onClick={() => setEdgeFilter('all')}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition cursor-pointer ${
                 edgeFilter === 'all'
-                  ? 'bg-primary-600 text-white font-semibold shadow-xs'
-                  : 'hover:bg-[var(--canvas)] text-[var(--muted)]'
+                  ? 'bg-emerald-600 text-white font-semibold shadow-xs'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
               }`}
             >
               All Edges ({graphData.links?.length || 0})
@@ -369,7 +355,7 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition flex items-center gap-1 cursor-pointer ${
                 edgeFilter === 'cites'
                   ? 'bg-blue-600 text-white font-semibold shadow-xs'
-                  : 'hover:bg-[var(--canvas)] text-[var(--muted)]'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
               }`}
             >
               <ShieldCheck className="w-3 h-3 text-blue-300" />
@@ -380,7 +366,7 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition cursor-pointer ${
                 edgeFilter === 'semantic'
                   ? 'bg-purple-600 text-white font-semibold shadow-xs'
-                  : 'hover:bg-[var(--canvas)] text-[var(--muted)]'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
               }`}
             >
               Semantic Clusters
@@ -390,7 +376,7 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition cursor-pointer ${
                 edgeFilter === 'author'
                   ? 'bg-emerald-600 text-white font-semibold shadow-xs'
-                  : 'hover:bg-[var(--canvas)] text-[var(--muted)]'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
               }`}
             >
               Co-Authors
@@ -404,20 +390,20 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               placeholder="Filter nodes..."
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
-              className="px-2.5 py-1 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-primary-500 w-28 sm:w-36 transition"
+              className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-700 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 w-28 sm:w-36 transition"
             />
           </div>
         </div>
 
         {/* Right: Integrated View Switcher */}
         {onViewModeChange && (
-          <div className="flex items-center gap-1 bg-[var(--canvas)] border border-[var(--border)] rounded-lg p-0.5 shrink-0 ml-auto">
+          <div className="flex items-center gap-1 bg-slate-900/80 border border-slate-700/80 rounded-lg p-0.5 shrink-0 ml-auto">
             <button
               onClick={() => onViewModeChange('flow')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer ${
                 viewMode === 'flow'
-                  ? 'bg-primary-600 text-white shadow-xs'
-                  : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
               }`}
               title="Lineage Flow Cards view"
             >
@@ -428,8 +414,8 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
               onClick={() => onViewModeChange('network')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer ${
                 viewMode === 'network'
-                  ? 'bg-primary-600 text-white shadow-xs'
-                  : 'text-[var(--muted)] hover:text-[var(--foreground)]'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
               }`}
               title="D3 Force-Directed Network Graph"
             >
@@ -440,26 +426,24 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
         )}
       </div>
 
-      {/* Relationship Legend (Bottom Right Dock) */}
-      <div className={`absolute bottom-4 right-4 z-10 backdrop-blur-md p-3.5 rounded-xl border text-xs shadow-sm space-y-2 ${
-        isDark ? 'bg-slate-900/90 border-slate-800 text-slate-300' : 'bg-white/90 border-slate-200 text-slate-700'
-      }`}>
-        <p className="font-semibold text-[11px] uppercase tracking-wider text-[var(--muted)] flex items-center gap-1.5">
-          <Info className="w-3 h-3" />
+      {/* Relationship Legend (Bottom Right Dock - Elevated & Enlarged) */}
+      <div className="absolute bottom-10 right-6 z-20 backdrop-blur-md p-4 rounded-2xl border border-slate-700/90 shadow-2xl space-y-2.5 bg-slate-800/95 text-slate-100 min-w-[280px] select-none">
+        <p className="font-bold text-xs uppercase tracking-wider text-slate-300 flex items-center gap-2 border-b border-slate-700/60 pb-2">
+          <Info className="w-4 h-4 text-emerald-400" />
           <span>Relationship Legend</span>
         </p>
-        <div className="space-y-1.5 text-[11px]">
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-0.5 bg-blue-500 shrink-0" />
-            <span>Solid Blue: Verified Direct Citation</span>
+        <div className="space-y-2 text-xs font-medium">
+          <div className="flex items-center gap-2.5">
+            <span className="w-6 h-1 rounded-full bg-blue-400 shrink-0 shadow-sm" />
+            <span className="text-slate-200">Solid Blue: Verified Direct Citation</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-0.5 border-t-2 border-dashed border-purple-500 shrink-0" />
-            <span>Dashed Purple: Semantic Similarity</span>
+          <div className="flex items-center gap-2.5">
+            <span className="w-6 h-1 border-t-2 border-dashed border-purple-400 shrink-0" />
+            <span className="text-slate-200">Dashed Purple: Semantic Similarity</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-0.5 bg-emerald-500 shrink-0" />
-            <span>Solid Green: Shared Authorship</span>
+          <div className="flex items-center gap-2.5">
+            <span className="w-6 h-1 rounded-full bg-emerald-400 shrink-0 shadow-sm" />
+            <span className="text-slate-200">Solid Green: Shared Authorship</span>
           </div>
         </div>
       </div>
@@ -475,23 +459,19 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
       >
         <Background 
           variant={BackgroundVariant.Dots} 
-          gap={20} 
-          size={1} 
-          color={isDark ? '#1e293b' : '#cbd5e1'} 
+          gap={22} 
+          size={1.2} 
+          color="#334155" 
         />
         <Controls 
-          className={`rounded-xl! border! shadow-xs! ${
-            isDark 
-              ? 'bg-slate-900! border-slate-800! fill-slate-300!' 
-              : 'bg-white! border-slate-200! fill-slate-600!'
-          }`} 
+          position="bottom-left"
+          style={{ bottom: '2.5rem', left: '1.5rem' }}
+          className="rounded-2xl! border! shadow-2xl! bg-slate-800/95! border-slate-700/80! fill-slate-300! text-slate-300!" 
         />
         <MiniMap
-          nodeColor={isDark ? '#6366f1' : '#4f46e5'}
-          maskColor={isDark ? 'rgba(9, 13, 22, 0.75)' : 'rgba(248, 250, 252, 0.75)'}
-          className={`rounded-xl! border! ${
-            isDark ? 'bg-slate-900! border-slate-800!' : 'bg-white! border-slate-200!'
-          }`}
+          nodeColor="#6366f1"
+          maskColor="rgba(15, 23, 42, 0.75)"
+          className="rounded-xl! border! bg-slate-900/90! border-slate-700/80!"
         />
       </ReactFlow>
 

@@ -19,27 +19,27 @@ export const CitationTrendsChart: React.FC<CitationTrendsChartProps> = ({ data }
   const { theme } = useResearchStore();
   const isDark = theme === 'dark';
 
-  const gridColor = isDark ? '#1e293b' : '#f1f5f9';
-  const axisColor = isDark ? '#64748b' : '#94a3b8';
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9';
+  const axisColor = isDark ? '#94a3b8' : '#64748b';
   const tooltipStyle = isDark
     ? {
-        backgroundColor: '#090d16',
-        borderColor: '#1e293b',
+        backgroundColor: '#171c28',
+        borderColor: 'rgba(255, 255, 255, 0.12)',
         borderRadius: '10px',
-        color: '#f8fafc',
+        color: '#f1f5f9',
         fontSize: '11px',
       }
     : {
         backgroundColor: '#ffffff',
         borderColor: '#e2e8f0',
         borderRadius: '10px',
-        color: '#0f172a',
+        color: '#1e293b',
         fontSize: '11px',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
       };
 
   return (
-    <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+    <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />

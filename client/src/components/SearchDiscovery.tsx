@@ -447,7 +447,11 @@ export const SearchDiscovery: React.FC<SearchDiscoveryProps> = ({
                       {/* Add to Collection Dropdown */}
                       <div className="relative">
                         <button
-                          onClick={() => setActiveCollectionDropdown(activeCollectionDropdown === paper.id ? null : paper.id)}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveCollectionDropdown(activeCollectionDropdown === paper.id ? null : paper.id);
+                          }}
                           className="flex items-center gap-1.5 px-2.5 py-1.2 rounded-lg border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium text-xs transition-colors cursor-pointer"
                         >
                           <FolderPlus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
@@ -456,22 +460,27 @@ export const SearchDiscovery: React.FC<SearchDiscoveryProps> = ({
                         </button>
 
                         {activeCollectionDropdown === paper.id && (
-                          <div className="absolute left-0 bottom-full mb-1 w-52 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg p-1.5 z-20 space-y-1 animate-in fade-in">
-                            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-2 py-1">
+                          <div 
+                            onClick={(e) => e.stopPropagation()}
+                            className="absolute left-0 bottom-full mb-1 w-56 max-h-60 overflow-y-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl p-1.5 z-50 space-y-1 animate-in fade-in"
+                          >
+                            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-2 py-1 sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700/60 pb-1">
                               Select Collection
                             </div>
                             {collections.map(col => (
                               <button
                                 key={col.id}
-                                onClick={async () => {
+                                type="button"
+                                onClick={async (e) => {
+                                  e.stopPropagation();
                                   await onAddToCollection(col.id, paper.id);
                                   setActiveCollectionDropdown(null);
                                 }}
                                 className="w-full text-left px-2 py-1.5 rounded-lg text-xs hover:bg-slate-100 dark:hover:bg-slate-700/80 flex items-center justify-between text-slate-700 dark:text-slate-300 cursor-pointer"
                               >
                                 <span className="truncate">{col.name}</span>
-                                {col.paperIds.includes(paper.id) && (
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                                {col.paperIds?.includes(paper.id) && (
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                                 )}
                               </button>
                             ))}

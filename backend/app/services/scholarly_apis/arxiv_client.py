@@ -86,8 +86,8 @@ class ArxivProvider(ScholarlyProvider):
         if not clean_query:
             return []
 
-        url = f"http://export.arxiv.org/api/query?search_query=all:{clean_query}&start=0&max_results={limit}&sortBy=relevance&sortOrder=descending"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        url = f"https://export.arxiv.org/api/query?search_query=all:{clean_query}&start=0&max_results={limit}&sortBy=relevance&sortOrder=descending"
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers={"User-Agent": f"ResearchRabbitAI/{settings.VERSION}"})
                 if resp.status_code == 429:

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paper, Collection } from '../../../../shared/types';
 import { PaperCard } from '../papers/PaperCard';
 import { SkeletonCardList } from '../common/LoadingState';
 import { EmptyState } from '../common/EmptyState';
-import { Search, Zap, ShieldCheck } from 'lucide-react';
+import { Search, Zap, ShieldCheck, LayoutGrid, List, CheckSquare } from 'lucide-react';
 
 interface SearchResultsListProps {
   papers: Paper[];
@@ -42,6 +42,8 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   onUpdatePaperRating,
   onSelectAll,
 }) => {
+  const [viewMode, setViewMode] = useState<'cards' | 'compact'>('cards');
+
   if (loading) {
     return <SkeletonCardList count={4} />;
   }
@@ -57,41 +59,76 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   }
 
   return (
-    <div className="space-y-3.5">
-      {/* Results Header Count, Cache Hit, & Batch Selection */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400 px-1">
-        <div className="flex items-center gap-2">
-          <span>
-            Showing <strong className="font-semibold text-slate-800 dark:text-slate-200">{papers.length}</strong>
+    <div className="space-y-4">
+      {/* Results Header Count, Cache Hit, View Switcher & Batch Selection */}
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 p-2 sm:px-3 bg-white/70 dark:bg-[#161b26]/70 backdrop-blur-md rounded-xl border border-slate-200/80 dark:border-white/10 shadow-2xs">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-medium text-slate-700 dark:text-slate-300">
+            Showing <strong className="font-bold text-slate-900 dark:text-white">{papers.length}</strong>
             {total && total > papers.length ? ` of ${total.toLocaleString()}` : ''} verified scholarly papers
           </span>
+
           {typeof queryTimeMs === 'number' && (
-            <span className="text-[11px] text-slate-400">({queryTimeMs}ms)</span>
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>({queryTimeMs}ms)</span>
+            </span>
           )}
+
           {cached && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
               <Zap className="w-2.5 h-2.5" />
               Cached
             </span>
           )}
         </div>
 
-        {onSelectAll && papers.length > 0 && (
-          <button
-            onClick={onSelectAll}
-            className="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors cursor-pointer"
-          >
-            Select all on this page
-          </button>
-        )}
+        <div className="flex items-center gap-2 ml-auto">
+          {/* View Mode Switcher */}
+          <div className="flex items-center bg-slate-100 dark:bg-[#1c2230] p-0.5 rounded-lg border border-slate-200/60 dark:border-white/5">
+            <button
+              onClick={() => setViewMode('cards')}
+              className={`p-1 rounded-md transition cursor-pointer ${
+                viewMode === 'cards'
+                  ? 'bg-white dark:bg-[#252e42] text-indigo-600 dark:text-indigo-400 shadow-2xs'
+                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+              }`}
+              title="Detailed Cards View"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => setViewMode('compact')}
+              className={`p-1 rounded-md transition cursor-pointer ${
+                viewMode === 'compact'
+                  ? 'bg-white dark:bg-[#252e42] text-indigo-600 dark:text-indigo-400 shadow-2xs'
+                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+              }`}
+              title="Compact List View"
+            >
+              <List className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {onSelectAll && papers.length > 0 && (
+            <button
+              onClick={onSelectAll}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#1c2230] hover:bg-slate-200 dark:hover:bg-[#242c3e] text-slate-700 dark:text-slate-300 font-medium transition cursor-pointer text-xs"
+            >
+              <CheckSquare className="w-3 h-3 text-indigo-500" />
+              <span>Select all on this page</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* List of Paper Cards */}
-      <div className="space-y-3">
+      <div className={viewMode === 'cards' ? 'space-y-3.5' : 'space-y-2'}>
         {papers.map((paper) => (
           <PaperCard
             key={paper.id}
             paper={paper}
+            compact={viewMode === 'compact'}
             isSelected={selectedPaperIds.includes(paper.id)}
             onToggleSelect={onToggleSelectPaper}
             onInspect={onInspectPaper}
@@ -107,8 +144,8 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
 
       {/* Attribution & Legal Terms Compliance Footer */}
       {attributions && attributions.length > 0 && (
-        <div className="mt-4 p-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-900/40 border border-slate-200/70 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1.5 animate-in fade-in">
-          <div className="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+        <div className="mt-5 p-4 rounded-xl bg-slate-50/80 dark:bg-[#141824]/60 border border-slate-200/70 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400 space-y-1.5 animate-in fade-in">
+          <div className="flex items-center gap-1.5 font-semibold text-slate-700 dark:text-slate-300">
             <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" />
             <span>Academic Source Attribution & Terms of Service</span>
           </div>

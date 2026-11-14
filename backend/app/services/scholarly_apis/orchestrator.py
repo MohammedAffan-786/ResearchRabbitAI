@@ -37,13 +37,16 @@ class ScholarlySearchOrchestrator:
     - Strict authentic scholarly evidence policy (no silent fake results).
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+    ):
         self._providers: Dict[str, ScholarlyProvider] = {
             "openalex": openalex_provider,
             "crossref": crossref_provider,
             "semantic_scholar": semantic_scholar_provider,
             "arxiv": arxiv_provider,
         }
+        self._provider_cooldowns: Dict[str, float] = {}
 
     def get_provider(self, provider_id: str) -> Optional[ScholarlyProvider]:
         return self._providers.get(provider_id.lower())
@@ -98,6 +101,9 @@ class ScholarlySearchOrchestrator:
                 return cached_res
 
         # Select target providers
+        import time
+        now = time.time()
+
         targets: List[ScholarlyProvider] = []
         if provider_name and provider_name != "all":
             p = self.get_provider(provider_name)
@@ -105,19 +111,32 @@ class ScholarlySearchOrchestrator:
                 raise ValueError(f"Unknown scholarly provider '{provider_name}'. Supported: {list(self._providers.keys())}")
             targets = [p]
         else:
-            # Default order: OpenAlex, Crossref, Semantic Scholar, arXiv
-            targets = [
+            # Default order: OpenAlex, Crossref, Semantic Scholar, arXiv (filtering out rate-limited providers)
+            all_candidates = [
                 openalex_provider,
                 crossref_provider,
                 semantic_scholar_provider,
                 arxiv_provider,
             ]
+            targets = [p for p in all_candidates if now >= self._provider_cooldowns.get(p.provider_id, 0.0)]
+            if not targets:
+                targets = [openalex_provider, crossref_provider]
 
-        # Execute searches concurrently
+        # Execute searches concurrently with timeout protection
         async def fetch_from_provider(provider: ScholarlyProvider) -> Tuple[str, Any]:
             try:
-                res = await provider.search(clean_q, limit=limit_per_provider, filters=filters)
+                res = await asyncio.wait_for(
+                    provider.search(clean_q, limit=limit_per_provider, filters=filters),
+                    timeout=3.5
+                )
                 return provider.provider_id, res
+            except RateLimitExceededError as rle:
+                logger.warning(f"Provider {provider.provider_id} rate-limited. Setting 60s cooldown.")
+                self._provider_cooldowns[provider.provider_id] = time.time() + 60.0
+                return provider.provider_id, rle
+            except asyncio.TimeoutError:
+                logger.warning(f"Provider {provider.provider_id} timed out after 3.5s.")
+                return provider.provider_id, ProviderUnavailableError(provider.provider_id, "Fast query timeout")
             except Exception as e:
                 logger.warning(f"Provider {provider.provider_id} query failed: {e}")
                 return provider.provider_id, e

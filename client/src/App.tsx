@@ -33,21 +33,18 @@ export const App: React.FC = () => {
     setSelectedCollectionId,
     toastMessage,
     showToast,
-    theme,
   } = useResearchStore();
 
-  // Sync theme class on <html> and <body>
+  // Ensure light mode across <html> and <body>
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.body.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.body.classList.remove('dark');
-      }
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      try {
+        localStorage.removeItem('rr_theme');
+      } catch (e) {}
     }
-  }, [theme]);
+  }, []);
 
   // Search state
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
@@ -251,7 +248,7 @@ export const App: React.FC = () => {
   const selectedPapers = papers.filter((p) => selectedPaperIds.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-[#fcfcfd] dark:bg-[#090d16] text-slate-900 dark:text-slate-100 flex font-sans transition-colors duration-150">
+    <div className="h-screen w-screen overflow-hidden bg-[#f1f4f9] dark:bg-[#121620] text-slate-800 dark:text-slate-100 flex font-sans transition-colors duration-200">
       {/* Toast Notification (Linear Style) */}
       {toastMessage && (
         <div className="fixed top-16 right-6 z-50 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-medium px-3.5 py-2 rounded-xl shadow-lg border border-slate-700/80 dark:border-slate-200 animate-in fade-in slide-in-from-top-2">
@@ -259,7 +256,7 @@ export const App: React.FC = () => {
         </div>
       )}
 
-      {/* Responsive Collapsible Sidebar */}
+      {/* Responsive Collapsible Sidebar - Fixed & Sticky to 100vh */}
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -267,23 +264,31 @@ export const App: React.FC = () => {
         onOpenExport={() => setIsExportOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
         totalLibraryCount={papers.length}
+        collections={collections}
+        onSelectCollection={(colId) => {
+          setSelectedCollectionId(colId);
+          setActiveTab('library');
+        }}
+        onCreateCollection={() => setActiveTab('library')}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Navbar */}
-        <Navbar
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          selectedPaperIds={selectedPaperIds}
-          onOpenUpload={() => setIsUploadOpen(true)}
-          onOpenExport={() => setIsExportOpen(true)}
-          onOpenAuth={() => setIsAuthOpen(true)}
-          totalLibraryCount={papers.length}
-        />
+      {/* Main Content Area - Full height with internal scroll for right page */}
+      <div className="flex-1 flex flex-col h-screen max-h-screen min-w-0 overflow-hidden">
+        {/* Top Navbar - Pinned header */}
+        <div className="shrink-0 z-20">
+          <Navbar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            selectedPaperIds={selectedPaperIds}
+            onOpenUpload={() => setIsUploadOpen(true)}
+            onOpenExport={() => setIsExportOpen(true)}
+            onOpenAuth={() => setIsAuthOpen(true)}
+            totalLibraryCount={papers.length}
+          />
+        </div>
 
-        {/* Dynamic Page Router */}
-        <main className="flex-1 pb-24 overflow-y-auto">
+        {/* Dynamic Page Router - Only the right white page scrolls */}
+        <main className={`flex-1 min-h-0 ${activeTab === 'graph' ? 'h-full overflow-hidden' : 'overflow-y-auto pb-24'}`}>
           {activeTab === 'dashboard' && (
             <Dashboard
               onOpenPaper={(paper) => setInspectedPaper(paper)}

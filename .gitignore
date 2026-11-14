@@ -24,7 +24,12 @@ qdrant_storage/
 *.sqlite
 *.sqlite3
 *.db
+*.db-shm
+*.db-wal
 backend/app.db
+backend/*.db-shm
+backend/*.db-wal
+scratch/
 
 # Uploaded test PDFs and intermediate documents
 backend/uploads/

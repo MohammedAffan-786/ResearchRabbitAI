@@ -24,7 +24,7 @@ export const SelectionBasketBar: React.FC<SelectionBasketBarProps> = ({
   if (selectedPapers.length === 0) return null;
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-3xl bg-slate-900/95 dark:bg-slate-950/95 text-white backdrop-blur-md rounded-xl p-2.5 shadow-xl border border-slate-700/60 dark:border-slate-800 transition-all animate-in fade-in slide-in-from-bottom-2">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-3xl bg-slate-900/95 dark:bg-[#1c2230]/95 text-slate-100 backdrop-blur-xl rounded-xl p-2.5 shadow-xl border border-slate-700/60 dark:border-white/10 transition-all animate-in fade-in slide-in-from-bottom-2">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5">
         {/* Left: Count & Chips */}
         <div className="flex items-center gap-2 overflow-x-auto max-w-full sm:max-w-xs w-full scrollbar-none">
@@ -37,7 +37,7 @@ export const SelectionBasketBar: React.FC<SelectionBasketBarProps> = ({
             {selectedPapers.slice(0, 2).map((p) => (
               <span
                 key={p.id}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[11px] border border-slate-700 max-w-[120px] truncate"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 dark:bg-[#141824] text-slate-300 text-[11px] border border-slate-700 dark:border-white/10 max-w-[120px] truncate"
                 title={p.title}
               >
                 <span className="truncate">{p.title}</span>
@@ -69,7 +69,7 @@ export const SelectionBasketBar: React.FC<SelectionBasketBarProps> = ({
 
           <button
             onClick={onOpenGraphWithSelection}
-            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 dark:bg-[#222938] hover:bg-slate-700 dark:hover:bg-[#2c3548] text-slate-300 text-xs font-medium border border-slate-700 dark:border-white/10 transition-all cursor-pointer"
           >
             <Network className="w-3 h-3 text-indigo-400" />
             <span>Graph</span>
@@ -77,7 +77,7 @@ export const SelectionBasketBar: React.FC<SelectionBasketBarProps> = ({
 
           <button
             onClick={onGenerateLiteratureReview}
-            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 dark:bg-[#222938] hover:bg-slate-700 dark:hover:bg-[#2c3548] text-slate-300 text-xs font-medium border border-slate-700 dark:border-white/10 transition-all cursor-pointer"
           >
             <BookOpen className="w-3 h-3 text-purple-400" />
             <span>Review</span>
@@ -85,7 +85,7 @@ export const SelectionBasketBar: React.FC<SelectionBasketBarProps> = ({
 
           <button
             onClick={onOpenExport}
-            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.2 rounded-lg bg-slate-800 dark:bg-[#222938] hover:bg-slate-700 dark:hover:bg-[#2c3548] text-slate-300 text-xs font-medium border border-slate-700 dark:border-white/10 transition-all cursor-pointer"
           >
             <Download className="w-3 h-3 text-slate-400" />
             <span>Export</span>

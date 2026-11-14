@@ -131,14 +131,14 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left Column: Multi-Paper Context & Synthesis Mode (Elicit / Notion style) */}
-        <div className="space-y-4">
+        <div className="lg:col-span-4 xl:col-span-4 space-y-4">
           
           {/* Active Context Box */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+          <div className="bg-white dark:bg-[#171c28] rounded-2xl p-4 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
                 <Layers className="w-4 h-4 text-indigo-500" />
@@ -153,28 +153,32 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
               Toggle papers to include full-text embeddings in cross-document Q&A.
             </p>
 
-            {/* Papers List */}
-            <div className="space-y-1 max-h-64 overflow-y-auto pr-1">
+            {/* Papers List with Full Title Display & Zero Truncation */}
+            <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
               {papers.map(paper => {
                 const isSelected = selectedPaperIds.includes(paper.id);
                 return (
                   <div
                     key={paper.id}
                     onClick={() => onToggleSelectPaper(paper)}
-                    className={`p-2 rounded-lg border text-xs cursor-pointer transition-all flex items-start gap-2 ${
+                    className={`p-2.5 rounded-xl border text-xs cursor-pointer transition-all flex items-start gap-2.5 ${
                       isSelected
-                        ? 'bg-indigo-50/60 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 text-slate-900 dark:text-slate-100 font-medium'
-                        : 'bg-slate-50/50 dark:bg-slate-800/40 border-slate-200/60 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                        ? 'bg-indigo-50/70 dark:bg-indigo-950/50 border-indigo-300 dark:border-indigo-700 text-slate-900 dark:text-slate-100 font-medium shadow-2xs'
+                        : 'bg-slate-50/60 dark:bg-slate-800/40 border-slate-200/70 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80'
                     }`}
                   >
-                    <div className={`mt-0.5 w-3.5 h-3.5 rounded border flex items-center justify-center flex-shrink-0 ${
+                    <div className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
                       isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
                     }`}>
                       {isSelected && <Check className="w-2.5 h-2.5" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="truncate font-medium">{paper.title}</p>
-                      <p className="text-[10px] text-slate-400">{paper.year} • {paper.authors[0]?.name}</p>
+                      <p className="font-semibold text-xs leading-snug break-words whitespace-normal text-slate-900 dark:text-slate-100">
+                        {paper.title}
+                      </p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-normal break-words whitespace-normal">
+                        {paper.year} • {paper.authors && paper.authors.length > 0 ? paper.authors.map(a => a.name).join(', ') : 'Academic Authors'}
+                      </p>
                     </div>
                   </div>
                 );
@@ -191,7 +195,7 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
                 setReviewTopic(targetPapers[0]?.fieldsOfStudy[0] || 'Foundational Machine Learning Architectures');
                 setShowReviewPrompt(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 text-xs font-semibold transition-all shadow-xs cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all shadow-xs cursor-pointer"
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>Synthesize Review</span>
@@ -199,7 +203,7 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
           </div>
 
           {/* Strategy Mode Selector */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-2.5">
+          <div className="bg-white dark:bg-[#171c28] rounded-2xl p-4 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5">
             <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-500" />
               <span>Synthesis Strategy</span>
@@ -215,7 +219,7 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
                 <button
                   key={m.id}
                   onClick={() => setMode(m.id as any)}
-                  className={`w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+                  className={`w-full text-left p-2.5 rounded-xl border text-xs transition-all cursor-pointer ${
                     mode === m.id
                       ? 'bg-indigo-50/60 dark:bg-indigo-950/40 border-indigo-400 dark:border-indigo-700 text-indigo-950 dark:text-indigo-200 font-medium'
                       : 'bg-slate-50/40 dark:bg-slate-800/40 border-slate-200/60 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -234,10 +238,10 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
         </div>
 
         {/* Right Column: Perplexity-Style Interactive Conversation */}
-        <div className="lg:col-span-3 flex flex-col h-[700px] bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden">
+        <div className="lg:col-span-8 xl:col-span-8 flex flex-col h-[750px] bg-white dark:bg-[#171c28] rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-xs overflow-hidden">
           
           {/* Header */}
-          <div className="px-5 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
+          <div className="px-5 py-3 border-b border-slate-100 dark:border-white/10 bg-slate-50/50 dark:bg-[#141824] flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 🐇
@@ -296,8 +300,8 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
 
                 <div className={`max-w-2xl rounded-xl p-3.5 text-xs sm:text-sm leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-medium'
-                    : 'bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-slate-800 dark:text-slate-200'
+                    ? 'bg-indigo-600 text-white font-medium shadow-xs'
+                    : 'bg-white dark:bg-[#1c2230] border border-slate-200/80 dark:border-white/10 text-slate-800 dark:text-slate-200 shadow-2xs'
                 }`}>
                   
                   {/* Prose */}
@@ -377,7 +381,7 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
           </div>
 
           {/* Input Bar */}
-          <div className="p-3 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <div className="p-3 border-t border-slate-100 dark:border-white/10 bg-white dark:bg-[#171c28]">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -395,7 +399,7 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
                     : 'Select at least 1 paper in the left context pane to ask questions...'
                 }
                 disabled={targetPapers.length === 0}
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-[#141824] text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
               />
 
               <button
@@ -414,9 +418,9 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
 
       {/* Citation Verification Dialog */}
       {activeCitationModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 max-w-lg w-full shadow-xl border border-slate-200 dark:border-slate-800 animate-in fade-in space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <div className="fixed inset-0 z-50 bg-[#090c12]/80 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#171c28] rounded-2xl p-5 max-w-lg w-full shadow-xl border border-slate-200 dark:border-white/10 animate-in fade-in space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-2.5">
               <div className="flex items-center gap-2">
                 <span className="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 font-bold text-xs border border-indigo-200/50 dark:border-indigo-800/50">
                   {activeCitationModal.citeKey}

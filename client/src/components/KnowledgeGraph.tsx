@@ -326,7 +326,7 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
   const fullPaper = selectedNode ? libraryPapers.find(p => p.id === selectedNode.id) : null;
 
   return (
-    <div className="relative w-full h-[calc(100vh-4.5rem)] flex overflow-hidden bg-slate-900 text-slate-100">
+    <div className="relative w-full h-full flex overflow-hidden bg-slate-900 text-slate-100">
       
       {/* Canvas Area */}
       <div ref={containerRef} className="relative flex-1 h-full w-full">
@@ -414,44 +414,44 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
 
         </div>
 
-        {/* Floating Zoom Controls */}
-        <div className="absolute bottom-6 right-6 z-10 flex flex-col gap-1.5 bg-slate-800/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-700/80 shadow-lg">
+        {/* Floating Zoom Controls - Elevated */}
+        <div className="absolute bottom-10 right-6 z-20 flex flex-col gap-1.5 bg-slate-800/95 backdrop-blur-md p-2 rounded-2xl border border-slate-700/80 shadow-2xl">
           <button
             onClick={() => handleZoom(1.3)}
-            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors cursor-pointer"
             title="Zoom In"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
           <button
             onClick={() => handleZoom(0.7)}
-            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors cursor-pointer"
             title="Zoom Out"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <button
             onClick={handleResetZoom}
-            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors cursor-pointer"
             title="Reset View"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Floating Graph Stats & Cluster Legend */}
-        <div className="absolute bottom-6 left-6 z-10 bg-slate-800/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 shadow-lg text-xs space-y-2 max-w-xs">
-          <div className="flex items-center justify-between text-slate-400 font-semibold border-b border-slate-700/60 pb-1.5">
-            <span>Knowledge Network Stats</span>
-            <span className="text-emerald-400 font-mono">
+        {/* Floating Graph Stats & Cluster Legend - Elevated & Enlarged */}
+        <div className="absolute bottom-10 left-6 z-20 bg-slate-800/95 backdrop-blur-md p-4 rounded-2xl border border-slate-700/90 shadow-2xl text-xs space-y-2.5 max-w-sm select-none">
+          <div className="flex items-center justify-between text-slate-300 font-semibold border-b border-slate-700/60 pb-2 gap-3">
+            <span className="font-bold text-slate-100 text-xs">Knowledge Network Stats</span>
+            <span className="text-emerald-400 font-mono text-xs font-bold">
               {graphData.nodes.length} papers • {graphData.links.length} connections
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
             {Object.entries(CLUSTER_COLORS).map(([key, item]) => (
-              <div key={key} className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.bg }} />
-                <span className="truncate text-slate-300">{item.label}</span>
+              <div key={key} className="flex items-center gap-2 min-w-0">
+                <span className="w-3 h-3 rounded-full shrink-0 shadow-xs" style={{ backgroundColor: item.bg }} />
+                <span className="truncate text-slate-200 font-medium text-[11.5px]" title={item.label}>{item.label}</span>
               </div>
             ))}
           </div>

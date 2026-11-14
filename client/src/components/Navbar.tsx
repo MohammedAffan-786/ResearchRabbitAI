@@ -11,9 +11,7 @@ import {
   Layers,
   BarChart3,
   User,
-  LogOut,
-  Sun,
-  Moon
+  LogOut
 } from 'lucide-react';
 import { useResearchStore } from '../store/useResearchStore';
 
@@ -38,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth,
   totalLibraryCount
 }) => {
-  const { user, logout, theme, toggleTheme } = useResearchStore();
+  const { user, logout } = useResearchStore();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
@@ -103,23 +101,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Action cluster: Theme, Auth, Upload, Basket */}
+          {/* Action cluster: Auth, Upload, Basket */}
           <div className="flex items-center gap-1.5">
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/80 text-xs transition-colors cursor-pointer shadow-xs"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-3.5 h-3.5 text-amber-400" />
-              ) : (
-                <Moon className="w-3.5 h-3.5 text-slate-600" />
-              )}
-            </button>
-
             {/* User Auth */}
             {user ? (
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 text-xs">

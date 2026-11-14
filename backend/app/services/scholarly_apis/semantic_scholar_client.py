@@ -85,7 +85,7 @@ class SemanticScholarProvider(ScholarlyProvider):
         elif filters and filters.get("year_start"):
             url += f"&year={filters['year_start']}-"
 
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 429:
@@ -112,7 +112,7 @@ class SemanticScholarProvider(ScholarlyProvider):
 
         fields_param = "title,authors,abstract,year,venue,citationCount,referenceCount,openAccessPdf,externalIds,fieldsOfStudy"
         url = f"https://api.semanticscholar.org/graph/v1/paper/DOI:{clean_doi}?fields={fields_param}"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 200:
@@ -125,7 +125,7 @@ class SemanticScholarProvider(ScholarlyProvider):
         clean_id = paper_id.replace("s2-", "").strip()
         fields_param = "title,authors,abstract,year,venue,citationCount,referenceCount,openAccessPdf,externalIds,fieldsOfStudy"
         url = f"https://api.semanticscholar.org/graph/v1/paper/{clean_id}?fields={fields_param}"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 200:

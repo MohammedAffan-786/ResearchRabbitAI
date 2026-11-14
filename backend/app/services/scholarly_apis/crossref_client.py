@@ -124,7 +124,7 @@ class CrossrefProvider(ScholarlyProvider):
             if crossref_filters:
                 url += f"&filter={','.join(crossref_filters)}"
 
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 429:
@@ -151,7 +151,7 @@ class CrossrefProvider(ScholarlyProvider):
             return None
 
         url = f"https://api.crossref.org/works/{clean_doi}"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 200:

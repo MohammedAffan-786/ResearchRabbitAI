@@ -28,7 +28,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
       className={`p-4 rounded-xl border transition-all cursor-pointer ${
         isSelected
           ? 'bg-indigo-50/50 dark:bg-indigo-950/30 border-indigo-400 dark:border-indigo-600 shadow-xs'
-          : 'bg-white dark:bg-[#0c121e] border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+          : 'bg-white dark:bg-[#171c28] border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'
       }`}
     >
       <div className="flex items-start justify-between gap-3">

@@ -52,7 +52,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/60 dark:bg-black/80 backdrop-blur-xs transition-opacity animate-in fade-in duration-150"
+        className="fixed inset-0 bg-slate-950/60 dark:bg-[#090c12]/80 backdrop-blur-xs transition-opacity animate-in fade-in duration-150"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -61,10 +61,10 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthClasses} bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-7 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidthClasses} bg-white dark:bg-[#171c28] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150`}
       >
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800/80 mb-5">
+          <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100 dark:border-white/10 mb-5">
             <div>
               {title && (
                 <div className="text-base font-semibold text-slate-900 dark:text-slate-100 tracking-tight">

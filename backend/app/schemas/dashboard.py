@@ -35,14 +35,25 @@ class RecommendationItem(BaseModel):
 class DashboardStats(BaseModel):
     totalPapers: int
     totalCitations: int
+    totalAuthors: int = 0
+    graphConnections: int = 0
     openAccessCount: int
     uploadedCount: int
     totalCollections: int
     totalReviews: int
 
+class WeeklyActivityDay(BaseModel):
+    day: str
+    dayName: str
+    date: str
+    count: int
+    isToday: bool = False
+    label: str
+
 class DashboardOverviewResponse(BaseModel):
     stats: DashboardStats
     recentActivities: List[Dict[str, Any]]
+    weeklyActivity: Optional[List[WeeklyActivityDay]] = None
     recentPapers: List[Dict[str, Any]]
     savedCollections: List[Dict[str, Any]]
     trendingTopics: List[TrendingTopicItem]

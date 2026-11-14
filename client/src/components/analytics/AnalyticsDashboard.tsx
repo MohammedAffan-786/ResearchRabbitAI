@@ -42,11 +42,11 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
     totalCitations = 0
   } = analyticsData || {};
 
-  const gridColor = isDark ? '#1e293b' : '#f1f5f9';
-  const axisColor = isDark ? '#64748b' : '#94a3b8';
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9';
+  const axisColor = isDark ? '#94a3b8' : '#64748b';
   const tooltipStyle = isDark
-    ? { backgroundColor: '#090d16', borderColor: '#1e293b', borderRadius: '10px', color: '#f8fafc', fontSize: '11px' }
-    : { backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '10px', color: '#0f172a', fontSize: '11px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' };
+    ? { backgroundColor: '#171c28', borderColor: 'rgba(255, 255, 255, 0.12)', borderRadius: '10px', color: '#f1f5f9', fontSize: '11px' }
+    : { backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '10px', color: '#1e293b', fontSize: '11px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-in fade-in">
@@ -63,7 +63,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
 
       {/* KPI Stats Cards (Linear Style) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+        <div className="bg-white dark:bg-[#171c28] p-4 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-1">
           <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
             <span>Indexed Papers</span>
@@ -72,7 +72,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-medium">Catalog Corpus</span>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+        <div className="bg-white dark:bg-[#171c28] p-4 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-1">
           <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
             <Flame className="w-3.5 h-3.5 text-amber-500" />
             <span>Total Citations</span>
@@ -81,7 +81,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">Verified Impact</span>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+        <div className="bg-white dark:bg-[#171c28] p-4 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-1">
           <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
             <span>Active Disciplines</span>
@@ -90,7 +90,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Fields of Study</span>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+        <div className="bg-white dark:bg-[#171c28] p-4 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-1">
           <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
             <Award className="w-3.5 h-3.5 text-purple-500" />
             <span>Seminal Authors</span>
@@ -104,7 +104,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Chart 1: Citation Trajectory (AreaChart) */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-[#171c28] p-5 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
             <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-indigo-500" />
@@ -133,7 +133,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
         </div>
 
         {/* Chart 2: Disciplinary Distribution (BarChart) */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-[#171c28] p-5 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
             <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <BarChart3 className="w-3.5 h-3.5 text-indigo-500" />
@@ -156,7 +156,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
         </div>
 
         {/* Chart 3: Citation Impact Tiers (PieChart) */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-[#171c28] p-5 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
             <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <Flame className="w-3.5 h-3.5 text-amber-500" />
@@ -191,7 +191,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ analytic
         </div>
 
         {/* Table: Seminal Authors Leaderboard */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-[#171c28] p-5 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
             <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5 text-purple-500" />

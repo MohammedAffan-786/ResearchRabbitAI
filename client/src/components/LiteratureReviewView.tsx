@@ -54,8 +54,8 @@ export const LiteratureReviewView: React.FC<LiteratureReviewViewProps> = ({
               onClick={() => setSelectedReviewId(r.id)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isSelected
-                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-semibold shadow-xs'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200/80 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                  : 'bg-white dark:bg-[#171c28] text-slate-600 dark:text-slate-400 border border-slate-200/80 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-[#1f2535]'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
@@ -66,7 +66,7 @@ export const LiteratureReviewView: React.FC<LiteratureReviewViewProps> = ({
       </div>
 
       {activeReview && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-6 animate-in fade-in">
+        <div className="bg-white dark:bg-[#171c28] rounded-xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-6 animate-in fade-in">
           
           {/* Header & Export Actions */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">

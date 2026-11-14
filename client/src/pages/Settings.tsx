@@ -4,8 +4,6 @@ import {
   Database,
   Cpu,
   ShieldCheck,
-  Sun,
-  Moon,
   Key,
   CheckCircle2,
   Zap,
@@ -57,7 +55,7 @@ interface EmbeddingProviderInfo {
 }
 
 export const Settings: React.FC = () => {
-  const { theme, toggleTheme, showToast } = useResearchStore();
+  const { showToast } = useResearchStore();
   const [defaultExportFormat, setDefaultExportFormat] = useState('bibtex');
   const [hybridAlpha, setHybridAlpha] = useState(0.65);
   const [maxSearchDepth, setMaxSearchDepth] = useState(2);
@@ -156,7 +154,7 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Connected Infrastructure & Health */}
-      <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+      <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
@@ -198,7 +196,7 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Scholarly Providers & In-Memory Caching */}
-      <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+      <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center">
@@ -300,7 +298,7 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Live DOI Scholarly Resolver Utility */}
-      <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+      <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
             <Search className="w-4 h-4" />
@@ -376,7 +374,7 @@ export const Settings: React.FC = () => {
 
       {/* AI & Embedding Configuration Form */}
       <form onSubmit={handleSavePreferences} className="space-y-6">
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+        <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
@@ -426,11 +424,11 @@ export const Settings: React.FC = () => {
             </div>
 
             {/* Ollama Commands Reference */}
-            <div className="space-y-1.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+            <div className="space-y-1.5 p-3 rounded-xl bg-slate-50 dark:bg-[#141824] border border-slate-200 dark:border-white/10">
               <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 block">
                 Local Ollama Model Commands (Zero Cost)
               </span>
-              <pre className="text-[10px] font-mono p-2 rounded bg-slate-100 dark:bg-slate-950 text-indigo-600 dark:text-indigo-400 overflow-x-auto">
+              <pre className="text-[10px] font-mono p-2 rounded bg-slate-100 dark:bg-[#1c2230] text-indigo-600 dark:text-indigo-400 overflow-x-auto">
 {`ollama pull qwen3:4b
 ollama pull nomic-embed-text
 ollama list`}
@@ -472,7 +470,7 @@ ollama list`}
         </div>
 
         {/* Retrieval & RAG Parameters Form */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+        <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <Cpu className="w-4 h-4" />
@@ -535,38 +533,6 @@ ollama list`}
                 <option value="json">JSON Metadata</option>
               </select>
             </div>
-          </div>
-        </div>
-
-        {/* Appearance & Interface */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-              {theme === 'dark' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                Appearance & Design System
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Linear & Notion-inspired high-contrast theme
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between pt-2">
-            <div>
-              <span className="text-xs font-medium text-slate-800 dark:text-slate-200 block">
-                Color Mode
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                Currently running in {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
-              </span>
-            </div>
-
-            <Button type="button" variant="outline" size="sm" onClick={toggleTheme}>
-              {theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
-            </Button>
           </div>
         </div>
 

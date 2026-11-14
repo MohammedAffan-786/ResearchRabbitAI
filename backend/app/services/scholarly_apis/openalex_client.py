@@ -107,7 +107,7 @@ class OpenAlexProvider(ScholarlyProvider):
             if filter_clauses:
                 url += f"&filter={','.join(filter_clauses)}"
 
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 429:
@@ -134,7 +134,7 @@ class OpenAlexProvider(ScholarlyProvider):
             return None
 
         url = f"https://api.openalex.org/works/https://doi.org/{clean_doi}?mailto={settings.OPENALEX_EMAIL}"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 200:
@@ -146,7 +146,7 @@ class OpenAlexProvider(ScholarlyProvider):
     async def get_paper(self, paper_id: str) -> Optional[Dict[str, Any]]:
         clean_id = paper_id.replace("openalex-", "").strip()
         url = f"https://api.openalex.org/works/{clean_id}?mailto={settings.OPENALEX_EMAIL}"
-        async with httpx.AsyncClient(timeout=9.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             try:
                 resp = await client.get(url, headers=self._headers())
                 if resp.status_code == 200:

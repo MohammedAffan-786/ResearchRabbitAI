@@ -163,8 +163,12 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
                       {isSelected && <Check className="w-2.5 h-2.5" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="truncate font-medium">{paper.title}</p>
-                      <p className="text-[10px] text-slate-400">{paper.year} • {paper.authors[0]?.name}</p>
+                      <p className="font-semibold text-xs leading-snug break-words whitespace-normal text-slate-900 dark:text-slate-100">
+                        {paper.title}
+                      </p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-normal break-words whitespace-normal">
+                        {paper.year} • {paper.authors && paper.authors.length > 0 ? paper.authors.map(a => a.name).join(', ') : 'Academic Authors'}
+                      </p>
                     </div>
                   </div>
                 );

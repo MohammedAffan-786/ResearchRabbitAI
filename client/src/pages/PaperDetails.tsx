@@ -119,7 +119,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
       )}
 
       {/* Main Paper Header Card */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 shadow-xs space-y-4">
+      <div className="p-6 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 shadow-xs space-y-4">
         <div className="flex items-center gap-2 flex-wrap text-xs">
           {paper.year && <Badge variant="default">{paper.year}</Badge>}
           {paper.venue && (
@@ -256,7 +256,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
             </div>
           )}
 
-          <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-2">
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-2">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               Abstract
             </h3>
@@ -266,7 +266,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
           </div>
 
           {paper.fieldsOfStudy && paper.fieldsOfStudy.length > 0 && (
-            <div className="p-4 rounded-xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-2">
+            <div className="p-4 rounded-xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-2">
               <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Research Fields & Topics
               </h4>
@@ -290,7 +290,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
             </div>
           ) : intelligence ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-1.5">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-1.5">
                 <h4 className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
                   Research Objectives & Problem
                 </h4>
@@ -299,7 +299,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-1.5">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-1.5">
                 <h4 className="text-xs font-semibold text-purple-600 dark:text-purple-400">
                   Methodology & Architectural Approach
                 </h4>
@@ -308,7 +308,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-1.5">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-1.5">
                 <h4 className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                   Key Findings & Empirical Results
                 </h4>
@@ -317,7 +317,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-1.5">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-1.5">
                 <h4 className="text-xs font-semibold text-amber-600 dark:text-amber-400">
                   Identified Limitations & Future Directions
                 </h4>
@@ -341,7 +341,7 @@ export const PaperDetails: React.FC<PaperDetailsPageProps> = ({
 
       {activeTab === 'similar' && (
         <div className="space-y-4">
-          <div className="p-5 rounded-2xl bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800/90 space-y-3">
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#171c28] border border-slate-200/90 dark:border-white/10 space-y-3">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               Related Scholarly Works
             </h3>

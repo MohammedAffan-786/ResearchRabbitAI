@@ -43,61 +43,32 @@ interface ResearchState {
   showToast: (msg: string) => void;
 }
 
-const getInitialTheme = (): 'light' | 'dark' => {
-  if (typeof window === 'undefined') return 'light';
-  try {
-    const saved = localStorage.getItem('rr_theme');
-    if (saved === 'light' || saved === 'dark') return saved;
-    if (typeof window.matchMedia === 'function') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-  } catch (e) {
-    // fallback
-  }
-  return 'light';
-};
-
 export const useResearchStore = create<ResearchState>((set) => {
-  const initialTheme = getInitialTheme();
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.removeItem('rr_theme');
+    } catch (e) {}
+  }
   if (typeof document !== 'undefined') {
-    if (initialTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      if (document.body) document.body.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      if (document.body) document.body.classList.remove('dark');
-    }
+    document.documentElement.classList.remove('dark');
+    if (document.body) document.body.classList.remove('dark');
   }
 
   return {
-    theme: initialTheme,
-    toggleTheme: () =>
-      set((state) => {
-        const next = state.theme === 'light' ? 'dark' : 'light';
-        localStorage.setItem('rr_theme', next);
-        if (typeof document !== 'undefined') {
-          if (next === 'dark') {
-            document.documentElement.classList.add('dark');
-            if (document.body) document.body.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-            if (document.body) document.body.classList.remove('dark');
-          }
-        }
-        return { theme: next };
-      }),
-    setTheme: (theme) => {
-      localStorage.setItem('rr_theme', theme);
+    theme: 'light',
+    toggleTheme: () => {
       if (typeof document !== 'undefined') {
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-          if (document.body) document.body.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-          if (document.body) document.body.classList.remove('dark');
-        }
+        document.documentElement.classList.remove('dark');
+        if (document.body) document.body.classList.remove('dark');
       }
-      set({ theme });
+      set({ theme: 'light' });
+    },
+    setTheme: () => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('dark');
+        if (document.body) document.body.classList.remove('dark');
+      }
+      set({ theme: 'light' });
     },
 
     user: null,

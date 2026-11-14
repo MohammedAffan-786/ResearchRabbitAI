@@ -63,13 +63,14 @@ export const SearchInterface: React.FC<SearchInterfaceProps> = ({
     }
   }, [searchInitialQuery]);
 
-  const executeSearch = (q: string) => {
+  const executeSearch = (q: string, overrideField?: string) => {
+    const targetField = overrideField !== undefined ? overrideField : fieldOfStudy;
     onSearch({
       query: q,
       yearStart,
       yearEnd,
       minCitations,
-      fieldOfStudy: fieldOfStudy === 'All Fields' ? undefined : fieldOfStudy,
+      fieldOfStudy: targetField === 'All Fields' ? undefined : targetField,
       source: source === 'all' ? undefined : (source as any),
       openAccessOnly,
       sortBy,
@@ -84,6 +85,11 @@ export const SearchInterface: React.FC<SearchInterfaceProps> = ({
   const handleSelectPreset = (preset: string) => {
     setQuery(preset);
     executeSearch(preset);
+  };
+
+  const handleQuickFieldSelect = (f: string) => {
+    setFieldOfStudy(f);
+    executeSearch(query, f);
   };
 
   const resetFilters = () => {
@@ -110,16 +116,18 @@ export const SearchInterface: React.FC<SearchInterfaceProps> = ({
     });
   };
 
+  const QUICK_FIELDS = ['All Fields', 'Computer Science', 'Medicine', 'Biology', 'Physics', 'Mathematics'];
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Search Header */}
       <div className="space-y-4">
         <div className="space-y-1">
-          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-            Academic Discovery & Intelligence
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            Academic Literature Search
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Query across 250M+ research papers, trace citation graphs, and synthesize evidence with verified citations.
+            Search across 250M+ verified research papers, trace citations, and explore scholarly literature.
           </p>
         </div>
 
@@ -134,6 +142,30 @@ export const SearchInterface: React.FC<SearchInterfaceProps> = ({
           hasActiveFilters={hasActiveFilters}
           onSelectPreset={handleSelectPreset}
         />
+
+        {/* Quick Discipline Bar */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 shrink-0 px-1">
+            Disciplines:
+          </span>
+          {QUICK_FIELDS.map((f) => {
+            const isActive = fieldOfStudy === f;
+            return (
+              <button
+                key={f}
+                type="button"
+                onClick={() => handleQuickFieldSelect(f)}
+                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                    : 'bg-white/80 dark:bg-[#181e2b] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200/80 dark:border-white/5 hover:border-indigo-500/30'
+                }`}
+              >
+                {f}
+              </button>
+            );
+          })}
+        </div>
 
         {/* Collapsible Filter Panel */}
         <SearchFiltersBar

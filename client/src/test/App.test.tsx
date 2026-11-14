@@ -60,9 +60,9 @@ describe('ResearchRabbit AI Frontend Suite', () => {
     clearSelection();
     expect(useResearchStore.getState().selectedPaperIds).toHaveLength(0);
 
-    const initialTheme = useResearchStore.getState().theme;
+    expect(useResearchStore.getState().theme).toBe('light');
     toggleTheme();
-    expect(useResearchStore.getState().theme).not.toBe(initialTheme);
+    expect(useResearchStore.getState().theme).toBe('light');
   });
 
   it('can navigate to the Settings page with hybrid search tuning', () => {

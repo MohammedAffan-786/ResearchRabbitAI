@@ -61,7 +61,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
   if (!show) return null;
 
   return (
-    <div className="mt-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 text-xs space-y-3 animate-in fade-in">
+    <div className="mt-3 p-4 rounded-xl bg-slate-50 dark:bg-[#171c28] border border-slate-200/80 dark:border-white/10 text-xs space-y-3 animate-in fade-in">
       <div className="flex items-center justify-between">
         <span className="font-semibold text-slate-800 dark:text-slate-200">
           Refine Search Filters & Scholarly Provider
@@ -87,7 +87,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
               onChange={(e) =>
                 onChangeYearStart(e.target.value ? parseInt(e.target.value) : undefined)
               }
-              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200"
             />
             <span className="text-slate-400">–</span>
             <input
@@ -97,7 +97,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
               onChange={(e) =>
                 onChangeYearEnd(e.target.value ? parseInt(e.target.value) : undefined)
               }
-              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200"
             />
           </div>
         </div>
@@ -112,7 +112,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
             onChange={(e) =>
               onChangeMinCitations(e.target.value ? parseInt(e.target.value) : undefined)
             }
-            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200"
           />
         </div>
 
@@ -122,7 +122,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
           <select
             value={source}
             onChange={(e) => onChangeSource && onChangeSource(e.target.value)}
-            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer font-medium text-indigo-600 dark:text-indigo-400"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer font-medium text-indigo-600 dark:text-indigo-400"
           >
             {SCHOLARLY_PROVIDERS.map((p) => (
               <option key={p.id} value={p.id}>
@@ -138,7 +138,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
           <select
             value={fieldOfStudy}
             onChange={(e) => onChangeFieldOfStudy(e.target.value)}
-            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer"
           >
             {FIELDS_OF_STUDY.map((f) => (
               <option key={f} value={f}>
@@ -154,7 +154,7 @@ export const SearchFiltersBar: React.FC<SearchFiltersBarProps> = ({
           <select
             value={sortBy}
             onChange={(e) => onChangeSortBy(e.target.value as any)}
-            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-[#141824] border border-slate-200 dark:border-slate-700/80 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer"
           >
             <option value="relevance">Relevance (Hybrid Reranked)</option>
             <option value="citations">Citation Count (Highest First)</option>

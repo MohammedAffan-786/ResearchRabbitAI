@@ -36,22 +36,30 @@ interface SkeletonCardProps {
 
 export const SkeletonCardList: React.FC<SkeletonCardProps> = ({ count = 3 }) => {
   return (
-    <div className="space-y-3 w-full animate-pulse">
+    <div className="space-y-3.5 w-full">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/40 space-y-3"
+          className="p-5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#171c28]/80 shadow-xs relative overflow-hidden space-y-3.5 animate-pulse"
         >
+          {/* Shimmer bar effect */}
           <div className="flex items-center gap-2">
-            <div className="h-4 w-16 bg-slate-200 dark:bg-slate-800 rounded"></div>
-            <div className="h-4 w-28 bg-slate-200 dark:bg-slate-800 rounded"></div>
-            <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded"></div>
+            <div className="h-4.5 w-14 bg-slate-200 dark:bg-[#242c3d] rounded-md"></div>
+            <div className="h-4.5 w-24 bg-slate-200 dark:bg-[#242c3d] rounded-md"></div>
+            <div className="h-4.5 w-28 bg-slate-200 dark:bg-[#242c3d] rounded-md"></div>
+            <div className="h-4.5 w-16 bg-slate-200 dark:bg-[#242c3d] rounded-md ml-auto"></div>
           </div>
-          <div className="h-5 w-3/4 bg-slate-200 dark:bg-slate-800 rounded"></div>
-          <div className="h-3 w-1/2 bg-slate-200 dark:bg-slate-800 rounded"></div>
-          <div className="space-y-1.5 pt-2">
-            <div className="h-3 w-full bg-slate-100 dark:bg-slate-800/60 rounded"></div>
-            <div className="h-3 w-5/6 bg-slate-100 dark:bg-slate-800/60 rounded"></div>
+          <div className="space-y-1.5">
+            <div className="h-5 w-5/6 bg-slate-200 dark:bg-[#242c3d] rounded-lg"></div>
+            <div className="h-4 w-1/2 bg-slate-100 dark:bg-[#1c2230] rounded-md"></div>
+          </div>
+          <div className="h-10 w-full bg-slate-100/70 dark:bg-[#141824] rounded-xl border border-slate-200/40 dark:border-white/5"></div>
+          <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/5">
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-20 bg-slate-200 dark:bg-[#242c3d] rounded-lg"></div>
+              <div className="h-7 w-20 bg-slate-200 dark:bg-[#242c3d] rounded-lg"></div>
+            </div>
+            <div className="h-4 w-28 bg-slate-100 dark:bg-[#1c2230] rounded-md"></div>
           </div>
         </div>
       ))}

@@ -110,6 +110,8 @@ class OllamaEmbeddingProvider(EmbeddingProvider):
         self.model = model or settings.OLLAMA_EMBED_MODEL
         self._api_key = api_key or settings.OLLAMA_API_KEY
         self._dim = dim
+        self._fallback = LocalDeterministicEmbeddingProvider(dim=dim)
+        self._offline_until: float = 0.0
 
     @property
     def provider_name(self) -> str:
@@ -133,51 +135,53 @@ class OllamaEmbeddingProvider(EmbeddingProvider):
         if not texts:
             return []
 
+        import time
+        now = time.time()
+        if now < self._offline_until:
+            return await self._fallback.embed_texts(texts)
+
         # Batch in chunks of 32 to prevent payload bloat
         batch_size = 32
         all_embeddings: List[List[float]] = []
 
-        async with httpx.AsyncClient(timeout=settings.OLLAMA_TIMEOUT) as client:
-            for i in range(0, len(texts), batch_size):
-                batch = texts[i:i + batch_size]
-                try:
-                    # Native Ollama /api/embed endpoint
-                    resp = await client.post(
-                        f"{self.base_url}/api/embed",
-                        headers=self._get_headers(),
-                        json={"model": self.model, "input": batch}
-                    )
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        embs = data.get("embeddings", [])
-                        all_embeddings.extend(embs)
-                        continue
+        try:
+            async with httpx.AsyncClient(timeout=1.5) as client:
+                for i in range(0, len(texts), batch_size):
+                    batch = texts[i:i + batch_size]
+                    try:
+                        # Native Ollama /api/embed endpoint
+                        resp = await client.post(
+                            f"{self.base_url}/api/embed",
+                            headers=self._get_headers(),
+                            json={"model": self.model, "input": batch}
+                        )
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            embs = data.get("embeddings", [])
+                            all_embeddings.extend(embs)
+                            continue
 
-                    # Fallback to legacy single /api/embeddings endpoint if /api/embed returns 404
-                    if resp.status_code == 404:
-                        batch_embs = []
-                        for item in batch:
-                            single_resp = await client.post(
-                                f"{self.base_url}/api/embeddings",
-                                headers=self._get_headers(),
-                                json={"model": self.model, "prompt": item}
-                            )
-                            single_resp.raise_for_status()
-                            batch_embs.append(single_resp.json().get("embedding", []))
-                        all_embeddings.extend(batch_embs)
-                        continue
+                        # Fallback to legacy single /api/embeddings endpoint if /api/embed returns 404
+                        if resp.status_code == 404:
+                            batch_embs = []
+                            for item in batch:
+                                single_resp = await client.post(
+                                    f"{self.base_url}/api/embeddings",
+                                    headers=self._get_headers(),
+                                    json={"model": self.model, "prompt": item}
+                                )
+                                single_resp.raise_for_status()
+                                batch_embs.append(single_resp.json().get("embedding", []))
+                            all_embeddings.extend(batch_embs)
+                            continue
 
-                    resp.raise_for_status()
-                except httpx.ConnectError:
-                    # Provide exact setup instruction when local Ollama is offline
-                    raise RuntimeError(
-                        f"Ollama local embedding service is offline at {self.base_url}. "
-                        f"Run `ollama serve` and `ollama pull {self.model}`."
-                    )
-                except Exception as e:
-                    raise RuntimeError(f"Ollama embedding inference failed: {str(e)}")
-
-        return all_embeddings
+                        resp.raise_for_status()
+                    except Exception:
+                        raise
+            return all_embeddings
+        except Exception as e:
+            self._offline_until = now + 60.0
+            return await self._fallback.embed_texts(texts)
 
 
 class OpenAIEmbeddingProvider(EmbeddingProvider):

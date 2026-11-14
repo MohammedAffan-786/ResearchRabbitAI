@@ -250,16 +250,28 @@ export interface ResearchActivityItem {
   timestamp: string;
 }
 
+export interface WeeklyActivityDay {
+  day: string;
+  dayName: string;
+  date: string;
+  count: number;
+  isToday?: boolean;
+  label: string;
+}
+
 export interface DashboardOverview {
   stats: {
     totalPapers: number;
     totalCitations: number;
+    totalAuthors?: number;
+    graphConnections?: number;
     openAccessCount: number;
     uploadedCount: number;
     totalCollections: number;
     totalReviews: number;
   };
   recentActivities: ResearchActivityItem[];
+  weeklyActivity?: WeeklyActivityDay[];
   recentPapers: Paper[];
   savedCollections: Collection[];
   trendingTopics: { topic: string; paperCount: number; growth: string }[];
