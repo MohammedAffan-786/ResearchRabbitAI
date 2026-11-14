@@ -110,12 +110,23 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
     zoomRef.current = zoom;
     svg.call(zoom);
 
+    // Seed initial 2D radial spread to prevent 1D vertical line collapse
+    const totalCount = Math.max(1, filteredNodes.length);
+    filteredNodes.forEach((node, idx) => {
+      if (node.x === undefined || node.y === undefined || isNaN(node.x) || isNaN(node.y)) {
+        const theta = (idx / totalCount) * 2 * Math.PI;
+        const radius = 180 + (idx % 4) * 55;
+        node.x = width / 2 + Math.cos(theta) * radius;
+        node.y = height / 2 + Math.sin(theta) * radius;
+      }
+    });
+
     // D3 Force Simulation setup
     const simulation = d3.forceSimulation<GraphNode>(filteredNodes)
-      .force('link', d3.forceLink<GraphNode, any>(filteredLinks).id(d => d.id).distance(d => 135 / (d.weight || 1)))
-      .force('charge', d3.forceManyBody().strength(-600))
+      .force('link', d3.forceLink<GraphNode, any>(filteredLinks).id(d => d.id).distance(d => 140 / (d.weight || 1)))
+      .force('charge', d3.forceManyBody().strength(-700).distanceMax(Math.max(width, height) / 1.5))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius(d => getNodeRadius(d) + 24));
+      .force('collision', d3.forceCollide().radius(d => getNodeRadius(d) + 28));
 
     // Custom layout forces based on layoutMode
     if (layoutMode === 'timeline') {

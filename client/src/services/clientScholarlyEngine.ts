@@ -490,6 +490,37 @@ function scorePaperRelevance(p: Paper, query: string): number {
   return score;
 }
 
+// In-memory defensive storage fallback for quota exhaustion or restricted browser sessions
+const memoryStorage = new Map<string, string>();
+
+const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const val = window.localStorage.getItem(key);
+        if (val !== null) return val;
+      }
+    } catch {}
+    return memoryStorage.get(key) ?? null;
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch {}
+    memoryStorage.set(key, value);
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key);
+      }
+    } catch {}
+    memoryStorage.delete(key);
+  }
+};
+
 class ClientScholarlyEngine {
   private papersKey = 'rr_papers_cache_v2';
   private collectionsKey = 'rr_collections_cache_v2';
@@ -501,9 +532,9 @@ class ClientScholarlyEngine {
   private ensureInitialized() {
     if (typeof window === 'undefined') return;
     try {
-      const storedPapers = localStorage.getItem(this.papersKey);
+      const storedPapers = safeStorage.getItem(this.papersKey);
       if (!storedPapers) {
-        localStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
+        safeStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
       } else {
         try {
           const current: Paper[] = JSON.parse(storedPapers);
@@ -516,25 +547,25 @@ class ClientScholarlyEngine {
             }
           }
           if (changed) {
-            localStorage.setItem(this.papersKey, JSON.stringify(current));
+            safeStorage.setItem(this.papersKey, JSON.stringify(current));
           }
         } catch {
           // If parse fails, reset with seed papers
-          localStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
+          safeStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
         }
       }
-      const storedCols = localStorage.getItem(this.collectionsKey);
+      const storedCols = safeStorage.getItem(this.collectionsKey);
       if (!storedCols) {
-        localStorage.setItem(this.collectionsKey, JSON.stringify(INITIAL_SEED_COLLECTIONS));
+        safeStorage.setItem(this.collectionsKey, JSON.stringify(INITIAL_SEED_COLLECTIONS));
       }
     } catch {
-      // localStorage may be disabled
+      // Storage safe fallback
     }
   }
 
   getPapers(collectionId?: string): { papers: Paper[]; total: number } {
     try {
-      const raw = localStorage.getItem(this.papersKey);
+      const raw = safeStorage.getItem(this.papersKey);
       let papers: Paper[] = raw ? JSON.parse(raw) : INITIAL_SEED_PAPERS;
       if (collectionId) {
         const cols = this.getCollections();
@@ -558,7 +589,7 @@ class ClientScholarlyEngine {
       } else {
         papers.unshift(paper);
       }
-      localStorage.setItem(this.papersKey, JSON.stringify(papers));
+      safeStorage.setItem(this.papersKey, JSON.stringify(papers));
     } catch {
       // Ignore
     }
@@ -566,7 +597,7 @@ class ClientScholarlyEngine {
 
   getCollections(): Collection[] {
     try {
-      const raw = localStorage.getItem(this.collectionsKey);
+      const raw = safeStorage.getItem(this.collectionsKey);
       return raw ? JSON.parse(raw) : INITIAL_SEED_COLLECTIONS;
     } catch {
       return INITIAL_SEED_COLLECTIONS;
@@ -589,26 +620,83 @@ class ClientScholarlyEngine {
     };
     collections.push(newCol);
     try {
-      localStorage.setItem(this.collectionsKey, JSON.stringify(collections));
+      safeStorage.setItem(this.collectionsKey, JSON.stringify(collections));
     } catch {}
     return newCol;
   }
 
   addPaperToCollection(colId: string, paperId: string): Collection {
     const collections = this.getCollections();
+    let target = collections.find(c => c.id === colId);
+    if (!target) {
+      if (collections.length > 0) {
+        target = collections[0];
+      } else {
+        target = this.createCollection({ name: 'Curated Papers', description: 'Primary curated research collection' });
+      }
+    }
+    if (target && !target.paperIds.includes(paperId)) {
+      target.paperIds.push(paperId);
+      target.paperCount = target.paperIds.length;
+      target.updatedAt = new Date().toISOString();
+      safeStorage.setItem(this.collectionsKey, JSON.stringify(collections));
+    }
+    return target;
+  }
+
+  removePaperFromCollection(colId: string, paperId: string): Collection {
+    const collections = this.getCollections();
     const target = collections.find(c => c.id === colId);
     if (target) {
-      if (!target.paperIds.includes(paperId)) {
-        target.paperIds.push(paperId);
-        target.paperCount = target.paperIds.length;
-        target.updatedAt = new Date().toISOString();
-        try {
-          localStorage.setItem(this.collectionsKey, JSON.stringify(collections));
-        } catch {}
-      }
+      target.paperIds = target.paperIds.filter(id => id !== paperId);
+      target.paperCount = target.paperIds.length;
+      target.updatedAt = new Date().toISOString();
+      safeStorage.setItem(this.collectionsKey, JSON.stringify(collections));
       return target;
     }
-    throw new Error('Collection not found');
+    return collections[0] || {
+      id: colId,
+      name: 'Curated Papers',
+      paperIds: [],
+      paperCount: 0,
+      isPublic: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  recordActivity(activityType: string, title: string, metadata?: any): void {
+    const now = new Date();
+    const currentDayIdx = (now.getDay() + 6) % 7; // 0 for Mon, 6 for Sun
+
+    let storedCounts = [18, 29, 44, 38, 56, 68, 14];
+    try {
+      const raw = safeStorage.getItem('rr_weekly_activity');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length === 7) storedCounts = parsed;
+      }
+    } catch {}
+
+    storedCounts[currentDayIdx] = (storedCounts[currentDayIdx] || 0) + 1;
+    safeStorage.setItem('rr_weekly_activity', JSON.stringify(storedCounts));
+
+    let recent: any[] = [];
+    try {
+      const rawRec = safeStorage.getItem('rr_recent_activities');
+      if (rawRec) recent = JSON.parse(rawRec);
+    } catch {}
+
+    const newAct = {
+      id: `act-${Date.now()}`,
+      type: activityType || 'search',
+      title: title || 'Academic research query executed',
+      timestamp: now.toISOString(),
+      metadata: metadata || {}
+    };
+
+    recent = [newAct, ...recent.slice(0, 19)];
+    safeStorage.setItem('rr_recent_activities', JSON.stringify(recent));
   }
 
   async search(filters: SearchFilters): Promise<SearchResult> {
@@ -794,7 +882,7 @@ class ClientScholarlyEngine {
 
     let storedCounts: number[] = [];
     try {
-      const raw = localStorage.getItem('rr_weekly_activity');
+      const raw = safeStorage.getItem('rr_weekly_activity');
       if (raw) storedCounts = JSON.parse(raw);
     } catch {}
 
@@ -1102,6 +1190,30 @@ class ClientScholarlyEngine {
     const weeklyActivity = this.getWeeklyActivity();
     const graphData = this.getGraph();
 
+    let recentActivities = [
+      {
+        id: 'act-1',
+        type: 'graph',
+        title: 'Explored Citation Graph for Attention Is All You Need',
+        timestamp: new Date().toISOString(),
+        metadata: { citations: 135400 }
+      },
+      {
+        id: 'act-2',
+        type: 'search',
+        title: 'Queried OpenAlex global catalog for Machine Learning architectures',
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        metadata: { query: 'Machine Learning' }
+      }
+    ];
+    try {
+      const rawRec = safeStorage.getItem('rr_recent_activities');
+      if (rawRec) {
+        const parsed = JSON.parse(rawRec);
+        if (Array.isArray(parsed) && parsed.length > 0) recentActivities = parsed;
+      }
+    } catch {}
+
     return {
       stats: {
         totalPapers: papers.length,
@@ -1114,22 +1226,7 @@ class ClientScholarlyEngine {
         totalReviews: this.getReviews().length
       },
       weeklyActivity,
-      recentActivities: [
-        {
-          id: 'act-1',
-          type: 'graph',
-          title: 'Explored Citation Graph for Attention Is All You Need',
-          timestamp: new Date().toISOString(),
-          metadata: { citations: 135400 }
-        },
-        {
-          id: 'act-2',
-          type: 'search',
-          title: 'Queried OpenAlex global catalog for Machine Learning architectures',
-          timestamp: new Date(Date.now() - 3600000).toISOString(),
-          metadata: { query: 'Machine Learning' }
-        }
-      ],
+      recentActivities,
       recentPapers: papers.slice(0, 5),
       savedCollections: collections,
       trendingTopics: [
@@ -1226,12 +1323,12 @@ class ClientScholarlyEngine {
 
     let existing: LiteratureReview[] = [];
     try {
-      const raw = localStorage.getItem('rr_reviews_cache_v2');
+      const raw = safeStorage.getItem('rr_reviews_cache_v2');
       if (raw) existing = JSON.parse(raw);
     } catch {}
     const updated = [review, ...existing.filter(r => r.id !== review.id)];
     try {
-      localStorage.setItem('rr_reviews_cache_v2', JSON.stringify(updated));
+      safeStorage.setItem('rr_reviews_cache_v2', JSON.stringify(updated));
     } catch {}
 
     return review;
@@ -1239,7 +1336,7 @@ class ClientScholarlyEngine {
 
   getReviews(): LiteratureReview[] {
     try {
-      const raw = localStorage.getItem('rr_reviews_cache_v2');
+      const raw = safeStorage.getItem('rr_reviews_cache_v2');
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -1257,7 +1354,7 @@ class ClientScholarlyEngine {
   deleteReview(id: string): void {
     const reviews = this.getReviews().filter(r => r.id !== id);
     try {
-      localStorage.setItem('rr_reviews_cache_v2', JSON.stringify(reviews));
+      safeStorage.setItem('rr_reviews_cache_v2', JSON.stringify(reviews));
     } catch {}
   }
 
@@ -1335,7 +1432,7 @@ class ClientScholarlyEngine {
 
   getPrismaProjects(): PrismaProject[] {
     try {
-      const raw = localStorage.getItem('rr_prisma_projects');
+      const raw = safeStorage.getItem('rr_prisma_projects');
       if (raw) return JSON.parse(raw);
     } catch {}
     const defaultProject: PrismaProject = {
@@ -1378,7 +1475,7 @@ class ClientScholarlyEngine {
     };
     projects.unshift(newProj);
     try {
-      localStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
+      safeStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
     } catch {}
     return newProj;
   }
@@ -1407,7 +1504,7 @@ class ClientScholarlyEngine {
 
     proj.updatedAt = new Date().toISOString();
     try {
-      localStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
+      safeStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
     } catch {}
     return proj;
   }
@@ -1520,7 +1617,7 @@ class ClientScholarlyEngine {
     const targetPapers = papers.filter(p => paperIds.includes(p.id));
 
     // Optional direct OpenAI integration if custom API key is present
-    const apiKey = userApiKey || (typeof window !== 'undefined' ? localStorage.getItem('rr_user_ai_key') : null);
+    const apiKey = userApiKey || (typeof window !== 'undefined' ? safeStorage.getItem('rr_user_ai_key') : null);
     if (apiKey && apiKey.startsWith('sk-')) {
       try {
         const contextStr = targetPapers.map(p => `Title: ${p.title}\nAuthors: ${p.authors.map(a => a.name).join(', ')}\nAbstract: ${p.abstract}`).join('\n\n');
