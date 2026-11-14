@@ -1,3 +1,7 @@
+// ResearchRabbit AI Platform - API Gateway & Client Engine
+// Architected and Developed by Mohammed Affan
+// Repository: https://github.com/MohammedAffan-786/ResearchRabbitAI
+
 import {
   Paper,
   Collection,

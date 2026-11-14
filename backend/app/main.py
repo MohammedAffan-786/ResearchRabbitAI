@@ -1,3 +1,7 @@
+# ResearchRabbit AI Platform
+# Architected and Developed by Mohammed Affan
+# Repository: https://github.com/MohammedAffan-786/ResearchRabbitAI
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.responses import JSONResponse

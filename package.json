@@ -21,6 +21,10 @@
     "arxiv",
     "prisma"
   ],
-  "author": "ResearchRabbit AI Team",
+  "author": "Mohammed Affan <https://github.com/MohammedAffan-786>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MohammedAffan-786/ResearchRabbitAI.git"
+  },
   "license": "MIT"
 }

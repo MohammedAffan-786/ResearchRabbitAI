@@ -2,6 +2,8 @@
 
 A production-quality academic research intelligence platform combining multi-provider scholarly discovery, interactive citation network exploration, grounded multi-paper RAG synthesis, PRISMA 2020 systematic literature review protocols, and asynchronous document vector ingestion.
 
+Developed by Mohammed Affan (https://github.com/MohammedAffan-786)
+
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React 19](https://img.shields.io/badge/Frontend-React_19_Vite-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![Qdrant](https://img.shields.io/badge/Vector_DB-Qdrant_1.12-DC2626?logo=qdrant&logoColor=white)](https://qdrant.tech)
