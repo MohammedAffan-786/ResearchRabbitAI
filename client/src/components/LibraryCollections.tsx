@@ -16,10 +16,14 @@ import {
   Check,
   Copy,
   Tag,
-  ArrowUpDown
+  ArrowUpDown,
+  X,
+  Globe,
+  Filter
 } from 'lucide-react';
 import { Paper, Collection } from '../../../shared/types';
 import { api } from '../services/api';
+import { useResearchStore } from '../store/useResearchStore';
 
 interface LibraryCollectionsProps {
   collections: Collection[];
@@ -59,9 +63,12 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
   const [newColDesc, setNewColDesc] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchInCol, setSearchInCol] = useState('');
+  const [searchScope, setSearchScope] = useState<'all' | 'title' | 'authors'>('all');
   const [sortBy, setSortBy] = useState<'default' | 'citations' | 'year' | 'title'>('default');
   const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
   const [currentNotes, setCurrentNotes] = useState('');
+
+  const { setActiveTab, setSearchInitialQuery } = useResearchStore();
 
   // Summary & Share modals
   const [collectionSummary, setCollectionSummary] = useState<string | null>(null);
@@ -70,6 +77,53 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
   const [copiedShare, setCopiedShare] = useState(false);
 
   const activeCollection = collections.find(c => c.id === selectedCollectionId) || null;
+
+  // Match relevance evaluator
+  const getMatchInfo = (p: Paper, query: string, scope: 'all' | 'title' | 'authors') => {
+    const q = query.toLowerCase().trim();
+    if (!q) return { matches: true, score: 0, location: null, snippet: '' };
+
+    const title = (p.title || '').toLowerCase();
+    const abstract = (p.abstract || '').toLowerCase();
+    const authorsStr = (p.authors || []).map(a => typeof a === 'string' ? a : (a.name || '')).join(' ').toLowerCase();
+
+    let score = 0;
+    let location: 'title' | 'author' | 'abstract' | null = null;
+    let snippet = '';
+
+    const titleMatches = title.includes(q);
+    const authorMatches = authorsStr.includes(q);
+    const abstractMatches = abstract.includes(q);
+
+    if (titleMatches) {
+      score += 100;
+      if (title.startsWith(q)) score += 50;
+      location = 'title';
+    }
+
+    if (authorMatches && (scope === 'all' || scope === 'authors')) {
+      score += 50;
+      if (!location) location = 'author';
+    }
+
+    if (abstractMatches && scope === 'all') {
+      score += 10;
+      if (!location) {
+        location = 'abstract';
+        const idx = abstract.indexOf(q);
+        const start = Math.max(0, idx - 30);
+        const end = Math.min(abstract.length, idx + q.length + 40);
+        snippet = (start > 0 ? '...' : '') + (p.abstract || '').substring(start, end) + (end < abstract.length ? '...' : '');
+      }
+    }
+
+    let matches = false;
+    if (scope === 'title') matches = titleMatches;
+    else if (scope === 'authors') matches = authorMatches;
+    else matches = titleMatches || authorMatches || abstractMatches;
+
+    return { matches, score, location, snippet };
+  };
 
   // Filter papers
   let displayedPapers = papers;
@@ -80,21 +134,23 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
     displayedPapers = displayedPapers.filter(p => p.readingStatus === statusFilter);
   }
   if (searchInCol.trim()) {
-    const q = searchInCol.toLowerCase();
-    displayedPapers = displayedPapers.filter(p =>
-      p.title.toLowerCase().includes(q) ||
-      (p.abstract && p.abstract.toLowerCase().includes(q)) ||
-      p.authors.some(a => a.name.toLowerCase().includes(q))
-    );
+    displayedPapers = displayedPapers.filter(p => getMatchInfo(p, searchInCol, searchScope).matches);
   }
 
-  // Sort
+  // Sort: when searching with default sort, prioritize relevance score (Title matches first)
   if (sortBy === 'citations') {
     displayedPapers = [...displayedPapers].sort((a, b) => (b.citationCount || 0) - (a.citationCount || 0));
   } else if (sortBy === 'year') {
     displayedPapers = [...displayedPapers].sort((a, b) => (b.year || 0) - (a.year || 0));
   } else if (sortBy === 'title') {
-    displayedPapers = [...displayedPapers].sort((a, b) => a.title.localeCompare(b.title));
+    displayedPapers = [...displayedPapers].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  } else if (searchInCol.trim()) {
+    // Relevance ordering: title matches > author matches > abstract matches
+    displayedPapers = [...displayedPapers].sort((a, b) => {
+      const scoreA = getMatchInfo(a, searchInCol, searchScope).score;
+      const scoreB = getMatchInfo(b, searchInCol, searchScope).score;
+      return scoreB - scoreA;
+    });
   }
 
   const handleCreateSubmit = async (e: React.FormEvent) => {
@@ -347,34 +403,84 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
             </div>
 
             {/* In-Collection Search & Sort Bar */}
-            <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 border-t border-[var(--border)]">
-              <div className="relative flex-1 w-full">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
-                <input
-                  type="text"
-                  placeholder="Search within this collection by keyword, author, or title..."
-                  value={searchInCol}
-                  onChange={(e) => setSearchInCol(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-primary-500"
-                />
+            <div className="space-y-2 pt-2 border-t border-[var(--border)]">
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <div className="relative flex-1 w-full">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
+                  <input
+                    type="text"
+                    placeholder="Search within this collection by keyword, author, or title..."
+                    value={searchInCol}
+                    onChange={(e) => setSearchInCol(e.target.value)}
+                    className="w-full pl-9 pr-8 py-1.5 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:border-primary-500"
+                  />
+                  {searchInCol && (
+                    <button
+                      onClick={() => setSearchInCol('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--foreground)] text-xs p-0.5 cursor-pointer"
+                      title="Clear search"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end flex-wrap">
+                  {/* Scope Selector */}
+                  <div className="flex items-center gap-1">
+                    <span className="text-[11px] text-[var(--muted)] flex items-center gap-1">
+                      <Filter className="w-3 h-3" />
+                      Scope:
+                    </span>
+                    <select
+                      value={searchScope}
+                      onChange={(e) => setSearchScope(e.target.value as any)}
+                      className="px-2 py-1 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-primary-500"
+                    >
+                      <option value="all">All Fields</option>
+                      <option value="title">Title Only</option>
+                      <option value="authors">Authors Only</option>
+                    </select>
+                  </div>
+
+                  {/* Sort Selector */}
+                  <div className="flex items-center gap-1">
+                    <span className="text-[11px] text-[var(--muted)] flex items-center gap-1">
+                      <ArrowUpDown className="w-3 h-3" />
+                      Sort:
+                    </span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="px-2 py-1 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-primary-500"
+                    >
+                      <option value="default">{searchInCol.trim() ? 'Best Match (Relevance)' : 'Default'}</option>
+                      <option value="citations">Most Citations</option>
+                      <option value="year">Newest Year</option>
+                      <option value="title">Title (A-Z)</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center gap-1 shrink-0 w-full sm:w-auto justify-end">
-                <span className="text-[11px] text-[var(--muted)] flex items-center gap-1">
-                  <ArrowUpDown className="w-3 h-3" />
-                  Sort:
-                </span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="px-2 py-1 rounded-lg bg-[var(--canvas)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-primary-500"
-                >
-                  <option value="default">Default</option>
-                  <option value="citations">Most Citations</option>
-                  <option value="year">Newest Year</option>
-                  <option value="title">Title (A-Z)</option>
-                </select>
-              </div>
+              {/* Global search quick link banner when searching */}
+              {searchInCol.trim() && (
+                <div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-lg bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/60 dark:border-indigo-800/60 text-xs">
+                  <span className="text-[11px] text-indigo-700 dark:text-indigo-300 font-medium truncate">
+                    Showing {displayedPapers.length} matching paper(s) in catalog.
+                  </span>
+                  <button
+                    onClick={() => {
+                      setSearchInitialQuery(searchInCol);
+                      setActiveTab('search');
+                    }}
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer shrink-0"
+                  >
+                    <Globe className="w-3 h-3" />
+                    <span>Search 250M+ Global Papers in Discover →</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -444,44 +550,85 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
           {/* Papers Cards */}
           <div className="space-y-3">
             {displayedPapers.length === 0 ? (
-              <div className="text-center py-12 bg-[var(--surface)] rounded-xl border border-dashed border-[var(--border)] p-8 space-y-2">
+              <div className="text-center py-12 bg-[var(--surface)] rounded-xl border border-dashed border-[var(--border)] p-8 space-y-3">
                 <FileText className="w-8 h-8 text-[var(--muted)] mx-auto" />
                 <h3 className="text-sm font-semibold text-[var(--foreground)]">No papers match criteria</h3>
                 <p className="text-xs text-[var(--muted)] max-w-sm mx-auto">
-                  Add papers from Discover, ingest research PDFs, or clear search filters.
+                  {searchInCol.trim()
+                    ? `No publications matching "${searchInCol}" were found in your local catalog.`
+                    : 'Add papers from Discover, ingest research PDFs, or clear search filters.'}
                 </p>
+                {searchInCol.trim() && (
+                  <button
+                    onClick={() => {
+                      setSearchInitialQuery(searchInCol);
+                      setActiveTab('search');
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-600 hover:bg-primary-500 text-white text-xs font-semibold shadow-xs transition cursor-pointer"
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>Search 250M+ Global Papers for "{searchInCol}"</span>
+                  </button>
+                )}
               </div>
             ) : (
-              displayedPapers.map(paper => (
-                <div
-                  key={paper.id}
-                  className="bg-[var(--surface)] rounded-xl p-4 sm:p-5 border border-[var(--border)] hover:border-primary-500/30 transition shadow-xs space-y-2.5"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="px-2 py-0.5 rounded bg-[var(--canvas)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-mono">
-                          {paper.year}
-                        </span>
-                        <span className="text-xs text-[var(--muted)] font-medium">
-                          {paper.venue || 'Peer-Reviewed Literature'}
-                        </span>
-                        <span className="text-xs text-primary-500 font-mono font-medium">
-                          {paper.citationCount.toLocaleString()} citations
-                        </span>
+              displayedPapers.map(paper => {
+                const matchInfo = searchInCol.trim() ? getMatchInfo(paper, searchInCol, searchScope) : null;
+                return (
+                  <div
+                    key={paper.id}
+                    className="bg-[var(--surface)] rounded-xl p-4 sm:p-5 border border-[var(--border)] hover:border-primary-500/30 transition shadow-xs space-y-2.5"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="px-2 py-0.5 rounded bg-[var(--canvas)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-mono">
+                            {paper.year}
+                          </span>
+                          <span className="text-xs text-[var(--muted)] font-medium">
+                            {paper.venue || 'Peer-Reviewed Literature'}
+                          </span>
+                          <span className="text-xs text-primary-500 font-mono font-medium">
+                            {(paper.citationCount || 0).toLocaleString()} citations
+                          </span>
+
+                          {/* Match reason badge */}
+                          {matchInfo && matchInfo.location === 'title' && (
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[10px] font-semibold flex items-center gap-1">
+                              <Check className="w-3 h-3" />
+                              <span>Matched in Title</span>
+                            </span>
+                          )}
+                          {matchInfo && matchInfo.location === 'author' && (
+                            <span className="px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800 text-[10px] font-semibold">
+                              Matched in Author
+                            </span>
+                          )}
+                          {matchInfo && matchInfo.location === 'abstract' && (
+                            <span className="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-[10px] font-medium" title={matchInfo.snippet}>
+                              Matched in Abstract
+                            </span>
+                          )}
+                        </div>
+
+                        <h3
+                          onClick={() => onInspectPaper(paper)}
+                          className="text-base font-semibold text-[var(--foreground)] hover:text-primary-500 cursor-pointer leading-snug transition"
+                        >
+                          {paper.title}
+                        </h3>
+
+                        <p className="text-xs text-[var(--muted)] truncate">
+                          {(paper.authors || []).map(a => typeof a === 'string' ? a : a.name).join(', ')}
+                        </p>
+
+                        {/* Match excerpt snippet when matched in abstract */}
+                        {matchInfo && matchInfo.location === 'abstract' && matchInfo.snippet && (
+                          <p className="text-[11px] text-amber-700 dark:text-amber-300 italic bg-amber-50 dark:bg-amber-950/40 rounded px-2.5 py-1 mt-1 border border-amber-200/60 dark:border-amber-800/60">
+                            Excerpt: "{matchInfo.snippet}"
+                          </p>
+                        )}
                       </div>
-
-                      <h3
-                        onClick={() => onInspectPaper(paper)}
-                        className="text-base font-semibold text-[var(--foreground)] hover:text-primary-500 cursor-pointer leading-snug transition"
-                      >
-                        {paper.title}
-                      </h3>
-
-                      <p className="text-xs text-[var(--muted)] truncate">
-                        {paper.authors.map(a => a.name).join(', ')}
-                      </p>
-                    </div>
 
                     {/* Delete from collection button */}
                     {activeCollection && (
@@ -600,8 +747,9 @@ export const LibraryCollections: React.FC<LibraryCollectionsProps> = ({
                   </div>
 
                 </div>
-              ))
-            )}
+              );
+            })
+          )}
           </div>
 
         </div>
