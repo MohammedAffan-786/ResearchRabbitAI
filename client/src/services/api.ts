@@ -525,17 +525,23 @@ export const api = {
   },
 
   synthesizeLiteratureReview: async (topic: string, paperIds: string[], collectionName?: string): Promise<LiteratureReview> => {
-    const res = await fetch(`${BASE_URL}/ai/synthesize`, {
-      method: 'POST',
-      headers: getHeaders(true),
-      body: JSON.stringify({ topic, paperIds, collectionName })
-    });
-    if (!res.ok) throw new Error('Synthesis failed');
-    return res.json();
+    return safeFetchJson(
+      `${BASE_URL}/ai/synthesize`,
+      {
+        method: 'POST',
+        headers: getHeaders(true),
+        body: JSON.stringify({ topic, paperIds, collectionName })
+      },
+      () => clientScholarlyEngine.synthesizeLiteratureReview(topic, paperIds, collectionName)
+    );
   },
 
   getReviews: async (): Promise<LiteratureReview[]> => {
-    return safeFetchJson(`${BASE_URL}/ai/reviews`, { headers: getHeaders(false) }, () => []);
+    return safeFetchJson(
+      `${BASE_URL}/ai/reviews`, 
+      { headers: getHeaders(false) }, 
+      () => clientScholarlyEngine.getReviews()
+    );
   },
 
   deleteReview: async (id: string): Promise<void> => {
@@ -545,31 +551,40 @@ export const api = {
         headers: getHeaders(false)
       });
     } catch {}
+    clientScholarlyEngine.deleteReview(id);
   },
 
   // PRISMA
   getPrismaProjects: async (): Promise<PrismaProject[]> => {
-    return safeFetchJson(`${BASE_URL}/prisma`, { headers: getHeaders(false) }, () => []);
+    return safeFetchJson(
+      `${BASE_URL}/prisma`, 
+      { headers: getHeaders(false) }, 
+      () => clientScholarlyEngine.getPrismaProjects()
+    );
   },
 
   createPrismaProject: async (data: { title: string; researchQuestion: string }): Promise<PrismaProject> => {
-    const res = await fetch(`${BASE_URL}/prisma`, {
-      method: 'POST',
-      headers: getHeaders(true),
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error('Failed to create PRISMA project');
-    return res.json();
+    return safeFetchJson(
+      `${BASE_URL}/prisma`,
+      {
+        method: 'POST',
+        headers: getHeaders(true),
+        body: JSON.stringify(data)
+      },
+      () => clientScholarlyEngine.createPrismaProject(data)
+    );
   },
 
   screenPaper: async (projectId: string, paperId: string, stage: string, exclusionReason?: string): Promise<PrismaProject> => {
-    const res = await fetch(`${BASE_URL}/prisma/${projectId}/screen`, {
-      method: 'POST',
-      headers: getHeaders(true),
-      body: JSON.stringify({ paperId, stage, exclusionReason })
-    });
-    if (!res.ok) throw new Error('Failed to screen paper');
-    return res.json();
+    return safeFetchJson(
+      `${BASE_URL}/prisma/${projectId}/screen`,
+      {
+        method: 'POST',
+        headers: getHeaders(true),
+        body: JSON.stringify({ paperId, stage, exclusionReason })
+      },
+      () => clientScholarlyEngine.screenPaper(projectId, paperId, stage, exclusionReason)
+    );
   },
 
   // Analytics
@@ -583,23 +598,33 @@ export const api = {
 
   // Export
   exportCitations: async (paperIds: string[], format: 'bibtex' | 'ris' | 'text', style = 'apa'): Promise<any> => {
-    const res = await fetch(`${BASE_URL}/export`, {
-      method: 'POST',
-      headers: getHeaders(true),
-      body: JSON.stringify({ paperIds, format, style })
-    });
-    if (format === 'bibtex' || format === 'ris') {
-      return res.text();
-    }
-    return res.json();
+    try {
+      const res = await fetch(`${BASE_URL}/export`, {
+        method: 'POST',
+        headers: getHeaders(true),
+        body: JSON.stringify({ paperIds, format, style })
+      });
+      if (res.ok) {
+        if (format === 'bibtex' || format === 'ris') {
+          return res.text();
+        }
+        return res.json();
+      }
+    } catch {}
+    return clientScholarlyEngine.exportCitations(paperIds, format, style);
   },
 
   exportReview: async (reviewId: string, format: 'markdown' | 'csv'): Promise<string> => {
-    const res = await fetch(`${BASE_URL}/export/review`, {
-      method: 'POST',
-      headers: getHeaders(true),
-      body: JSON.stringify({ reviewId, format })
-    });
-    return res.text();
+    try {
+      const res = await fetch(`${BASE_URL}/export/review`, {
+        method: 'POST',
+        headers: getHeaders(true),
+        body: JSON.stringify({ reviewId, format })
+      });
+      if (res.ok) {
+        return res.text();
+      }
+    } catch {}
+    return clientScholarlyEngine.exportReview(reviewId, format);
   }
 };

@@ -112,10 +112,10 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
 
     // D3 Force Simulation setup
     const simulation = d3.forceSimulation<GraphNode>(filteredNodes)
-      .force('link', d3.forceLink<GraphNode, any>(filteredLinks).id(d => d.id).distance(d => 110 / (d.weight || 1)))
-      .force('charge', d3.forceManyBody().strength(-350))
+      .force('link', d3.forceLink<GraphNode, any>(filteredLinks).id(d => d.id).distance(d => 135 / (d.weight || 1)))
+      .force('charge', d3.forceManyBody().strength(-600))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius(d => getNodeRadius(d) + 14));
+      .force('collision', d3.forceCollide().radius(d => getNodeRadius(d) + 24));
 
     // Custom layout forces based on layoutMode
     if (layoutMode === 'timeline') {

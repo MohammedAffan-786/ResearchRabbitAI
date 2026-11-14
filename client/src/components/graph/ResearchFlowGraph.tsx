@@ -72,11 +72,11 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
     // Simulation nodes setup
     const simNodes = filteredGraphNodes.map((n, idx) => {
       const angle = (idx / total) * 2 * Math.PI;
-      const initialRadius = Math.max(380, total * 36);
+      const initialRadius = Math.max(420, total * 45);
       return {
         id: n.id,
-        x: 650 + initialRadius * Math.cos(angle),
-        y: 450 + initialRadius * Math.sin(angle),
+        x: 750 + initialRadius * Math.cos(angle),
+        y: 500 + initialRadius * Math.sin(angle),
         raw: n
       };
     });
@@ -93,8 +93,8 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
 
     // D3 force simulation with collision radius to eliminate any card overlap
     const simulation = d3.forceSimulation(simNodes as any)
-      .force('charge', d3.forceManyBody().strength(-1600))
-      .force('center', d3.forceCenter(700, 500))
+      .force('charge', d3.forceManyBody().strength(-2200))
+      .force('center', d3.forceCenter(750, 500))
       .force('collision', d3.forceCollide().radius((d: any) => {
         const isAuthorOrTopic = (
           d.raw.type === 'author' || 
@@ -102,13 +102,13 @@ export const ResearchFlowGraph: React.FC<ResearchFlowGraphProps> = ({
           d.raw.type === 'topic' || 
           d.raw.nodeType === 'topic'
         );
-        return isAuthorOrTopic ? 140 : 235;
+        return isAuthorOrTopic ? 150 : 255;
       }))
-      .force('link', d3.forceLink(simLinks).id((d: any) => d.id).distance(300).strength(0.25))
+      .force('link', d3.forceLink(simLinks).id((d: any) => d.id).distance(320).strength(0.15))
       .stop();
 
     // Run static ticks to settle layout
-    for (let i = 0; i < 110; ++i) simulation.tick();
+    for (let i = 0; i < 140; ++i) simulation.tick();
 
     return simNodes.map((simNode) => {
       const n = simNode.raw;

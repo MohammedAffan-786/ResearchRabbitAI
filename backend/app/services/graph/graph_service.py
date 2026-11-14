@@ -100,22 +100,28 @@ class GraphService:
 
         # Semantic Similarity Links
         if link_type in ["all", "semantic", "similar"]:
+            generic_terms = {"computer science", "artificial intelligence", "preprint", "journal", "academic publication"}
             for i, p1 in enumerate(target_papers):
                 for p2 in target_papers[i + 1:]:
-                    shared_fields = set(p1.fields_of_study or []).intersection(set(p2.fields_of_study or []))
+                    f1 = {str(f).lower() for f in (p1.fields_of_study or []) if str(f).lower() not in generic_terms}
+                    f2 = {str(f).lower() for f in (p2.fields_of_study or []) if str(f).lower() not in generic_terms}
+                    shared_fields = f1.intersection(f2)
                     year_diff = abs(p1.year - p2.year)
                     if shared_fields and year_diff <= 3:
-                        link_id = f"sim-{p1.id}-{p2.id}"
-                        if link_id not in seen_links and f"sim-{p2.id}-{p1.id}" not in seen_links:
-                            seen_links.add(link_id)
-                            links.append({
-                                "id": link_id,
-                                "source": p1.id,
-                                "target": p2.id,
-                                "type": "semantic",
-                                "label": f"Similar ({list(shared_fields)[0]})",
-                                "strength": 0.6
-                            })
+                        p1_sim_count = sum(1 for l in links if l.get("type") == "semantic" and (l["source"] == p1.id or l["target"] == p1.id))
+                        p2_sim_count = sum(1 for l in links if l.get("type") == "semantic" and (l["source"] == p2.id or l["target"] == p2.id))
+                        if p1_sim_count < 2 and p2_sim_count < 2:
+                            link_id = f"sim-{p1.id}-{p2.id}"
+                            if link_id not in seen_links and f"sim-{p2.id}-{p1.id}" not in seen_links:
+                                seen_links.add(link_id)
+                                links.append({
+                                    "id": link_id,
+                                    "source": p1.id,
+                                    "target": p2.id,
+                                    "type": "semantic",
+                                    "label": f"Similar ({list(shared_fields)[0].title()})",
+                                    "strength": 0.6
+                                })
 
         # Author and Topic Entities
         if include_entities:

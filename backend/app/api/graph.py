@@ -129,10 +129,21 @@ def get_graph(
 
             # Semantic similarity
             if linkType in ["all", "semantic"]:
-                f1_set = {str(f).lower() for f in (p1.fields_of_study or [])}
-                f2_set = {str(f).lower() for f in (p2.fields_of_study or [])}
+                generic_terms = {"computer science", "artificial intelligence", "preprint", "journal", "academic publication"}
+                f1_set = {str(f).lower() for f in (p1.fields_of_study or []) if str(f).lower() not in generic_terms}
+                f2_set = {str(f).lower() for f in (p2.fields_of_study or []) if str(f).lower() not in generic_terms}
                 common_fields = f1_set.intersection(f2_set)
-                if len(common_fields) >= 2 or (p1.year == p2.year and len(common_fields) >= 1):
+                
+                # Check specific title keywords
+                p1_words = {w for w in p1.title.lower().split() if len(w) > 4 and w not in ["model", "models", "using", "based", "neural", "learning"]}
+                p2_words = {w for w in p2.title.lower().split() if len(w) > 4 and w not in ["model", "models", "using", "based", "neural", "learning"]}
+                shared_words = p1_words.intersection(p2_words)
+
+                p1_sim_count = sum(1 for l in links if l.get("type") == "semantic_similarity" and (l["source"] == p1.id or l["target"] == p1.id))
+                p2_sim_count = sum(1 for l in links if l.get("type") == "semantic_similarity" and (l["source"] == p2.id or l["target"] == p2.id))
+
+                if (common_fields or len(shared_words) >= 2) and p1_sim_count < 2 and p2_sim_count < 2:
+                    label = list(common_fields)[0].title() if common_fields else "Semantic Similarity"
                     links.append({
                         "id": f"link-{p1.id}-{p2.id}-sim",
                         "source": p1.id,
@@ -140,7 +151,7 @@ def get_graph(
                         "type": "semantic_similarity",
                         "isVerifiedCitation": False,
                         "weight": 1.2,
-                        "label": "Semantic Similarity"
+                        "label": label
                     })
 
     # Optional Entity nodes: Topics

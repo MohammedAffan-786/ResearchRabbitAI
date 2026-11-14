@@ -10,7 +10,10 @@ import {
   CitationItem,
   DashboardOverview,
   LiteratureReview,
-  PrismaProject
+  PrismaProject,
+  PrismaRecord,
+  SynthesisRow,
+  WeeklyActivityDay
 } from '../../../shared/types';
 
 export const INITIAL_SEED_PAPERS: Paper[] = [
@@ -480,60 +483,273 @@ class ClientScholarlyEngine {
     };
   }
 
+  getWeeklyActivity(): WeeklyActivityDay[] {
+    const days = [
+      { code: 'M', name: 'Monday' },
+      { code: 'T', name: 'Tuesday' },
+      { code: 'W', name: 'Wednesday' },
+      { code: 'T', name: 'Thursday' },
+      { code: 'F', name: 'Friday' },
+      { code: 'S', name: 'Saturday' },
+      { code: 'S', name: 'Sunday' }
+    ];
+
+    const now = new Date();
+    const currentDayIdx = (now.getDay() + 6) % 7; // 0 for Mon, 6 for Sun
+
+    let storedCounts: number[] = [];
+    try {
+      const raw = localStorage.getItem('rr_weekly_activity');
+      if (raw) storedCounts = JSON.parse(raw);
+    } catch {}
+
+    const defaultPattern = [18, 29, 44, 38, 56, 68, 14];
+
+    return days.map((d, idx) => {
+      const diffFromToday = idx - currentDayIdx;
+      const targetDate = new Date(now);
+      targetDate.setDate(now.getDate() + diffFromToday);
+      const isToday = idx === currentDayIdx;
+      const isPast = idx <= currentDayIdx;
+
+      const count = storedCounts[idx] !== undefined 
+        ? storedCounts[idx] 
+        : (isPast ? defaultPattern[idx] : 0);
+
+      const dateStr = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const actionWord = count === 1 ? 'action' : 'actions';
+
+      return {
+        day: d.code,
+        dayName: d.name,
+        date: dateStr,
+        count,
+        isToday,
+        label: isToday 
+          ? `Today (${d.name}, ${dateStr}): ${count} research ${actionWord}`
+          : `${d.name} (${dateStr}): ${count} research ${actionWord}`
+      };
+    });
+  }
+
   getGraph(seeds?: string[]): GraphData {
     const { papers } = this.getPapers();
-    const targetPapers = seeds && seeds.length > 0 
-      ? papers.filter(p => seeds.includes(p.id))
-      : papers;
+    let targetPapers: Paper[] = [];
 
-    const nodes: GraphNode[] = targetPapers.map((p, idx) => ({
+    if (seeds && seeds.length > 0) {
+      const seedPapers = papers.filter(p => seeds.includes(p.id));
+      const seedMap = new Map(seedPapers.map(p => [p.id, p]));
+      targetPapers = [...seedPapers];
+
+      // Add referenced papers from seed papers
+      seedPapers.forEach(sp => {
+        (sp.references || []).forEach(refId => {
+          const refPaper = papers.find(p => p.id === refId);
+          if (refPaper && !seedMap.has(refPaper.id)) {
+            seedMap.set(refPaper.id, refPaper);
+            targetPapers.push(refPaper);
+          }
+        });
+      });
+
+      // If still fewer than 10, fill with top-cited papers
+      if (targetPapers.length < 10) {
+        const remaining = [...papers]
+          .sort((a, b) => (b.citationCount || 0) - (a.citationCount || 0))
+          .filter(p => !seedMap.has(p.id));
+        for (const rem of remaining) {
+          if (targetPapers.length >= 12) break;
+          seedMap.set(rem.id, rem);
+          targetPapers.push(rem);
+        }
+      }
+    } else {
+      // No seeds specified: select top 12-14 focal papers by citation count
+      targetPapers = [...papers]
+        .sort((a, b) => (b.citationCount || 0) - (a.citationCount || 0))
+        .slice(0, 14);
+    }
+
+    const seedIdSet = new Set(seeds || (targetPapers.length > 0 ? [targetPapers[0].id] : []));
+
+    // Helper to determine field cluster
+    const getFieldGroup = (fields: string[] = [], title: string = ''): number => {
+      const combined = [...fields, title].join(' ').toLowerCase();
+      if (combined.includes('nlp') || combined.includes('transformer') || combined.includes('attention') || combined.includes('language') || combined.includes('bert') || combined.includes('gpt')) return 1;
+      if (combined.includes('vision') || combined.includes('image') || combined.includes('diffusion')) return 2;
+      if (combined.includes('bio') || combined.includes('crispr') || combined.includes('protein') || combined.includes('gene') || combined.includes('medicine')) return 3;
+      if (combined.includes('quantum') || combined.includes('physics') || combined.includes('qubit')) return 4;
+      if (combined.includes('reinforce') || combined.includes('feedback') || combined.includes('rlhf') || combined.includes('align')) return 5;
+      return 6; // Systems, Hardware, Power Electronics, etc.
+    };
+
+    const nodes: GraphNode[] = targetPapers.map((p) => ({
       id: p.id,
       title: p.title,
       authors: p.authors.map(a => a.name),
       year: p.year,
       citations: p.citationCount,
       fields: p.fieldsOfStudy || ['Computer Science'],
-      isSeed: seeds ? seeds.includes(p.id) : idx === 0,
-      venue: p.venue || 'Journal',
-      group: (idx % 4) + 1
+      isSeed: seedIdSet.has(p.id),
+      nodeType: 'paper',
+      venue: p.venue || 'Academic Journal',
+      group: getFieldGroup(p.fieldsOfStudy, p.title)
     }));
 
-    const links: GraphLink[] = [];
-    const nodeMap = new Map(nodes.map(n => [n.id, n]));
-
+    // Author entity nodes for seminal authors (e.g. >15,000 cites in target papers)
+    const authorCitations = new Map<string, { author: string; citations: number; paperIds: string[] }>();
     targetPapers.forEach(p => {
-      // Citations
+      p.authors.forEach(a => {
+        const name = a.name?.trim();
+        if (name && !name.toLowerCase().includes('et al') && name.length > 3) {
+          const cur = authorCitations.get(name) || { author: name, citations: 0, paperIds: [] };
+          cur.citations = Math.max(cur.citations, p.citationCount || 0);
+          cur.paperIds.push(p.id);
+          authorCitations.set(name, cur);
+        }
+      });
+    });
+
+    const prominentAuthors = Array.from(authorCitations.values())
+      .filter(a => a.citations >= 15000 && a.paperIds.length >= 1)
+      .sort((a, b) => b.citations - a.citations)
+      .slice(0, 4);
+
+    const authorNodes: GraphNode[] = prominentAuthors.map((pa) => {
+      const slug = pa.author.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return {
+        id: `author-${slug}`,
+        title: pa.author,
+        authors: [pa.author],
+        year: 2024,
+        citations: pa.citations,
+        fields: ['Author Collaboration'],
+        isSeed: false,
+        nodeType: 'author',
+        venue: 'Scholarly Researcher',
+        group: 3
+      };
+    });
+
+    nodes.push(...authorNodes);
+
+    const links: GraphLink[] = [];
+    const linkSet = new Set<string>();
+
+    const addLink = (l: GraphLink) => {
+      const s = typeof l.source === 'object' ? (l.source as any).id : l.source;
+      const t = typeof l.target === 'object' ? (l.target as any).id : l.target;
+      const key1 = `${s}->${t}`;
+      const key2 = `${t}->${s}`;
+      if (linkSet.has(key1) || linkSet.has(key2)) return;
+      linkSet.add(key1);
+      links.push(l);
+    };
+
+    // 1. Author-to-paper links (Solid Green)
+    prominentAuthors.forEach(pa => {
+      const slug = pa.author.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      pa.paperIds.forEach(pid => {
+        addLink({
+          id: `link-author-${slug}-${pid}`,
+          source: `author-${slug}`,
+          target: pid,
+          type: 'author_collaboration',
+          isVerifiedCitation: false,
+          weight: 2.0,
+          label: 'Authored'
+        });
+      });
+    });
+
+    // 2. Direct citations between papers (Solid Blue)
+    const nodeMap = new Map(targetPapers.map(p => [p.id, p]));
+    targetPapers.forEach(p => {
       if (p.references) {
         p.references.forEach(refId => {
           if (nodeMap.has(refId) && refId !== p.id) {
-            links.push({
+            addLink({
+              id: `link-${p.id}-${refId}-cite`,
               source: p.id,
               target: refId,
               type: 'cites',
-              weight: 2,
+              weight: 2.5,
               isVerifiedCitation: true,
-              label: 'Cites'
+              label: 'Verified Citation'
             });
           }
         });
       }
-
-      // Semantic similarities
-      nodes.forEach(other => {
-        if (other.id !== p.id) {
-          const sharedFields = (p.fieldsOfStudy || []).filter(f => other.fields.includes(f));
-          if (sharedFields.length >= 2) {
-            links.push({
-              source: p.id,
-              target: other.id,
-              type: 'semantic_similarity',
-              weight: 1,
-              label: sharedFields[0]
-            });
-          }
-        }
-      });
     });
+
+    // 3. Shared authorship between papers (Solid Green)
+    for (let i = 0; i < targetPapers.length; i++) {
+      const p1 = targetPapers[i];
+      const a1 = new Set(p1.authors.map(a => a.name.toLowerCase().trim()).filter(n => n.length > 3));
+      for (let j = i + 1; j < targetPapers.length; j++) {
+        const p2 = targetPapers[j];
+        const shared = p2.authors.find(a => a1.has(a.name.toLowerCase().trim()));
+        if (shared) {
+          addLink({
+            id: `link-${p1.id}-${p2.id}-auth`,
+            source: p1.id,
+            target: p2.id,
+            type: 'author_collaboration',
+            weight: 2.0,
+            label: `Shared Author: ${shared.name}`
+          });
+        }
+      }
+    }
+
+    // 4. Semantic similarity (Dashed Purple): Strict, capped to at most 2 per paper
+    const stopWords = new Set(['the', 'of', 'and', 'in', 'to', 'a', 'for', 'on', 'with', 'as', 'by', 'an', 'at', 'from', 'is', 'are', 'was', 'were', 'it', 'its', 'that', 'this', 'these', 'those', 'models', 'model', 'using', 'based', 'via', 'approach', 'study', 'analysis', 'towards', 'new']);
+    const getTokens = (p: Paper): Set<string> => {
+      const words = `${p.title} ${(p.tags || []).join(' ')}`
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .filter(w => w.length > 3 && !stopWords.has(w));
+      return new Set(words);
+    };
+
+    const paperTokens = new Map(targetPapers.map(p => [p.id, getTokens(p)]));
+    const semanticCounts = new Map<string, number>();
+
+    for (let i = 0; i < targetPapers.length; i++) {
+      const p1 = targetPapers[i];
+      const tok1 = paperTokens.get(p1.id) || new Set();
+
+      for (let j = i + 1; j < targetPapers.length; j++) {
+        const p2 = targetPapers[j];
+        if ((semanticCounts.get(p1.id) || 0) >= 2 || (semanticCounts.get(p2.id) || 0) >= 2) continue;
+
+        // Skip if already linked
+        const key1 = `${p1.id}->${p2.id}`;
+        const key2 = `${p2.id}->${p1.id}`;
+        if (linkSet.has(key1) || linkSet.has(key2)) continue;
+
+        const tok2 = paperTokens.get(p2.id) || new Set();
+        const intersection = Array.from(tok1).filter(t => tok2.has(t));
+        
+        // Specific shared tags (e.g. transformer, rag, diffusion, crispr, rlhf)
+        const specificTags = (p1.tags || []).filter(t => (p2.tags || []).includes(t));
+
+        if (specificTags.length > 0 || intersection.length >= 2) {
+          const label = specificTags[0] || (intersection[0] ? intersection[0].charAt(0).toUpperCase() + intersection[0].slice(1) : 'Semantic Similarity');
+          addLink({
+            id: `link-${p1.id}-${p2.id}-sim`,
+            source: p1.id,
+            target: p2.id,
+            type: 'semantic_similarity',
+            weight: 1.2,
+            label
+          });
+          semanticCounts.set(p1.id, (semanticCounts.get(p1.id) || 0) + 1);
+          semanticCounts.set(p2.id, (semanticCounts.get(p2.id) || 0) + 1);
+        }
+      }
+    }
 
     return {
       nodes,
@@ -588,18 +804,21 @@ class ClientScholarlyEngine {
     const { papers } = this.getPapers();
     const collections = this.getCollections();
     const totalCitations = papers.reduce((acc, p) => acc + (p.citationCount || 0), 0);
+    const weeklyActivity = this.getWeeklyActivity();
+    const graphData = this.getGraph();
 
     return {
       stats: {
         totalPapers: papers.length,
         totalCitations,
         totalAuthors: 24,
-        graphConnections: 39,
+        graphConnections: graphData.links.length,
         openAccessCount: papers.filter(p => !!p.openAccessPdfUrl).length,
         uploadedCount: 0,
         totalCollections: collections.length,
-        totalReviews: 2
+        totalReviews: this.getReviews().length
       },
+      weeklyActivity,
       recentActivities: [
         {
           id: 'act-1',
@@ -628,6 +847,272 @@ class ClientScholarlyEngine {
         recommendationReason: 'Seminal foundation work relevant to your research focus'
       }))
     };
+  }
+
+  synthesizeLiteratureReview(topic: string, paperIds: string[], collectionName?: string): LiteratureReview {
+    const { papers } = this.getPapers();
+    const targetPapers = papers.filter(p => paperIds.includes(p.id));
+    const effectivePapers = targetPapers.length > 0 ? targetPapers : papers.slice(0, 4);
+
+    const citeItems: CitationItem[] = effectivePapers.map((p) => ({
+      paperId: p.id,
+      citeKey: `${p.authors[0]?.name.split(' ').pop() || 'Scholar'}${p.year}`,
+      title: p.title,
+      authors: p.authors.map(a => a.name).join(', '),
+      year: p.year,
+      quoteSnippet: p.tldr || (p.abstract.substring(0, 160) + '...'),
+      confidence: 0.96
+    }));
+
+    const matrixRows: SynthesisRow[] = effectivePapers.map(p => {
+      const authorStr = p.authors.map(a => a.name).slice(0, 2).join(', ');
+      const fieldStr = (p.fieldsOfStudy && p.fieldsOfStudy[0]) || 'Machine Learning';
+      return {
+        paperId: p.id,
+        paperTitle: p.title,
+        authors: authorStr,
+        year: p.year,
+        objective: `Investigate and formalize ${fieldStr} methodologies within ${p.title}.`,
+        methodology: 'Empirical benchmark evaluation, neural scaling, and systematic qualitative comparison',
+        datasetOrSample: 'Standard scholarly benchmark corpora (WMT, GLUE, ImageNet, arXiv)',
+        keyFindings: p.tldr || p.abstract.substring(0, 220),
+        limitations: 'High hardware accelerator compute requirements and domain distribution sensitivity',
+        gapsIdentified: 'Sub-quadratic context scaling, real-time verifiable grounding, and low-resource adaptation'
+      };
+    });
+
+    const leadPaper = effectivePapers[0];
+    const leadAuthor = leadPaper?.authors[0]?.name || 'Primary Investigator';
+    const leadYear = leadPaper?.year || 2023;
+
+    const review: LiteratureReview = {
+      id: `rev-${Date.now()}`,
+      title: `Systematic Literature Review: ${topic}`,
+      topic,
+      paperIds: effectivePapers.map(p => p.id),
+      executiveSummary: `This systematic literature review evaluates ${effectivePapers.length} peer-reviewed studies examining ${topic}. Across the investigated corpus, recent developments demonstrate a distinct paradigm transition toward scalable foundational architectures, unified attention-driven representations, and rigorous empirical validation. The synthesized findings establish consistent gains across standardized evaluation suites while pinpointing critical trade-offs in computational latency, training efficiency, and external verifiability.`,
+      sections: [
+        {
+          heading: '1. Introduction and Systematic Background',
+          content: `The evolution of ${topic} represents a foundational progression in modern scientific computing. Traditional methodologies relied on rigid algorithmic heuristics and constrained feature representations. Seminal contributions, notably ${leadAuthor} (${leadYear}), demonstrate that unified representational learning dramatically enhances sample efficiency and inductive bias across diverse problem formulations.`,
+          citations: citeItems.slice(0, 2)
+        },
+        {
+          heading: '2. Methodological Paradigms and Architecture',
+          content: `A central consensus across the analyzed literature is the deliberate elimination of recurrence and sequential dependencies to maximize hardware acceleration. By leveraging parallelized self-attention and bidirectional parameter conditioning, modern architectures capture long-range semantic dependencies with minimal information loss.`,
+          citations: citeItems.slice(0, 3)
+        },
+        {
+          heading: '3. Comparative Empirical Findings and Consensus',
+          content: `Quantitative benchmarking across the reviewed papers highlights a strong correlation between parameter capacity, dataset diversity, and downstream generalization. Nevertheless, empirical evidence indicates diminishing marginal returns without explicit non-parametric retrieval grounding or structured evidence verification.`,
+          citations: citeItems
+        },
+        {
+          heading: '4. Critical Limitations and Methodological Gaps',
+          content: `Four fundamental limitations remain prominent in the current literature: (1) Quadratic computational complexity relative to sequence length; (2) Susceptibility to hallucinations and domain distribution drift; (3) High energy and compute costs associated with large-scale pre-training; and (4) The necessity for formal interpretability in mission-critical applications.`,
+          citations: citeItems.slice(0, 4)
+        },
+        {
+          heading: '5. Conclusions and Future Research Directions',
+          content: `Future research trajectories will concentrate on sub-quadratic linear attention, state-space representations, real-time grounded retrieval-augmented generation, and automated alignment protocols. The synthesized evidence offers a rigorous framework for advancing next-generation research in this domain.`,
+          citations: citeItems
+        }
+      ],
+      synthesisMatrix: matrixRows,
+      prismaStats: {
+        identified: effectivePapers.length * 4,
+        screened: effectivePapers.length * 3,
+        eligible: effectivePapers.length * 2,
+        included: effectivePapers.length
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const existing = this.getReviews();
+    const updated = [review, ...existing.filter(r => r.id !== review.id)];
+    try {
+      localStorage.setItem('rr_reviews_cache_v2', JSON.stringify(updated));
+    } catch {}
+
+    return review;
+  }
+
+  getReviews(): LiteratureReview[] {
+    try {
+      const raw = localStorage.getItem('rr_reviews_cache_v2');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+
+    // Seed initial review
+    const initial = [
+      this.synthesizeLiteratureReview(
+        'Attention Mechanisms and Modern Neural Architectures',
+        ['paper-vaswani-2017', 'paper-devlin-2018', 'paper-brown-2020']
+      )
+    ];
+    return initial;
+  }
+
+  deleteReview(id: string): void {
+    const reviews = this.getReviews().filter(r => r.id !== id);
+    try {
+      localStorage.setItem('rr_reviews_cache_v2', JSON.stringify(reviews));
+    } catch {}
+  }
+
+  exportReview(reviewId: string, format: 'markdown' | 'csv'): string {
+    const review = this.getReviews().find(r => r.id === reviewId);
+    if (!review) return '';
+
+    if (format === 'csv') {
+      const headers = ['Paper Title', 'Authors', 'Year', 'Objective', 'Methodology', 'Key Findings', 'Limitations'];
+      const rows = review.synthesisMatrix.map(r => [
+        `"${r.paperTitle.replace(/"/g, '""')}"`,
+        `"${r.authors.replace(/"/g, '""')}"`,
+        r.year,
+        `"${r.objective.replace(/"/g, '""')}"`,
+        `"${r.methodology.replace(/"/g, '""')}"`,
+        `"${r.keyFindings.replace(/"/g, '""')}"`,
+        `"${r.limitations.replace(/"/g, '""')}"`
+      ].join(','));
+      return [headers.join(','), ...rows].join('\n');
+    }
+
+    // Markdown
+    let md = `# ${review.title}\n\n`;
+    md += `Date: ${new Date(review.createdAt).toLocaleDateString()}\n`;
+    md += `Core Topic: ${review.topic}\n`;
+    md += `Evaluated Studies: ${review.paperIds.length}\n\n`;
+    md += `## Executive Summary\n\n${review.executiveSummary}\n\n`;
+    review.sections.forEach(sec => {
+      md += `## ${sec.heading}\n\n${sec.content}\n\n`;
+    });
+    md += `## Evidence Extraction Matrix\n\n`;
+    md += `| Paper | Year | Objective | Methodology | Key Findings | Limitations |\n`;
+    md += `| --- | --- | --- | --- | --- | --- |\n`;
+    review.synthesisMatrix.forEach(r => {
+      md += `| ${r.paperTitle} | ${r.year} | ${r.objective} | ${r.methodology} | ${r.keyFindings} | ${r.limitations} |\n`;
+    });
+    return md;
+  }
+
+  exportCitations(paperIds: string[], format: 'bibtex' | 'ris' | 'text', style = 'apa'): string {
+    const { papers } = this.getPapers();
+    const target = papers.filter(p => paperIds.includes(p.id));
+    const effective = target.length > 0 ? target : papers.slice(0, 3);
+
+    if (format === 'bibtex') {
+      return effective.map(p => {
+        const firstAuthor = p.authors[0]?.name.split(' ').pop() || 'Scholar';
+        const key = `${firstAuthor.toLowerCase()}${p.year}`;
+        const authorNames = p.authors.map(a => a.name).join(' and ');
+        return `@article{${key},\n  author = {${authorNames}},\n  title = {${p.title}},\n  journal = {${p.venue || 'Academic Journal'}},\n  year = {${p.year}},\n  doi = {${p.doi || ''}}\n}`;
+      }).join('\n\n');
+    }
+
+    if (format === 'ris') {
+      return effective.map(p => {
+        const lines = [
+          'TY  - JOUR',
+          `TI  - ${p.title}`,
+          ...p.authors.map(a => `AU  - ${a.name}`),
+          `PY  - ${p.year}`,
+          `JO  - ${p.venue || 'Academic Journal'}`,
+          `DO  - ${p.doi || ''}`,
+          'ER  - '
+        ];
+        return lines.join('\n');
+      }).join('\n\n');
+    }
+
+    // Text APA format
+    return effective.map(p => {
+      const authors = p.authors.map(a => a.name).join(', ');
+      return `${authors} (${p.year}). ${p.title}. ${p.venue || 'Scholarly Publication'}. ${p.doi ? 'https://doi.org/' + p.doi : ''}`;
+    }).join('\n\n');
+  }
+
+  getPrismaProjects(): PrismaProject[] {
+    try {
+      const raw = localStorage.getItem('rr_prisma_projects');
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    const defaultProject: PrismaProject = {
+      id: 'prisma-default-1',
+      title: 'Neural Language Architectures and Transformer Scaling',
+      researchQuestion: 'How do self-attention mechanisms compare to recurrent models in long-context language processing?',
+      inclusionCriteria: ['Peer-reviewed publication', 'Empirical benchmark evaluation', 'Open access availability'],
+      exclusionCriteria: ['Non-English preprints', 'Pure theoretical notes without validation'],
+      records: [
+        {
+          paperId: 'paper-vaswani-2017',
+          paperTitle: 'Attention Is All You Need',
+          stage: 'included',
+          timestamp: new Date().toISOString()
+        },
+        {
+          paperId: 'paper-devlin-2018',
+          paperTitle: 'BERT: Pre-training of Deep Bidirectional Transformers',
+          stage: 'included',
+          timestamp: new Date().toISOString()
+        }
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    return [defaultProject];
+  }
+
+  createPrismaProject(data: { title: string; researchQuestion: string }): PrismaProject {
+    const projects = this.getPrismaProjects();
+    const newProj: PrismaProject = {
+      id: `prisma-${Date.now()}`,
+      title: data.title,
+      researchQuestion: data.researchQuestion,
+      inclusionCriteria: ['Peer-reviewed publication', 'Empirical validation'],
+      exclusionCriteria: ['Incomplete methodology'],
+      records: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    projects.unshift(newProj);
+    try {
+      localStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
+    } catch {}
+    return newProj;
+  }
+
+  screenPaper(projectId: string, paperId: string, stage: string, exclusionReason?: string): PrismaProject {
+    const projects = this.getPrismaProjects();
+    const proj = projects.find(p => p.id === projectId) || projects[0];
+    const { papers } = this.getPapers();
+    const paper = papers.find(p => p.id === paperId);
+    
+    const validStage = (stage as PrismaRecord['stage']) || 'screened_in';
+    const existingIdx = proj.records.findIndex(r => r.paperId === paperId);
+    const newRecord: PrismaRecord = {
+      paperId,
+      paperTitle: paper?.title || 'Academic Paper',
+      stage: validStage,
+      exclusionReason,
+      timestamp: new Date().toISOString()
+    };
+
+    if (existingIdx >= 0) {
+      proj.records[existingIdx] = newRecord;
+    } else {
+      proj.records.push(newRecord);
+    }
+
+    proj.updatedAt = new Date().toISOString();
+    try {
+      localStorage.setItem('rr_prisma_projects', JSON.stringify(projects));
+    } catch {}
+    return proj;
   }
 
   getAnalytics() {
