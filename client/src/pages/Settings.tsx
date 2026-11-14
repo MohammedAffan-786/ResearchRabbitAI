@@ -536,6 +536,39 @@ ollama list`}
           </div>
         </div>
 
+        {/* Platform Attribution & Developer Information */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#161c2c] border border-slate-200/90 dark:border-white/10 shadow-2xs space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-violet-600 text-white flex items-center justify-center font-bold text-sm shadow-xs border border-indigo-400/20">
+              🐇
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                ResearchRabbit AI Platform
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Academic Discovery & Citation Intelligence Engine
+              </p>
+            </div>
+          </div>
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-slate-600 dark:text-slate-400">
+              Platform Architect & Developer:{' '}
+              <a
+                href="https://github.com/MohammedAffan-786"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+              >
+                Mohammed Affan
+              </a>
+            </span>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500">
+              v1.0.0 Enterprise Edition
+            </span>
+          </div>
+        </div>
+
         {/* Submit */}
         <div className="flex justify-end">
           <Button type="submit" variant="primary" size="md">

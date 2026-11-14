@@ -216,7 +216,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Sign In / User Profile Section */}
-      <div className="p-3 border-t border-[#1b2234] bg-[#0c101c] shrink-0">
+      <div className="p-3 border-t border-[#1b2234] bg-[#0c101c] shrink-0 space-y-2">
         {user ? (
           <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} gap-2 px-2.5 py-2 rounded-xl bg-[#141b2c] border border-[#1e273d]`}>
             <div className="flex items-center gap-2.5 min-w-0">
@@ -253,6 +253,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <User className="w-4 h-4 text-indigo-200 group-hover:scale-110 transition-transform" />
             {!isCollapsed && <span>Sign In</span>}
           </button>
+        )}
+
+        {/* Developer Attribution */}
+        {!isCollapsed ? (
+          <div className="pt-1 text-center">
+            <a
+              href="https://github.com/MohammedAffan-786"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-indigo-400 transition-colors"
+            >
+              <span>Developed by</span>
+              <span className="font-semibold text-slate-200 hover:text-indigo-300">Mohammed Affan</span>
+            </a>
+          </div>
+        ) : (
+          <div className="flex justify-center" title="Developed by Mohammed Affan">
+            <span className="text-[10px] text-slate-400 font-mono">MA</span>
+          </div>
         )}
       </div>
     </aside>

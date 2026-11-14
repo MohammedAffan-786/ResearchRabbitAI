@@ -241,6 +241,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               );
             })}
+
+            {/* Mobile Developer Attribution */}
+            <div className="pt-2 pb-1 text-center border-t border-slate-200/60 dark:border-slate-800/60">
+              <a
+                href="https://github.com/MohammedAffan-786"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+              >
+                <span>Developed by</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">Mohammed Affan</span>
+              </a>
+            </div>
           </div>
         )}
       </div>

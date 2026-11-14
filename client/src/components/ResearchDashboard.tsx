@@ -421,7 +421,17 @@ export const ResearchDashboard: React.FC<ResearchDashboardProps> = ({ onOpenPape
 
       {/* 7. FOOTER */}
       <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400 dark:text-slate-500">
-        <div>ResearchRabbit AI • Open research, connected knowledge.</div>
+        <div>
+          ResearchRabbit AI • Developed by{' '}
+          <a
+            href="https://github.com/MohammedAffan-786"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 underline decoration-slate-300 dark:decoration-slate-700 underline-offset-2"
+          >
+            Mohammed Affan
+          </a>
+        </div>
         <div className="flex items-center gap-1.5 font-medium">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           <span>Local-first architecture</span>
