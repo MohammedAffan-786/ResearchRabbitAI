@@ -110,6 +110,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ResearchRabbit
                 </span>
               </div>
+              <button
+                onClick={() => {
+                  setActiveTab('search');
+                  const main = document.querySelector('main');
+                  if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
+                  setTimeout(() => {
+                    const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search"]');
+                    if (searchInput) searchInput.focus();
+                  }, 100);
+                }}
+                className="p-1 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ml-0.5 cursor-pointer"
+                title="Search literature"
+              >
+                <Search className="w-3.5 h-3.5" />
+              </button>
             </div>
 
             {/* Desktop Breadcrumb: Replaces redundant tabs with clean workspace context */}
@@ -118,22 +133,37 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {currentTab.section}
               </span>
               <span className="text-slate-300 dark:text-slate-700">/</span>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 font-semibold border border-slate-200/50 dark:border-slate-700/50 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('search');
+                  const main = document.querySelector('main');
+                  if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
+                  setTimeout(() => {
+                    const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search"]');
+                    if (searchInput) searchInput.focus();
+                  }, 100);
+                }}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 dark:bg-slate-800/60 dark:hover:bg-indigo-950/40 text-slate-900 hover:text-indigo-600 dark:text-slate-100 dark:hover:text-indigo-400 font-semibold border border-slate-200/50 hover:border-indigo-300 dark:border-slate-700/50 dark:hover:border-indigo-700/50 shadow-2xs transition-all cursor-pointer"
+                title="Click to search literature"
+              >
                 <ActiveIcon className="w-3.5 h-3.5 text-indigo-500" />
                 <span>{currentTab.label}</span>
                 <span className="sr-only">Discover</span>
-              </div>
+              </button>
             </div>
           </div>
 
-          {/* CENTER: Real Working Omni-Search Input */}
-          <div className="hidden xl:flex flex-1 max-w-md mx-auto">
+          {/* CENTER: Real Working Omni-Search Input - Visible across all desktop & laptop screens */}
+          <div className="hidden md:flex flex-1 max-w-md mx-2 lg:mx-4">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 if (navSearchQuery.trim()) {
                   setSearchInitialQuery(navSearchQuery.trim());
                   setActiveTab('search');
+                  const main = document.querySelector('main');
+                  if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
               className="w-full relative flex items-center group"
