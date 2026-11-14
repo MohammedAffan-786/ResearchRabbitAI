@@ -64,8 +64,7 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 p-2 sm:px-3 bg-white/70 dark:bg-[#161b26]/70 backdrop-blur-md rounded-xl border border-slate-200/80 dark:border-white/10 shadow-2xs">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="font-medium text-slate-700 dark:text-slate-300">
-            Showing <strong className="font-bold text-slate-900 dark:text-white">{papers.length}</strong>
-            {total && total > papers.length ? ` of ${total.toLocaleString()}` : ''} verified scholarly papers
+            Found <strong className="font-bold text-slate-900 dark:text-white">{papers.length}</strong> relevant papers searched across <span className="font-semibold text-indigo-600 dark:text-indigo-400">250M+ global works</span>
           </span>
 
           {typeof queryTimeMs === 'number' && (
