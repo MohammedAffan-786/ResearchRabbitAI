@@ -214,8 +214,57 @@ export const INITIAL_SEED_PAPERS: Paper[] = [
     source: "local",
     readingStatus: "completed",
     userRating: 5,
-    tags: ["AlphaFold", "Structural Biology", "Proteins", "Deep Learning"],
+    tags: ["AlphaFold", "Structural Biology", "Proteins", "Deep Learning", "Structure Prediction"],
     references: ["paper-vaswani-2017"]
+  },
+  {
+    id: "paper-arute-2019",
+    title: "Quantum supremacy using a programmable superconducting processor",
+    authors: [
+      { name: "Frank Arute", affiliation: "Google AI Quantum" },
+      { name: "Kunal Arya", affiliation: "Google AI Quantum" },
+      { name: "John M. Martinis", affiliation: "Google AI Quantum & UC Santa Barbara" }
+    ],
+    abstract: "The promise of quantum computers is that certain computational tasks might be executed exponentially faster on a quantum processor than on a classical processor. A fundamental milestone is to demonstrate a computational task that cannot be performed in reasonable time on any classical computer. Here we use a processor with 53 programmable superconducting qubits to demonstrate quantum supremacy.",
+    year: 2019,
+    venue: "Nature 2019",
+    doi: "10.1038/s41586-019-1666-5",
+    citationCount: 5400,
+    referenceCount: 48,
+    influentialCitationCount: 820,
+    fieldsOfStudy: ["Physics", "Quantum Physics", "Computer Science"],
+    openAccessPdfUrl: "https://www.nature.com/articles/s41586-019-1666-5.pdf",
+    tldr: "Demonstrates quantum computational supremacy using a 53-qubit programmable superconducting Sycamore processor.",
+    source: "local",
+    readingStatus: "to-read",
+    userRating: 5,
+    tags: ["Quantum Computing", "Superconducting Qubits", "Quantum Supremacy", "Qubits"],
+    references: ["paper-vaswani-2017"]
+  },
+  {
+    id: "paper-jinek-2012",
+    title: "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity (CRISPR-Cas9)",
+    authors: [
+      { name: "Martin Jinek", affiliation: "UC Berkeley" },
+      { name: "Krzysztof Chylinski", affiliation: "University of Vienna" },
+      { name: "Jennifer A. Doudna", affiliation: "UC Berkeley" },
+      { name: "Emmanuelle Charpentier", affiliation: "Umeå University" }
+    ],
+    abstract: "Clustered regularly interspaced short palindromic repeats (CRISPR)/CRISPR-associated (Cas) systems provide adaptive immunity against viruses and plasmids in bacteria and archaea. Cas9 endonuclease guided by dual RNA molecules mediates site-specific DNA cleavage. We demonstrate that Cas9 can be programmed with single guide RNAs for targeted genome editing.",
+    year: 2012,
+    venue: "Science 2012",
+    doi: "10.1126/science.1225829",
+    citationCount: 22400,
+    referenceCount: 35,
+    influentialCitationCount: 4100,
+    fieldsOfStudy: ["Biology", "Genetics", "Molecular Biology"],
+    openAccessPdfUrl: "https://www.science.org/doi/10.1126/science.1225829",
+    tldr: "Discovers and engineers the CRISPR-Cas9 programmable RNA-guided genome editing system for targeted genetic modifications.",
+    source: "local",
+    readingStatus: "to-read",
+    userRating: 5,
+    tags: ["CRISPR", "Cas9", "Genome Editing", "Gene Therapy", "Genetics"],
+    references: []
   }
 ];
 
@@ -303,6 +352,140 @@ function mapOpenAlexWorkToPaper(w: any): Paper {
   };
 }
 
+function stripHtml(html?: string): string {
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '').trim();
+}
+
+function mapCrossrefItemToPaper(item: any): Paper {
+  const title = (item.title && item.title[0]) || 'Untitled Scholarly Publication';
+  const authors = (item.author || []).map((a: any) => ({
+    name: [a.given, a.family].filter(Boolean).join(' ') || 'Academic Researcher',
+    affiliation: (a.affiliation && a.affiliation[0]?.name) || undefined
+  }));
+  const year = (item.issued && item.issued['date-parts'] && item.issued['date-parts'][0] && item.issued['date-parts'][0][0]) || 
+               (item.published && item.published['date-parts'] && item.published['date-parts'][0] && item.published['date-parts'][0][0]) || 2024;
+  const rawAbstract = stripHtml(item.abstract);
+  const abstract = rawAbstract || `Peer-reviewed scientific research published via ${item.publisher || 'Crossref scholarly index'}.`;
+
+  const doi = item.DOI ? String(item.DOI) : undefined;
+  const venue = item['container-title']?.[0] || item.publisher || 'Crossref Verified Source';
+
+  return {
+    id: doi ? `cr-${doi.replace(/[^a-zA-Z0-9]/g, '-')}` : `cr-${Math.random().toString(36).substring(2, 9)}`,
+    title,
+    authors: authors.length > 0 ? authors : [{ name: 'Academic Researchers' }],
+    abstract,
+    year: typeof year === 'number' ? year : 2024,
+    venue,
+    doi,
+    citationCount: item['is-referenced-by-count'] || 0,
+    referenceCount: item['references-count'] || 0,
+    fieldsOfStudy: ['Biology', 'Computer Science', 'Scientific Research'],
+    openAccessPdfUrl: item.resource?.primary?.URL || (doi ? `https://doi.org/${doi}` : undefined),
+    tldr: abstract.length > 200 ? abstract.substring(0, 197) + '...' : abstract,
+    source: 'crossref',
+    readingStatus: 'to-read',
+    userRating: 5,
+    tags: ['Crossref', 'Peer-Reviewed']
+  };
+}
+
+function mapEuropePmcItemToPaper(item: any): Paper {
+  const authorNames = (item.authorString || '').split(',').map((s: string) => s.trim()).filter(Boolean);
+  const authors = authorNames.map((name: string) => ({ name }));
+  const year = item.pubYear ? parseInt(item.pubYear) : 2024;
+  const venue = item.journalTitle || 'Europe PMC Indexed Journal';
+  const doi = item.doi ? String(item.doi) : undefined;
+  const abstract = `Peer-reviewed biomedical literature indexed in Europe PMC. ${item.journalTitle ? 'Published in ' + item.journalTitle + '.' : ''}`;
+
+  return {
+    id: item.id ? `epmc-${item.id}` : `epmc-${Math.random().toString(36).substring(2, 9)}`,
+    title: item.title?.replace(/\.$/, '') || 'Untitled Medical/Biological Study',
+    authors: authors.length > 0 ? authors : [{ name: 'Academic Researchers' }],
+    abstract,
+    year: isNaN(year) ? 2024 : year,
+    venue,
+    doi,
+    citationCount: item.citedByCount || 0,
+    referenceCount: 0,
+    fieldsOfStudy: ['Biomedicine', 'Life Sciences', 'Bioinformatics'],
+    openAccessPdfUrl: item.isOpenAccess === 'Y' && item.pmcid ? `https://europepmc.org/articles/${item.pmcid}?pdf=render` : (doi ? `https://doi.org/${doi}` : undefined),
+    tldr: abstract,
+    source: 'europepmc',
+    readingStatus: 'to-read',
+    userRating: 5,
+    tags: ['Europe PMC', 'Biomedicine']
+  };
+}
+
+function scorePaperRelevance(p: Paper, query: string): number {
+  if (!query.trim()) return p.citationCount || 0;
+  const qLower = query.toLowerCase().trim();
+  const titleLower = (p.title || '').toLowerCase();
+  const abstractLower = (p.abstract || '').toLowerCase();
+  const tagsLower = (p.tags || []).join(' ').toLowerCase();
+  const authorsLower = (p.authors || []).map(a => a.name).join(' ').toLowerCase();
+  const fieldsLower = (p.fieldsOfStudy || []).join(' ').toLowerCase();
+  const venueLower = (p.venue || '').toLowerCase();
+  const fullText = `${titleLower} ${abstractLower} ${tagsLower} ${authorsLower} ${fieldsLower}`;
+
+  let score = 0;
+
+  // Exact phrase match bonus
+  if (titleLower.includes(qLower)) score += 300;
+  else if (fullText.includes(qLower)) score += 150;
+
+  // Keyword token matches
+  const stopWords = new Set(['the', 'of', 'and', 'in', 'to', 'a', 'for', 'on', 'with', 'as', 'by', 'an', 'at', 'from']);
+  const tokens = qLower.split(/[\s,?:;!]+/).filter(w => w.length > 2 && !stopWords.has(w));
+
+  if (tokens.length > 0) {
+    let matchedTokens = 0;
+    let titleMatchedTokens = 0;
+
+    tokens.forEach(tok => {
+      if (titleLower.includes(tok)) {
+        score += 70;
+        matchedTokens++;
+        titleMatchedTokens++;
+      } else if (tagsLower.includes(tok)) {
+        score += 45;
+        matchedTokens++;
+      } else if (fieldsLower.includes(tok)) {
+        score += 35;
+        matchedTokens++;
+      } else if (abstractLower.includes(tok)) {
+        score += 15;
+        matchedTokens++;
+      } else if (authorsLower.includes(tok)) {
+        score += 50;
+        matchedTokens++;
+      }
+    });
+
+    if (matchedTokens === tokens.length) {
+      score += 150;
+    }
+    // High-impact bonus if all query tokens appear in title
+    if (titleMatchedTokens === tokens.length) {
+      score += 200;
+    }
+  }
+
+  // Citation bonus (impact factor scaling)
+  const citationBonus = Math.min(Math.log10((p.citationCount || 0) + 1) * 25, 120);
+  score += citationBonus;
+
+  // Prestigious venue boost
+  if (venueLower.includes('nature') || venueLower.includes('science') || venueLower.includes('cell') || 
+      venueLower.includes('neurips') || venueLower.includes('iclr') || venueLower.includes('cvpr')) {
+    score += 30;
+  }
+
+  return score;
+}
+
 class ClientScholarlyEngine {
   private papersKey = 'rr_papers_cache_v2';
   private collectionsKey = 'rr_collections_cache_v2';
@@ -317,6 +500,24 @@ class ClientScholarlyEngine {
       const storedPapers = localStorage.getItem(this.papersKey);
       if (!storedPapers) {
         localStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
+      } else {
+        try {
+          const current: Paper[] = JSON.parse(storedPapers);
+          const currentIds = new Set(current.map(p => p.id));
+          let changed = false;
+          for (const seed of INITIAL_SEED_PAPERS) {
+            if (!currentIds.has(seed.id)) {
+              current.push(seed);
+              changed = true;
+            }
+          }
+          if (changed) {
+            localStorage.setItem(this.papersKey, JSON.stringify(current));
+          }
+        } catch {
+          // If parse fails, reset with seed papers
+          localStorage.setItem(this.papersKey, JSON.stringify(INITIAL_SEED_PAPERS));
+        }
       }
       const storedCols = localStorage.getItem(this.collectionsKey);
       if (!storedCols) {
@@ -409,64 +610,147 @@ class ClientScholarlyEngine {
   async search(filters: SearchFilters): Promise<SearchResult> {
     const startTime = Date.now();
     const query = filters.query?.trim() || '';
+    const searchQuery = query || 'machine learning transformers';
 
-    // 1. First, search local database for exact matches
+    // 1. Search local curated and cached papers using token relevance scoring
     const { papers: localPapers } = this.getPapers();
     let localMatches: Paper[] = [];
     if (query) {
-      const lower = query.toLowerCase();
-      localMatches = localPapers.filter(p =>
-        p.title.toLowerCase().includes(lower) ||
-        p.abstract.toLowerCase().includes(lower) ||
-        p.authors.some(a => a.name.toLowerCase().includes(lower)) ||
-        (p.tags || []).some(t => t.toLowerCase().includes(lower))
-      );
+      localMatches = localPapers
+        .map(p => ({ paper: p, score: scorePaperRelevance(p, query) }))
+        .filter(item => item.score > 20)
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.paper);
     } else {
       localMatches = [...localPapers];
     }
 
-    // 2. Query OpenAlex global scholarly API directly from the browser (CORS enabled)
-    let remotePapers: Paper[] = [];
-    try {
-      const searchQuery = query || 'machine learning transformers';
-      const openAlexUrl = `https://api.openalex.org/works?search=${encodeURIComponent(searchQuery)}&per_page=20`;
-      const res = await fetch(openAlexUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.results && Array.isArray(data.results)) {
-          remotePapers = data.results.map(mapOpenAlexWorkToPaper);
-        }
+    // 2. Query global scholarly registries in parallel with resilient timeout
+    const fetchWithTimeout = async (url: string, timeoutMs = 4500) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timer);
+        return res;
+      } catch (err) {
+        clearTimeout(timer);
+        throw err;
       }
-    } catch {
-      // Network or offline fallback
-    }
+    };
 
-    // Merge without duplicates
-    const seenIds = new Set<string>();
+    let crossrefPapers: Paper[] = [];
+    let europePmcPapers: Paper[] = [];
+    let openAlexPapers: Paper[] = [];
+
+    const fetchTasks: Promise<void>[] = [
+      // Provider 1: Crossref (150M+ DOIs, unblocked, high performance)
+      (async () => {
+        try {
+          const crUrl = `https://api.crossref.org/works?query=${encodeURIComponent(searchQuery)}&rows=25&mailto=researchrabbitai@gmail.com`;
+          const res = await fetchWithTimeout(crUrl, 4500);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.message?.items && Array.isArray(data.message.items)) {
+              crossrefPapers = data.message.items.map(mapCrossrefItemToPaper);
+            }
+          }
+        } catch {
+          // Gracefully continue
+        }
+      })(),
+
+      // Provider 2: Europe PMC (45M+ Life Sciences & Biomedical publications, unblocked)
+      (async () => {
+        try {
+          const epmcUrl = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(searchQuery)}&format=json&pageSize=25`;
+          const res = await fetchWithTimeout(epmcUrl, 4500);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.resultList?.result && Array.isArray(data.resultList.result)) {
+              europePmcPapers = data.resultList.result.map(mapEuropePmcItemToPaper);
+            }
+          }
+        } catch {
+          // Gracefully continue
+        }
+      })(),
+
+      // Provider 3: OpenAlex (250M+ Scholarly Network)
+      (async () => {
+        try {
+          const oaUrl = `https://api.openalex.org/works?search=${encodeURIComponent(searchQuery)}&per_page=25`;
+          const res = await fetchWithTimeout(oaUrl, 3500);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.results && Array.isArray(data.results)) {
+              openAlexPapers = data.results.map(mapOpenAlexWorkToPaper);
+            }
+          }
+        } catch {
+          // Rate-limit or offline fallback
+        }
+      })()
+    ];
+
+    await Promise.allSettled(fetchTasks);
+
+    // 3. Deduplicate across local and federated providers
+    const seenTitles = new Set<string>();
+    const seenDois = new Set<string>();
     const combined: Paper[] = [];
 
-    for (const p of [...localMatches, ...remotePapers]) {
-      if (!seenIds.has(p.id) && !seenIds.has(p.title.toLowerCase())) {
-        seenIds.add(p.id);
-        seenIds.add(p.title.toLowerCase());
-        combined.push(p);
-        // Cache to local storage for offline use
-        this.savePaper(p);
-      }
+    const normalizeTitle = (t: string) => t.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Priority order: local matches first, then Crossref, Europe PMC, OpenAlex
+    const allCandidates = [
+      ...localMatches,
+      ...crossrefPapers,
+      ...europePmcPapers,
+      ...openAlexPapers
+    ];
+
+    for (const p of allCandidates) {
+      const nTitle = normalizeTitle(p.title);
+      const nDoi = p.doi ? p.doi.toLowerCase().trim() : '';
+
+      if (nTitle && seenTitles.has(nTitle)) continue;
+      if (nDoi && seenDois.has(nDoi)) continue;
+
+      if (nTitle) seenTitles.add(nTitle);
+      if (nDoi) seenDois.add(nDoi);
+
+      combined.push(p);
+      this.savePaper(p);
     }
 
-    // Apply filters
+    // 4. Apply user filters
     let results = combined;
     if (filters.yearStart) results = results.filter(p => p.year >= filters.yearStart!);
     if (filters.yearEnd) results = results.filter(p => p.year <= filters.yearEnd!);
     if (filters.minCitations) results = results.filter(p => p.citationCount >= filters.minCitations!);
     if (filters.openAccessOnly) results = results.filter(p => !!p.openAccessPdfUrl);
+    if (filters.fieldOfStudy && filters.fieldOfStudy !== 'All Fields') {
+      const fLower = filters.fieldOfStudy.toLowerCase();
+      results = results.filter(p => 
+        (p.fieldsOfStudy || []).some(f => f.toLowerCase().includes(fLower)) ||
+        p.title.toLowerCase().includes(fLower) ||
+        p.abstract.toLowerCase().includes(fLower)
+      );
+    }
 
-    // Sorting
+    // 5. Intelligent Ranking and Sorting
     if (filters.sortBy === 'citations') {
       results.sort((a, b) => b.citationCount - a.citationCount);
     } else if (filters.sortBy === 'year') {
       results.sort((a, b) => b.year - a.year);
+    } else {
+      // Relevance sort based on token scoring and citations
+      results.sort((a, b) => {
+        const scoreA = scorePaperRelevance(a, query);
+        const scoreB = scorePaperRelevance(b, query);
+        return scoreB - scoreA;
+      });
     }
 
     return {
@@ -475,10 +759,17 @@ class ClientScholarlyEngine {
       page: 1,
       queryTimeMs: Date.now() - startTime,
       sourceBreakdown: {
-        openalex: remotePapers.length,
+        crossref: crossrefPapers.length,
+        europepmc: europePmcPapers.length,
+        openalex: openAlexPapers.length,
         local: localMatches.length
       },
-      attributions: ['OpenAlex Global Scholarly Network (250M+ Works)', 'ResearchRabbit Local Engine'],
+      attributions: [
+        'Crossref Digital Object Registry (150M+ Works, DOI Foundation)',
+        'Europe PMC Life Sciences Repository (45M+ Works, EMBL-EBI)',
+        'OpenAlex Global Scholarly Network (250M+ Works, CC0)',
+        'ResearchRabbit High-Performance Federated Search'
+      ],
       cached: false
     };
   }

@@ -37,7 +37,7 @@ export interface Paper {
   fieldsOfStudy: string[];
   openAccessPdfUrl?: string;
   tldr?: string;
-  source: 'openalex' | 'arxiv' | 'semanticscholar' | 'crossref' | 'upload' | 'local';
+  source: 'openalex' | 'arxiv' | 'semanticscholar' | 'crossref' | 'europepmc' | 'upload' | 'local';
   pdfExtracted?: {
     sections: PaperSection[];
     references: string[];
@@ -182,7 +182,7 @@ export interface SearchFilters {
   fieldOfStudy?: string;
   openAccessOnly?: boolean;
   sortBy?: 'relevance' | 'citations' | 'year';
-  source?: 'all' | 'openalex' | 'crossref' | 'semantic_scholar' | 'arxiv';
+  source?: 'all' | 'openalex' | 'crossref' | 'semantic_scholar' | 'arxiv' | 'europepmc';
   provider?: string;
 }
 
