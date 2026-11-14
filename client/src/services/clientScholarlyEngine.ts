@@ -929,7 +929,11 @@ class ClientScholarlyEngine {
       updatedAt: new Date().toISOString()
     };
 
-    const existing = this.getReviews();
+    let existing: LiteratureReview[] = [];
+    try {
+      const raw = localStorage.getItem('rr_reviews_cache_v2');
+      if (raw) existing = JSON.parse(raw);
+    } catch {}
     const updated = [review, ...existing.filter(r => r.id !== review.id)];
     try {
       localStorage.setItem('rr_reviews_cache_v2', JSON.stringify(updated));
@@ -948,13 +952,11 @@ class ClientScholarlyEngine {
     } catch {}
 
     // Seed initial review
-    const initial = [
-      this.synthesizeLiteratureReview(
-        'Attention Mechanisms and Modern Neural Architectures',
-        ['paper-vaswani-2017', 'paper-devlin-2018', 'paper-brown-2020']
-      )
-    ];
-    return initial;
+    const initialReview = this.synthesizeLiteratureReview(
+      'Attention Mechanisms and Modern Neural Architectures',
+      ['paper-vaswani-2017', 'paper-devlin-2018', 'paper-brown-2020']
+    );
+    return [initialReview];
   }
 
   deleteReview(id: string): void {
