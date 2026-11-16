@@ -67,8 +67,8 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
   const [inputQuestion, setInputQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<'comprehensive' | 'comparative' | 'methodology' | 'critique'>('comprehensive');
-  const [modelProvider, setModelProvider] = useState<'builtin' | 'openai' | 'anthropic' | 'gemini'>(
-    () => (localStorage.getItem('rr_user_ai_provider') as any) || 'builtin'
+  const [modelProvider, setModelProvider] = useState<string>(
+    () => localStorage.getItem('rr_user_ai_provider') || 'llama'
   );
   const [activeCitationModal, setActiveCitationModal] = useState<CitationItem | null>(null);
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
@@ -267,10 +267,12 @@ export const ChatInterface: React.FC<AiAssistantProps> = ({
                   }}
                   className="text-[11px] bg-transparent text-slate-800 dark:text-slate-200 font-medium focus:outline-none cursor-pointer"
                 >
+                  <option value="llama">Meta Llama API (Primary)</option>
+                  <option value="gemini">Google Gemini 1.5 Flash (Free Cloud Tier)</option>
+                  <option value="ollama">Ollama Local Engine (Llama 3.2)</option>
                   <option value="builtin">Builtin Neural Engine</option>
                   <option value="openai">OpenAI (GPT-4o-mini)</option>
                   <option value="anthropic">Claude 3.5 Sonnet</option>
-                  <option value="gemini">Gemini 1.5 Flash</option>
                 </select>
               </div>
 

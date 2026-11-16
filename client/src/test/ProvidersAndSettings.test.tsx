@@ -101,8 +101,8 @@ describe('Scholarly and AI Providers Frontend Suite', () => {
 
   it('renders Ollama local model commands and free tier indicators in Settings', () => {
     render(<Settings />);
-    expect(screen.getByText(/Local Ollama Model Commands \(Zero Cost\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/ollama pull qwen3:4b/i)).toBeInTheDocument();
+    expect(screen.getByText(/Local Ollama Model Commands/i)).toBeInTheDocument();
+    expect(screen.getByText(/ollama pull llama3.2/i)).toBeInTheDocument();
     expect(screen.getByText(/ollama pull nomic-embed-text/i)).toBeInTheDocument();
   });
 });

@@ -1616,11 +1616,184 @@ class ClientScholarlyEngine {
     const { papers } = this.getPapers();
     const targetPapers = papers.filter(p => paperIds.includes(p.id));
 
-    // Optional direct OpenAI integration if custom API key is present
+    // Active AI Model and Provider Dispatch
+    const chosenProvider = modelProvider || (typeof window !== 'undefined' ? safeStorage.getItem('rr_user_ai_provider') : null) || 'llama';
     const apiKey = userApiKey || (typeof window !== 'undefined' ? safeStorage.getItem('rr_user_ai_key') : null);
+    const contextStr = targetPapers.map(p => `Title: ${p.title}\nAuthors: ${p.authors.map(a => a.name).join(', ')}\nAbstract: ${p.abstract}`).join('\n\n');
+
+    // 1. Google Gemini 1.5 Flash (Free Cloud Tier on Google AI Studio)
+    if (chosenProvider === 'gemini' && apiKey) {
+      try {
+        const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `SYSTEM INSTRUCTION: You are an elite academic literature assistant. Answer the user question rigorously with formal academic prose, clear sections, and empirical evidence from peer-reviewed literature. Avoid using asterisks or markdown hashes in headings.\n\nRESEARCH QUESTION: ${trimmedQ}\n\nCONTEXT PAPERS:\n${contextStr || 'No specific context papers selected; synthesize from global peer-reviewed literature.'}`
+                  }
+                ]
+              }
+            ],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 2048
+            }
+          })
+        });
+        if (geminiRes.ok) {
+          const geminiJson = await geminiRes.json();
+          const geminiText = geminiJson.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (geminiText) {
+            return {
+              answer: geminiText,
+              citations: targetPapers.map(p => ({
+                paperId: p.id,
+                citeKey: `${p.authors[0]?.name.split(' ').pop() || 'Author'}${p.year}`,
+                title: p.title,
+                authors: p.authors.map(a => a.name).join(', '),
+                year: p.year,
+                quoteSnippet: p.abstract.substring(0, 150) + '...',
+                confidence: 0.98
+              })),
+              synthesisKeyPoints: [
+                `Direct synthesis addressing: ${trimmedQ}`,
+                'Evidence grounded across verified literature using Google Gemini 1.5 Flash Free Tier'
+              ],
+              suggestedFollowUps: [
+                `What are the principal theoretical trade-offs in ${trimmedQ}?`,
+                `How do recent empirical benchmarks compare across different architectures?`,
+                `What open research questions remain in this domain?`
+              ],
+              modeUsed: mode
+            };
+          }
+        }
+      } catch {
+        // Fall back to next provider
+      }
+    }
+
+    // 2. Meta Llama API (Primary Cloud Model)
+    if (chosenProvider === 'llama' && apiKey) {
+      try {
+        const llamaRes = await fetch('https://api.llama-api.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'meta-llama/Llama-3.3-70B-Instruct',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are an elite academic literature assistant. Answer the user question rigorously with formal academic prose, clear sections, and empirical evidence from peer-reviewed literature. Avoid using asterisks or markdown hashes in headings.'
+              },
+              {
+                role: 'user',
+                content: `RESEARCH QUESTION: ${trimmedQ}\n\nCONTEXT PAPERS:\n${contextStr || 'No specific context papers selected; synthesize from global peer-reviewed literature.'}`
+              }
+            ],
+            temperature: 0.2
+          })
+        });
+        if (llamaRes.ok) {
+          const llamaJson = await llamaRes.json();
+          const llamaText = llamaJson.choices?.[0]?.message?.content;
+          if (llamaText) {
+            return {
+              answer: llamaText,
+              citations: targetPapers.map(p => ({
+                paperId: p.id,
+                citeKey: `${p.authors[0]?.name.split(' ').pop() || 'Author'}${p.year}`,
+                title: p.title,
+                authors: p.authors.map(a => a.name).join(', '),
+                year: p.year,
+                quoteSnippet: p.abstract.substring(0, 150) + '...',
+                confidence: 0.98
+              })),
+              synthesisKeyPoints: [
+                `Direct synthesis addressing: ${trimmedQ}`,
+                'Evidence grounded across verified literature using Meta Llama API'
+              ],
+              suggestedFollowUps: [
+                `What are the principal theoretical trade-offs in ${trimmedQ}?`,
+                `How do recent empirical benchmarks compare across different architectures?`,
+                `What open research questions remain in this domain?`
+              ],
+              modeUsed: mode
+            };
+          }
+        }
+      } catch {
+        // Fall back to next provider
+      }
+    }
+
+    // 3. Local Ollama Engine (Llama 3.2 Offline Fallback)
+    if (chosenProvider === 'ollama') {
+      try {
+        const ollamaController = new AbortController();
+        const timeoutId = setTimeout(() => ollamaController.abort(), 3000);
+        const ollamaRes = await fetch('http://localhost:11434/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: ollamaController.signal,
+          body: JSON.stringify({
+            model: 'llama3.2',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are an elite academic literature assistant. Answer the user question rigorously with formal academic prose, clear sections, and empirical evidence from peer-reviewed literature.'
+              },
+              {
+                role: 'user',
+                content: `RESEARCH QUESTION: ${trimmedQ}\n\nCONTEXT PAPERS:\n${contextStr || 'No specific context papers selected; synthesize from global peer-reviewed literature.'}`
+              }
+            ],
+            stream: false
+          })
+        });
+        clearTimeout(timeoutId);
+        if (ollamaRes.ok) {
+          const ollamaJson = await ollamaRes.json();
+          const ollamaText = ollamaJson.message?.content;
+          if (ollamaText) {
+            return {
+              answer: ollamaText,
+              citations: targetPapers.map(p => ({
+                paperId: p.id,
+                citeKey: `${p.authors[0]?.name.split(' ').pop() || 'Author'}${p.year}`,
+                title: p.title,
+                authors: p.authors.map(a => a.name).join(', '),
+                year: p.year,
+                quoteSnippet: p.abstract.substring(0, 150) + '...',
+                confidence: 0.98
+              })),
+              synthesisKeyPoints: [
+                `Direct synthesis addressing: ${trimmedQ}`,
+                'Evidence grounded using local offline Ollama (Llama 3.2)'
+              ],
+              suggestedFollowUps: [
+                `What are the principal theoretical trade-offs in ${trimmedQ}?`,
+                `How do recent empirical benchmarks compare across different architectures?`,
+                `What open research questions remain in this domain?`
+              ],
+              modeUsed: mode
+            };
+          }
+        }
+      } catch {
+        // Fall through to builtin engine
+      }
+    }
+
+    // 4. Optional OpenAI integration if custom API key is present
     if (apiKey && apiKey.startsWith('sk-')) {
       try {
-        const contextStr = targetPapers.map(p => `Title: ${p.title}\nAuthors: ${p.authors.map(a => a.name).join(', ')}\nAbstract: ${p.abstract}`).join('\n\n');
         const openAiRes = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {

@@ -68,7 +68,7 @@ export const Settings: React.FC = () => {
   // AI Providers State
   const [llmProviders, setLlmProviders] = useState<LLMProviderInfo[]>([]);
   const [embeddingProviders, setEmbeddingProviders] = useState<EmbeddingProviderInfo[]>([]);
-  const [selectedLlm, setSelectedLlm] = useState<string>(() => localStorage.getItem('rr_user_ai_provider') || 'builtin');
+  const [selectedLlm, setSelectedLlm] = useState<string>(() => localStorage.getItem('rr_user_ai_provider') || 'llama');
   const [customApiKey, setCustomApiKey] = useState<string>(() => localStorage.getItem('rr_user_ai_key') || '');
   const [showApiKey, setShowApiKey] = useState(false);
 
@@ -408,8 +408,9 @@ export const Settings: React.FC = () => {
                   ))
                 ) : (
                   <>
-                    <option value="ollama">Ollama Local Engine (qwen3:4b — Free Local Model)</option>
-                    <option value="qwen3:8b">Ollama Local Engine (qwen3:8b — Optional High Capacity)</option>
+                    <option value="llama">Meta Llama API (Primary: Llama 3.3 70B / Llama 3.2)</option>
+                    <option value="gemini">Google Gemini 1.5 Flash (Free Cloud Tier — Zero Cost)</option>
+                    <option value="ollama">Ollama Local Engine (Llama 3.2 — Offline Fallback)</option>
                     <option value="builtin">ResearchRabbit Verifiable Builtin Synthesizer</option>
                   </>
                 )}
@@ -417,24 +418,54 @@ export const Settings: React.FC = () => {
               <span className="text-[11px] text-slate-400 block">
                 {selectedLlm === 'builtin'
                   ? 'Deterministic synthesis engine with citation verification. Zero external keys required.'
-                  : selectedLlm === 'qwen3:8b'
-                  ? 'High-capacity 8B local parameter model via Ollama. Recommended for 16GB+ RAM.'
-                  : 'Primary free local model (qwen3:4b) running via Ollama at http://localhost:11434.'}
+                  : selectedLlm === 'llama'
+                  ? 'Primary cloud reasoning engine via Meta Llama API (Llama 3.3 70B / Llama 3.2).'
+                  : selectedLlm === 'gemini'
+                  ? 'Secondary cloud model powered by Google Gemini 1.5 Flash (Free Tier on Google AI Studio).'
+                  : 'Offline fallback local engine running via Ollama (Llama 3.2) at http://localhost:11434.'}
               </span>
+
+              {(selectedLlm === 'llama' || selectedLlm === 'gemini' || selectedLlm === 'openai' || selectedLlm === 'anthropic') && (
+                <div className="pt-2 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-medium text-slate-700 dark:text-slate-300">
+                      {selectedLlm === 'llama' ? 'Meta Llama API Key (Optional)' : selectedLlm === 'gemini' ? 'Google Gemini API Key (Free Tier)' : 'Custom API Key (Optional)'}
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowApiKey(!showApiKey)}
+                      className="text-[10px] text-indigo-600 dark:text-indigo-400 hover:underline"
+                    >
+                      {showApiKey ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                  <input
+                    type={showApiKey ? 'text' : 'password'}
+                    value={customApiKey}
+                    onChange={(e) => setCustomApiKey(e.target.value)}
+                    placeholder={selectedLlm === 'llama' ? 'Enter Meta Llama API key or token' : selectedLlm === 'gemini' ? 'Enter Google AI Studio Gemini API key (Free)' : 'Enter API key'}
+                    className="w-full px-3 py-1.5 text-xs rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono"
+                  />
+                  <span className="text-[10px] text-slate-400 block">
+                    {selectedLlm === 'gemini' ? 'Google AI Studio provides 1,500 free requests per day without credit card.' : 'Stored securely in your local browser storage for client and backend requests.'}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Ollama Commands Reference */}
             <div className="space-y-1.5 p-3 rounded-xl bg-slate-50 dark:bg-[#141824] border border-slate-200 dark:border-white/10">
               <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 block">
-                Local Ollama Model Commands (Zero Cost)
+                Local Ollama Model Commands (Zero Cost Offline Fallback)
               </span>
               <pre className="text-[10px] font-mono p-2 rounded bg-slate-100 dark:bg-[#1c2230] text-indigo-600 dark:text-indigo-400 overflow-x-auto">
-{`ollama pull qwen3:4b
+{`ollama pull llama3.2
+ollama run llama3.2
 ollama pull nomic-embed-text
 ollama list`}
               </pre>
               <span className="text-[10px] text-slate-400 block">
-                Runs entirely locally without OpenAI, Gemini, or Claude subscriptions.
+                Runs entirely locally without external subscriptions or network dependencies.
               </span>
             </div>
           </div>

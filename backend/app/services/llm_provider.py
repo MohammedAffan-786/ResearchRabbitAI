@@ -223,6 +223,78 @@ class GeminiLLMProvider(LLMProvider):
                 raise AIProviderError("Gemini", f"Inference failed: {str(e)}")
 
 
+class LlamaLLMProvider(LLMProvider):
+    """
+    Meta Llama API primary cloud provider.
+    Connects to Meta Llama model (meta-llama/Llama-3.3-70B-Instruct, Llama-3.2, etc.)
+    via Llama API or OpenAI-compatible endpoint.
+    """
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        model: Optional[str] = None,
+        base_url: Optional[str] = None
+    ):
+        self._api_key = api_key or settings.LLAMA_API_KEY
+        self._model = model or settings.LLAMA_MODEL
+        self._base_url = (base_url or settings.LLAMA_BASE_URL).rstrip("/")
+
+    @property
+    def provider_name(self) -> str:
+        return "llama"
+
+    @property
+    def model_name(self) -> str:
+        return self._model
+
+    @property
+    def is_available(self) -> bool:
+        return bool(self._api_key)
+
+    async def generate(
+        self,
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        temperature: float = 0.2,
+        max_tokens: int = 2048
+    ) -> str:
+        if not self._api_key:
+            raise AIProviderError("Meta Llama", "LLAMA_API_KEY not configured", status_code=401)
+
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": self._model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens
+        }
+
+        endpoint = f"{self._base_url}/chat/completions" if not self._base_url.endswith("/chat/completions") else self._base_url
+
+        async with httpx.AsyncClient(timeout=45.0) as client:
+            try:
+                resp = await client.post(endpoint, headers=headers, json=payload)
+                if resp.status_code == 429:
+                    raise AIProviderError("Meta Llama", "Rate limit exceeded (HTTP 429)", status_code=429)
+                if resp.status_code == 401:
+                    raise AIProviderError("Meta Llama", "Authentication failed: invalid Llama API key", status_code=401)
+                resp.raise_for_status()
+                data = resp.json()
+                return data["choices"][0]["message"]["content"]
+            except AIProviderError:
+                raise
+            except Exception as e:
+                raise AIProviderError("Meta Llama", f"Inference failed: {str(e)}")
+
+
 class OllamaLLMProvider(LLMProvider):
     """
     Ollama native primary LLM provider.
@@ -395,14 +467,18 @@ class LocalSmartProvider(LLMProvider):
 
 # Provider Registry
 _PROVIDER_CLASSES = {
+    "llama": LlamaLLMProvider,
+    "meta-llama": LlamaLLMProvider,
+    "meta": LlamaLLMProvider,
+    "gemini": GeminiLLMProvider,
     "ollama": OllamaLLMProvider,
+    "llama3.2": OllamaLLMProvider,
     "qwen": OllamaLLMProvider,
     "qwen3": OllamaLLMProvider,
     "qwen3:4b": OllamaLLMProvider,
     "qwen3:8b": OllamaLLMProvider,
     "openai": OpenAILLMProvider,
     "anthropic": AnthropicLLMProvider,
-    "gemini": GeminiLLMProvider,
     "builtin": LocalSmartProvider,
     "local": LocalSmartProvider,
 }
@@ -414,31 +490,56 @@ def get_llm_provider(
 ) -> LLMProvider:
     """
     Factory function returning the configured LLM provider.
-    Defaults to OllamaLLMProvider with settings.OLLAMA_CHAT_MODEL (qwen3:4b).
+    Priority hierarchy:
+    1. Meta Llama API (Primary Cloud Engine: Llama 3.3 70B / Llama 3.2)
+    2. Google Gemini Flash (Secondary Cloud Engine: Free of charge via Google AI Studio Free Tier)
+    3. Ollama Local Engine (Offline / Local Fallback: Llama 3.2 local model)
+    4. ResearchRabbit Builtin Synthesizer (Deterministic Fallback)
     """
-    name = (provider_name or settings.LLM_PROVIDER or "ollama").lower()
+    name = (provider_name or settings.LLM_PROVIDER or "llama").lower()
 
-    if name in ("ollama", "qwen", "qwen3", "qwen3:4b", "qwen3:8b"):
+    if name in ("llama", "meta-llama", "meta"):
+        key = api_key or settings.LLAMA_API_KEY
+        if key:
+            return LlamaLLMProvider(api_key=key, model=model)
+        # Fallback 1: Gemini Flash Free Tier if configured
+        if settings.GEMINI_API_KEY:
+            return GeminiLLMProvider(api_key=settings.GEMINI_API_KEY, model=model or settings.GEMINI_MODEL)
+        # Fallback 2: Ollama Local Engine
+        return OllamaLLMProvider(model=model or settings.OLLAMA_CHAT_MODEL, api_key=api_key)
+
+    elif name == "gemini":
+        key = api_key or settings.GEMINI_API_KEY
+        if key:
+            return GeminiLLMProvider(api_key=key, model=model or settings.GEMINI_MODEL)
+        # Fallback to Ollama
+        return OllamaLLMProvider(model=model or settings.OLLAMA_CHAT_MODEL, api_key=api_key)
+
+    elif name in ("ollama", "llama3.2", "qwen", "qwen3", "qwen3:4b", "qwen3:8b"):
         chat_model = model or (settings.OLLAMA_CHAT_MODEL if name == "ollama" else name)
         return OllamaLLMProvider(model=chat_model, api_key=api_key)
+
     elif name == "openai":
         key = api_key or settings.OPENAI_API_KEY
         if key:
             return OpenAILLMProvider(api_key=key, model=model)
         return LocalSmartProvider(model=model or "researchrabbit-deterministic-v2")
+
     elif name == "anthropic":
         key = api_key or settings.ANTHROPIC_API_KEY
         if key:
             return AnthropicLLMProvider(api_key=key, model=model)
         return LocalSmartProvider(model=model or "researchrabbit-deterministic-v2")
-    elif name == "gemini":
-        key = api_key or settings.GEMINI_API_KEY
-        if key:
-            return GeminiLLMProvider(api_key=key, model=model)
-        return LocalSmartProvider(model=model or "researchrabbit-deterministic-v2")
+
     elif name in ("builtin", "local"):
         return LocalSmartProvider(model=model or "researchrabbit-deterministic-v2")
 
+    # Default fallback: check Llama, then Gemini, then Ollama
+    key = api_key or settings.LLAMA_API_KEY
+    if key:
+        return LlamaLLMProvider(api_key=key, model=model)
+    if settings.GEMINI_API_KEY:
+        return GeminiLLMProvider(api_key=settings.GEMINI_API_KEY, model=model or settings.GEMINI_MODEL)
     return OllamaLLMProvider(model=model or settings.OLLAMA_CHAT_MODEL, api_key=api_key)
 
 
@@ -446,23 +547,32 @@ def list_llm_providers() -> List[Dict[str, Any]]:
     """Returns status and configuration of all supported LLM providers."""
     return [
         {
+            "id": "llama",
+            "name": f"Meta Llama API (Primary: {settings.LLAMA_MODEL})",
+            "default_model": settings.LLAMA_MODEL,
+            "available": bool(settings.LLAMA_API_KEY),
+            "requires_api_key": True,
+            "active": settings.LLM_PROVIDER in ("llama", "meta-llama", "meta"),
+            "description": "Primary cloud API model powered by Meta Llama 3.3 / Llama 3.2. State-of-the-art academic synthesis and reasoning.",
+            "endpoint": settings.LLAMA_BASE_URL,
+        },
+        {
+            "id": "gemini",
+            "name": "Google Gemini 1.5 Flash (Free Cloud Tier)",
+            "default_model": settings.GEMINI_MODEL,
+            "available": bool(settings.GEMINI_API_KEY),
+            "requires_api_key": True,
+            "active": settings.LLM_PROVIDER == "gemini",
+            "description": "Verified 100% free of cost on Google AI Studio Free Tier (15 RPM, 1M TPM, 1,500 RPD). Fast multimodal reasoning.",
+        },
+        {
             "id": "ollama",
-            "name": f"Ollama Local Engine ({settings.OLLAMA_CHAT_MODEL})",
+            "name": f"Ollama Local Engine (Llama 3.2 Fallback)",
             "default_model": settings.OLLAMA_CHAT_MODEL,
             "available": True,
             "requires_api_key": False,
-            "active": settings.LLM_PROVIDER in ("ollama", "qwen", "qwen3"),
-            "description": "Primary free local model (qwen3:4b). High reasoning quality, zero paid subscriptions.",
-            "endpoint": settings.OLLAMA_BASE_URL,
-        },
-        {
-            "id": "qwen3:8b",
-            "name": "Ollama Local Engine (qwen3:8b)",
-            "default_model": "qwen3:8b",
-            "available": True,
-            "requires_api_key": False,
-            "active": settings.OLLAMA_CHAT_MODEL == "qwen3:8b",
-            "description": "Optional higher-capacity 8B local model for computers with 16GB+ RAM.",
+            "active": settings.LLM_PROVIDER in ("ollama", "llama3.2"),
+            "description": "Local offline fallback model running Meta Llama 3.2 via Ollama at http://localhost:11434. Zero cost, no external subscriptions.",
             "endpoint": settings.OLLAMA_BASE_URL,
         },
         {
@@ -489,14 +599,6 @@ def list_llm_providers() -> List[Dict[str, Any]]:
             "available": bool(settings.ANTHROPIC_API_KEY),
             "requires_api_key": True,
             "active": settings.LLM_PROVIDER == "anthropic",
-        },
-        {
-            "id": "gemini",
-            "name": "Google Gemini (Gemini 1.5 Flash)",
-            "default_model": settings.GEMINI_MODEL,
-            "available": bool(settings.GEMINI_API_KEY),
-            "requires_api_key": True,
-            "active": settings.LLM_PROVIDER == "gemini",
         },
     ]
 

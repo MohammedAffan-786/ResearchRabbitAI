@@ -22,22 +22,29 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
     QDRANT_COLLECTION_NAME: str = os.getenv("QDRANT_COLLECTION_NAME", "research_papers")
 
-    # Ollama Local Free AI Engine (Primary & Default)
+    # Meta Llama API (Primary Cloud AI Engine)
+    LLAMA_API_KEY: str = os.getenv("LLAMA_API_KEY", "")
+    LLAMA_BASE_URL: str = os.getenv("LLAMA_BASE_URL", "https://api.llama-api.com")
+    LLAMA_MODEL: str = os.getenv("LLAMA_MODEL", "meta-llama/Llama-3.3-70B-Instruct")
+
+    # Google Gemini Flash API (Secondary Cloud AI Engine - Verified Free Tier on Google AI Studio)
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+
+    # Ollama Local Free AI Engine (Offline / Local Fallback)
     OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-    OLLAMA_CHAT_MODEL: str = os.getenv("OLLAMA_CHAT_MODEL", "qwen3:4b")
+    OLLAMA_CHAT_MODEL: str = os.getenv("OLLAMA_CHAT_MODEL", "llama3.2")
     OLLAMA_EMBED_MODEL: str = os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text")
     OLLAMA_API_KEY: str = os.getenv("OLLAMA_API_KEY", "")  # Optional auth token for remote Ollama in production
     OLLAMA_TIMEOUT: float = float(os.getenv("OLLAMA_TIMEOUT", "120.0"))
     OLLAMA_CONTEXT_WINDOW: int = int(os.getenv("OLLAMA_CONTEXT_WINDOW", "4096"))
 
-    # AI Model Providers (Defaults to Ollama Free Local Engine)
-    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "ollama")
+    # AI Model Providers (Primary: Meta Llama API; Secondary: Gemini Flash Free Tier; Fallback: Ollama Local)
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "llama")
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     ANTHROPIC_MODEL: str = os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
     # Embeddings (Defaults to Ollama nomic-embed-text)
     EMBEDDING_PROVIDER: str = os.getenv("EMBEDDING_PROVIDER", "ollama")

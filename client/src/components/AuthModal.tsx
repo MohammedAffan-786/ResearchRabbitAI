@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Lock, Mail, User, Building, LogIn } from 'lucide-react';
 import { useResearchStore } from '../store/useResearchStore';
+import { api } from '../services/api';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -25,41 +26,36 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setLoading(true);
     setError(null);
 
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !password) {
+      setError('Please provide a valid academic email and password.');
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isRegister) {
-        const resp = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, full_name: fullName, institution })
+        const data = await api.register({
+          email: cleanEmail,
+          password,
+          full_name: fullName.trim() || 'Researcher',
+          institution: institution.trim() || 'Academic Institution'
         });
-        if (!resp.ok) {
-          const errData = await resp.json().catch(() => ({ detail: 'Registration failed' }));
-          throw new Error(errData.detail || 'Registration failed');
-        }
-        const data = await resp.json();
         setUser(data.user, data.access_token);
-        showToast(`Welcome, ${data.user.full_name || 'Researcher'}!`);
+        showToast(`Welcome, ${data.user.full_name || 'Researcher'}! Account created successfully.`);
+        onClose();
       } else {
-        const formData = new URLSearchParams();
-        formData.append('username', email);
+        const formData = new FormData();
+        formData.append('username', cleanEmail);
         formData.append('password', password);
 
-        const resp = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
-        });
-        if (!resp.ok) {
-          const errData = await resp.json().catch(() => ({ detail: 'Invalid credentials' }));
-          throw new Error(errData.detail || 'Incorrect email or password');
-        }
-        const data = await resp.json();
+        const data = await api.login(formData);
         setUser(data.user, data.access_token);
-        showToast('Signed in successfully');
+        showToast(`Signed in successfully as ${data.user.full_name || data.user.email}`);
+        onClose();
       }
-      onClose();
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      setError(err.message || 'Authentication failed. Please verify your credentials or register a new account.');
     } finally {
       setLoading(false);
     }
