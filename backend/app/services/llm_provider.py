@@ -165,7 +165,11 @@ class AnthropicLLMProvider(LLMProvider):
 class GeminiLLMProvider(LLMProvider):
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         self._api_key = api_key or settings.GEMINI_API_KEY
-        self._model = model or settings.GEMINI_MODEL
+        selected_model = model or settings.GEMINI_MODEL
+        # Normalize Gemini 1.3 Flash requests to Google's official free-tier endpoint gemini-1.5-flash
+        if "1.3" in selected_model:
+            selected_model = "gemini-1.5-flash"
+        self._model = selected_model
 
     @property
     def provider_name(self) -> str:

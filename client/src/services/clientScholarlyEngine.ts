@@ -1621,8 +1621,8 @@ class ClientScholarlyEngine {
     const apiKey = userApiKey || (typeof window !== 'undefined' ? safeStorage.getItem('rr_user_ai_key') : null);
     const contextStr = targetPapers.map(p => `Title: ${p.title}\nAuthors: ${p.authors.map(a => a.name).join(', ')}\nAbstract: ${p.abstract}`).join('\n\n');
 
-    // 1. Google Gemini 1.5 Flash (Free Cloud Tier on Google AI Studio)
-    if (chosenProvider === 'gemini' && apiKey) {
+    // 1. Google Gemini Flash (Free Cloud Tier on Google AI Studio — gemini-1.5-flash)
+    if ((chosenProvider === 'gemini' || chosenProvider.includes('gemini') || chosenProvider.includes('1.3') || chosenProvider.includes('1.5')) && apiKey) {
       try {
         const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
